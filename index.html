@@ -1,187 +1,32 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Smart Aid | Помощник водителя</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a56db">
-    <style>
-        /* Базовые стили (можно вынести в styles.css, но для простоты здесь) */
-        :root { --primary: #1a56db; --bg: #f3f4f6; --text: #1f2937; --card: #ffffff; }
-        @media (prefers-color-scheme: dark) {
-            :root { --primary: #3b82f6; --bg: #111827; --text: #f3f4f6; --card: #1f2937; }
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.5; }
-        header { background: var(--primary); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        h1 { margin: 0; font-size: 1.25rem; }
-        .container { max-width: 800px; margin: 0 auto; padding: 1rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .card { background: var(--card); padding: 1.5rem; border-radius: 12px; text-align: center; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .card:hover { transform: translateY(-3px); }
-        .card-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
-        .card-title { font-weight: bold; display: block; }
-        .section { display: none; background: var(--card); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; animation: fadeIn 0.3s; }
-        .section.active { display: block; }
-        .btn { display: inline-block; background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 1rem; border: none; cursor: pointer; width: 100%; box-sizing: border-box; text-align: center; }
-        .btn-danger { background: #dc2626; }
-        .btn-secondary { background: #4b5563; }
-        .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid; }
-        .alert-red { background: #fef2f2; border-color: #dc2626; color: #991b1b; }
-        .alert-green { background: #f0fdf4; border-color: #16a34a; color: #166534; }
-        footer { text-align: center; padding: 2rem 1rem; font-size: 0.8rem; opacity: 0.7; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        /* Баннер обновления */
-        #update-banner { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: white; padding: 1rem; z-index: 1000; text-align: center; }
-        #update-banner button { background: #3b82f6; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; margin-left: 10px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <title>Road Smart Aid</title>
+    <script src="script.js" defer></script>
 </head>
 <body>
-
-<header>
-    <h1>🚗 Road Smart Aid</h1>
-    <div style="font-size: 0.8rem; opacity: 0.9;">Правовой гид водителя (РФ)</div>
-</header>
-
-<div class="container">
-    <!-- Главное меню -->
-    <div id="main-menu" class="grid">
-        <div class="card" onclick="showSection('stop')">
-            <span class="card-icon">🛑</span>
-            <span class="card-title">Остановка ДПС</span>
-        </div>
-        <div class="card" onclick="showSection('docs')">
-            <span class="card-icon">📄</span>
-            <span class="card-title">Документы</span>
-        </div>
-        <div class="card" onclick="showSection('search')">
-            <span class="card-icon">🔍</span>
-            <span class="card-title">Осмотр/Досмотр</span>
-        </div>
-        <div class="card" onclick="showSection('accident')">
-            <span class="card-icon">🚗💥</span>
-            <span class="card-title">ДТП</span>
-        </div>
-        <div class="card" onclick="showSection('rights')">
-            <span class="card-icon">⚖️</span>
-            <span class="card-title">Ваши права</span>
-        </div>
-    </div>
-
-    <!-- Разделы контента -->
-    <div id="stop" class="section">
-        <h2>Вас остановил инспектор</h2>
-        <div class="alert alert-green">✅ Законно: Инспектор должен представиться и назвать причину.</div>
-        <ol>
-            <li>Остановитесь в безопасном месте.</li>
-            <li>Опустите стекло.</li>
-            <li>Попросите предъявить удостоверение (в раскрытом виде).</li>
-            <li>Зафиксируйте номер жетона.</li>
-        </ol>
-        <button class="btn btn-danger" onclick="alert('Набираем 112...')">📞 Позвонить 112</button>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
-    </div>
-
-    <div id="docs" class="section">
-        <h2>Какие документы возить с собой?</h2>
-        <ul>
-            <li>✅ Водительское удостоверение</li>
-            <li>✅ СТС (Свидетельство о регистрации)</li>
-            <li>✅ Полис ОСАГО (можно в электронном виде)</li>
-        </ul>
-        <div class="alert alert-red">⚠️ Права на машину (ПТС) возить с собой НЕ нужно!</div>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
-    </div>
-
-    <div id="search" class="section">
-        <h2>Осмотр и Досмотр</h2>
-        <p><strong>Осмотр</strong> — визуальный осмотр без открытия багажника. Протокол не нужен.</p>
-        <p><strong>Досмотр</strong> — вскрытие авто. Требует:</p>
-        <ul>
-            <li>Понятых (2 чел) ИЛИ видеозапись</li>
-            <li>Протокола досмотра</li>
-        </ul>
-        <button class="btn" onclick="alert('Режим записи включен (имитация)')">🎥 Начать видеозапись</button>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
-    </div>
-
-    <div id="accident" class="section">
-        <h2>Произошло ДТП</h2>
-        <div class="alert alert-red">🛑 Немедленно включите аварийку и выставьте знак!</div>
-        <ol>
-            <li>Проверьте наличие пострадавших.</li>
-            <li>Если нет пострадавших и ущерб небольшой — оформите Европротокол.</li>
-            <li>Сфотографируйте положение машин, повреждения, номера.</li>
-        </ol>
-        <button class="btn btn-danger" onclick="alert('Вызов скорой и ГИБДД...')">🚑 Экстренный вызов</button>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
-    </div>
-
-    <div id="rights" class="section">
-        <h2>Ваши права</h2>
-        <p>Согласно Приказу МВД № 264:</p>
-        <ul>
-            <li>Вы имеете право снимать инспектора на видео.</li>
-            <li>Вы не обязаны выходить из машины (кроме случаев досмотра или составления протокола вне авто).</li>
-            <li>Вы можете не подписывать протокол, если не согласны (пишите "Не согласен").</li>
-        </ul>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
-    </div>
-
+    <header>
+        <h1>Welcome to Road Smart Aid</h1>
+    </header>
+    <main>
+        <section aria-labelledby="features">
+            <h2 id="features">Features</h2>
+            <p>Our application helps you find the best routes.</p>
+        </section>
+        <section aria-labelledby="error-handling">
+            <h2 id="error-handling">Error Handling</h2>
+            <p>Please ensure your input is valid.</p>
+        </section>
+        <section aria-labelledby="accessibility">
+            <h2 id="accessibility">Accessibility Features</h2>
+            <p>This application complies with WCAG standards.</p>
+        </section>
+    </main>
     <footer>
-        <p>Основано на Приказе МВД РФ № 264 от 02.05.2023.<br>
-        Данные проверены: <span id="last-check">Загрузка...</span><br>
-        <small>Не является юридической консультацией.</small></p>
+        <p>&copy; 2026 Road Smart Aid. All rights reserved.</p>
     </footer>
-</div>
-
-<!-- Баннер обновлений -->
-<div id="update-banner">
-    <span>🔄 Доступно обновление базы правил!</span>
-    <button onclick="applyUpdate()">Обновить</button>
-    <button onclick="dismissUpdate()" style="background:transparent; border:1px solid #fff;">Позже</button>
-</div>
-
-<script>
-    // Логика переключения экранов
-    function showSection(id) {
-        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-        document.getElementById('main-menu').style.display = id === 'main' ? 'grid' : 'none';
-        if(id !== 'main') {
-            document.getElementById(id).classList.add('active');
-        } else {
-            document.getElementById('main-menu').style.display = 'grid';
-        }
-    }
-
-    // Проверка даты обновления (имитация загрузки из JSON)
-    fetch('data/legal-base.json')
-        .then(r => r.json())
-        .then(data => {
-            document.getElementById('last-check').innerText = data.metadata.last_verified.split('T')[0];
-        })
-        .catch(() => {
-            document.getElementById('last-check').innerText = "Неизвестно (офлайн)";
-        });
-
-    // Регистрация Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('SW зарегистрирован', reg))
-            .catch(err => console.log('SW ошибка', err));
-    }
-
-    // Функции баннера
-    function applyUpdate() {
-        if ('caches' in window) {
-            caches.keys().then(names => names.forEach(name => caches.delete(name)));
-        }
-        window.location.reload();
-    }
-    function dismissUpdate() {
-        document.getElementById('update-banner').style.display = 'none';
-    }
-</script>
 </body>
 </html>
