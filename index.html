@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Road Smart Aid</title>
-    <script src="script.js" defer></script>
+    <title>Обсуждение прав водителей</title>
+    <style>
+        .btn {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Road Smart Aid</h1>
-    </header>
-    <main>
-        <section aria-labelledby="features">
-            <h2 id="features">Features</h2>
-            <p>Our application helps you find the best routes.</p>
-        </section>
-        <section aria-labelledby="error-handling">
-            <h2 id="error-handling">Error Handling</h2>
-            <p>Please ensure your input is valid.</p>
-        </section>
-        <section aria-labelledby="accessibility">
-            <h2 id="accessibility">Accessibility Features</h2>
-            <p>This application complies with WCAG standards.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Road Smart Aid. All rights reserved.</p>
-    </footer>
+    <h1>Добро пожаловать в Road Smart Aid</h1>
+    <p>Информация о полицейских остановках, документах, авариях и правах водителей.</p>
+    <button class="btn" aria-label="Проверить права водителя">Проверить права</button>
+    <script>
+        async function fetchData(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Ошибка: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data);
+                // Обработайте данные здесь, если нужно
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error);
+                alert('Не удалось получить данные. Пожалуйста, попробуйте еще раз.');
+            }
+        }
+
+        // Пример вызова функции fetchData с вашим URL
+        fetchData('https://api.example.com/data');
+    </script>
 </body>
 </html>
