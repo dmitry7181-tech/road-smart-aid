@@ -398,21 +398,21 @@
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
-        <!-- Footer с правовыми нормами и дисклеймером -->
+           <!-- Footer с правовыми нормами и дисклеймером -->
     <footer>
         <!-- Блок с нормативной базой (аккордеон) -->
         <div style="background: var(--card); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid var(--border);">
             <h3 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">📚 Нормативная база приложения</h3>
             
             <details style="margin: 1rem 0; cursor: pointer;">
-                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0;">
-                    🔴 Приказ МВД № 264 (развернуть)
+                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0; cursor: pointer;">
+                    🔴 Приказ МВД № 264 (нажмите, чтобы развернуть)
                 </summary>
                 <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid var(--primary);">
                     <p style="margin: 0.5rem 0;"><strong>Приказ МВД России от 02.05.2023 № 264</strong><br>
                     <em>«Об утверждении Порядка осуществления надзора за соблюдением участниками дорожного движения требований законодательства РФ»</em></p>
                     <p style="margin: 0.5rem 0; font-size: 0.9rem;">
-                        📌 <a href="https://publication.pravo.gov.ru/document/0001202305020028" target="_blank" style="color: var(--primary);">Официальная публикация</a>
+                        📌 <a href="https://publication.pravo.gov.ru/document/0001202305020028" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; font-weight: 500;">→ Открыть официальную публикацию на pravo.gov.ru</a>
                     </p>
                     <ul style="font-size: 0.85rem; margin: 0.5rem 0; padding-left: 1.5rem;">
                         <li>п. 44-45 — Обязанности инспектора при остановке</li>
@@ -426,8 +426,8 @@
             </details>
 
             <details style="margin: 1rem 0; cursor: pointer;">
-                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0;">
-                    ⚖️ КоАП РФ и Конституция (развернуть)
+                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0; cursor: pointer;">
+                    ⚖️ КоАП РФ и Конституция (нажмите, чтобы развернуть)
                 </summary>
                 <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid #16a34a;">
                     <ul style="font-size: 0.85rem; margin: 0.5rem 0; padding-left: 1.5rem;">
@@ -436,14 +436,14 @@
                         <li><strong>ФЗ «О полиции» № 3-ФЗ</strong>: ст. 5, 6, 13, 28</li>
                     </ul>
                     <p style="margin: 0.5rem 0; font-size: 0.9rem;">
-                        📌 <a href="http://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" style="color: var(--primary);">Текст КоАП РФ</a>
+                        📌 <a href="http://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; font-weight: 500;">→ Открыть текст КоАП РФ на Consultant.ru</a>
                     </p>
                 </div>
             </details>
 
             <details style="margin: 1rem 0; cursor: pointer;">
-                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0;">
-                    🚗 ПДД РФ и иные акты (развернуть)
+                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0; cursor: pointer;">
+                    🚗 ПДД РФ и иные акты (нажмите, чтобы развернуть)
                 </summary>
                 <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid #8b5cf6;">
                     <ul style="font-size: 0.85rem; margin: 0.5rem 0; padding-left: 1.5rem;">
@@ -452,11 +452,14 @@
                         <li><strong>ФЗ «О безопасности дорожного движения» № 196-ФЗ</strong></li>
                         <li><strong>ГК РФ, УК РФ</strong> — смежные нормы</li>
                     </ul>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                        📌 <a href="https://www.consultant.ru/document/cons_doc_LAW_112308/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; font-weight: 500;">→ Открыть актуальные ПДД РФ</a>
+                    </p>
                 </div>
             </details>
         </div>
 
-        <!-- 🔥 ВАШ ЮРИДИЧЕСКИЙ ТЕКСТ (выделенный блок) -->
+        <!-- 🔥 ЮРИДИЧЕСКИЙ ДИСКЛЕЙМЕР (выделенный блок) -->
         <div style="background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 1.25rem; border-radius: 12px; border-left: 4px solid var(--primary); margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.6;">
             <p style="margin: 0 0 0.75rem 0; font-weight: 600; color: var(--text);">
                 ℹ️ Правовая информация
@@ -481,11 +484,11 @@
                 <strong>📅 Последнее обновление базы:</strong> <span id="last-check">Загрузка...</span>
             </p>
             <p style="margin: 1rem 0; font-size: 0.8rem; color: #6b7280;">
-                📌 Официальные источники:<br>
-                <a href="https://publication.pravo.gov.ru" target="_blank" style="color: var(--primary);">pravo.gov.ru</a> • 
-                <a href="http://www.consultant.ru" target="_blank" style="color: var(--primary);">consultant.ru</a> • 
-                <a href="https://www.garant.ru" target="_blank" style="color: var(--primary);">garant.ru</a> • 
-                <a href="https://гибдд.рф" target="_blank" style="color: var(--primary);">гибдд.рф</a>
+                📌 Официальные источники:<br><br>
+                <a href="https://publication.pravo.gov.ru" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; margin: 0 0.5rem;">pravo.gov.ru</a> • 
+                <a href="http://www.consultant.ru" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; margin: 0 0.5rem;">consultant.ru</a> • 
+                <a href="https://www.garant.ru" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; margin: 0 0.5rem;">garant.ru</a> • 
+                <a href="https://гибдд.рф" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; margin: 0 0.5rem;">гибдд.рф</a>
             </p>
             <p style="margin: 1rem 0; font-size: 0.75rem; color: #9ca3af;">
                 Road Smart Aid v2.1 • Социальный проект
