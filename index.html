@@ -398,77 +398,97 @@
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
-    <!-- Footer -->
+        <!-- Footer с правовыми нормами и дисклеймером -->
     <footer>
-        <p><strong>Приказ МВД России № 264 от 02.05.2023</strong></p>
-        <p>Базовый нормативный акт для работы сотрудников ГИБДД/ДПС</p>
-        <p style="margin-top: 1rem;">Данные проверены: <span id="last-check">Загрузка...</span></p>
-        <p style="margin-top: 0.5rem; font-size: 0.75rem;">
-            ⚠️ Не является юридической консультацией.<br>
-            Проверьте актуальность на <a href="https://publication.pravo.gov.ru" target="_blank">pravo.gov.ru</a>
-        </p>
+        <!-- Блок с нормативной базой (аккордеон) -->
+        <div style="background: var(--card); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid var(--border);">
+            <h3 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">📚 Нормативная база приложения</h3>
+            
+            <details style="margin: 1rem 0; cursor: pointer;">
+                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0;">
+                    🔴 Приказ МВД № 264 (развернуть)
+                </summary>
+                <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid var(--primary);">
+                    <p style="margin: 0.5rem 0;"><strong>Приказ МВД России от 02.05.2023 № 264</strong><br>
+                    <em>«Об утверждении Порядка осуществления надзора за соблюдением участниками дорожного движения требований законодательства РФ»</em></p>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                        📌 <a href="https://publication.pravo.gov.ru/document/0001202305020028" target="_blank" style="color: var(--primary);">Официальная публикация</a>
+                    </p>
+                    <ul style="font-size: 0.85rem; margin: 0.5rem 0; padding-left: 1.5rem;">
+                        <li>п. 44-45 — Обязанности инспектора при остановке</li>
+                        <li>п. 84 — Основания для остановки ТС</li>
+                        <li>п. 89, 91, 93 — Выход водителя из автомобиля</li>
+                        <li>п. 175-179 — Порядок составления протокола</li>
+                        <li>п. 227-243 — Медицинское освидетельствование</li>
+                        <li>п. 244-257 — Задержание транспортного средства</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details style="margin: 1rem 0; cursor: pointer;">
+                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0;">
+                    ⚖️ КоАП РФ и Конституция (развернуть)
+                </summary>
+                <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid #16a34a;">
+                    <ul style="font-size: 0.85rem; margin: 0.5rem 0; padding-left: 1.5rem;">
+                        <li><strong>КоАП РФ</strong>: ст. 2.7, 27.9, 27.13, 28.2, Глава 12</li>
+                        <li><strong>Конституция РФ</strong>: ст. 23, 25, 27, 29 ч.4, 45, 46</li>
+                        <li><strong>ФЗ «О полиции» № 3-ФЗ</strong>: ст. 5, 6, 13, 28</li>
+                    </ul>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">
+                        📌 <a href="http://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" style="color: var(--primary);">Текст КоАП РФ</a>
+                    </p>
+                </div>
+            </details>
+
+            <details style="margin: 1rem 0; cursor: pointer;">
+                <summary style="font-weight: 600; color: var(--text); padding: 0.5rem 0;">
+                    🚗 ПДД РФ и иные акты (развернуть)
+                </summary>
+                <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid #8b5cf6;">
+                    <ul style="font-size: 0.85rem; margin: 0.5rem 0; padding-left: 1.5rem;">
+                        <li><strong>ПДД РФ</strong> (Постановление № 1090 от 23.10.1993)</li>
+                        <li><strong>ФЗ «Об ОСАГО» № 40-ФЗ</strong></li>
+                        <li><strong>ФЗ «О безопасности дорожного движения» № 196-ФЗ</strong></li>
+                        <li><strong>ГК РФ, УК РФ</strong> — смежные нормы</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- 🔥 ВАШ ЮРИДИЧЕСКИЙ ТЕКСТ (выделенный блок) -->
+        <div style="background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 1.25rem; border-radius: 12px; border-left: 4px solid var(--primary); margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.6;">
+            <p style="margin: 0 0 0.75rem 0; font-weight: 600; color: var(--text);">
+                ℹ️ Правовая информация
+            </p>
+            <p style="margin: 0.5rem 0; color: var(--text);">
+                Информация основана на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.
+            </p>
+            <p style="margin: 0.5rem 0; color: var(--text);">
+                Приложение предоставляет справочно-информационные материалы на основе действующего законодательства 
+                (ст. 2 ч. 2 п. 3 Федерального закона «О рекламе») и не является юридической консультацией. 
+                Для решения конкретных правовых вопросов рекомендуется обращаться к квалифицированному юристу. 
+                Владелец приложения действует как информационный посредник в соответствии со ст. 1253.1 ГК РФ.
+            </p>
+            <p style="margin: 0.75rem 0 0 0; font-weight: 600; color: var(--primary);">
+                📅 Актуально на март 2026 г.
+            </p>
+        </div>
+
+        <!-- Ссылки и метаданные -->
+        <div style="border-top: 2px solid var(--border); padding-top: 1rem; margin-top: 1rem; text-align: center;">
+            <p style="margin: 0.5rem 0; font-size: 0.85rem;">
+                <strong>📅 Последнее обновление базы:</strong> <span id="last-check">Загрузка...</span>
+            </p>
+            <p style="margin: 1rem 0; font-size: 0.8rem; color: #6b7280;">
+                📌 Официальные источники:<br>
+                <a href="https://publication.pravo.gov.ru" target="_blank" style="color: var(--primary);">pravo.gov.ru</a> • 
+                <a href="http://www.consultant.ru" target="_blank" style="color: var(--primary);">consultant.ru</a> • 
+                <a href="https://www.garant.ru" target="_blank" style="color: var(--primary);">garant.ru</a> • 
+                <a href="https://гибдд.рф" target="_blank" style="color: var(--primary);">гибдд.рф</a>
+            </p>
+            <p style="margin: 1rem 0; font-size: 0.75rem; color: #9ca3af;">
+                Road Smart Aid v2.1 • Социальный проект
+            </p>
+        </div>
     </footer>
-
-</div>
-
-<!-- Баннер обновлений -->
-<div id="update-banner">
-    <span>🔄 Доступно обновление базы!</span>
-    <button onclick="applyUpdate()">Обновить</button>
-    <button onclick="dismissUpdate()">Позже</button>
-</div>
-
-<script>
-    // Переключение разделов
-    function showSection(id) {
-        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-        document.getElementById('main-menu').style.display = 'none';
-        document.getElementById('emergency-main').style.display = 'none';
-        
-        if (id === 'main') {
-            document.getElementById('main-menu').style.display = 'grid';
-            document.getElementById('emergency-main').style.display = 'block';
-        } else {
-            const section = document.getElementById(id);
-            if (section) section.classList.add('active');
-        }
-        window.scrollTo(0, 0);
-    }
-
-    // Загрузка даты проверки
-    fetch('data/legal-base.json?t=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
-            const el = document.getElementById('last-check');
-            if (el && data.metadata && data.metadata.last_verified) {
-                el.innerText = data.metadata.last_verified.split('T')[0];
-            }
-        })
-        .catch(() => {
-            const el = document.getElementById('last-check');
-            if (el) el.innerText = "Онлайн";
-        });
-
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW error', err));
-        });
-    }
-
-    // Баннер обновлений
-    function applyUpdate() {
-        if ('caches' in window) {
-            caches.keys().then(names => names.forEach(name => caches.delete(name)));
-        }
-        window.location.reload();
-    }
-    function dismissUpdate() {
-        document.getElementById('update-banner').style.display = 'none';
-    }
-</script>
-
-</body>
-</html>
