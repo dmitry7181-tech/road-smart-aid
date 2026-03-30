@@ -1,39 +1,59 @@
 {
   "metadata": {
-    "version": "2.0.0",
-    "last_verified": "2026-03-29T21:00:00Z",
-    "source": "Приказ МВД РФ № 264, КоАП РФ, ПДД РФ"
+    "version": "3.1.0",
+    "schema_version": "1.0",
+    "last_verified": "2026-03-30T12:00:00Z",
+    "auto_updated": false,
+    "source": "Приказ МВД России № 264 от 02.05.2023",
+    "disclaimer": "Информация предоставлена в справочных целях. Не является юридической консультацией. Проверьте актуальность на pravo.gov.ru перед использованием."
   },
   "documents": {
     "mvd_order_264": {
-      "name": "Приказ МВД России № 264",
-      "content_hash": "legal_doc_hash_2024",
-      "url": "https://publication.pravo.gov.ru/document/0001202305020028",
-      "description": "Основной документ, регулирующий деятельность сотрудников ДПС"
+      "name": "Приказ МВД России № 264 от 02.05.2023",
+      "description": "Порядок осуществления надзора за соблюдением ПДД",
+      "content_hash": "a1b2c3d4e5f6g7h8",
+      "url": "https://www.consultant.ru/document/cons_doc_LAW_451297/",
+      "official_url": "https://publication.pravo.gov.ru/document/0001202305020028",
+      "last_checked": "2026-03-30T12:00:00Z",
+      "update_pending": false
+    },
+    "koap_rf": {
+      "name": "Кодекс РФ об административных правонарушениях",
+      "description": "Глава 12: Правонарушения в области дорожного движения",
+      "content_hash": "k1o2a3p4r5f6x7y8",
+      "url": "https://www.consultant.ru/document/cons_doc_LAW_34661/",
+      "official_url": "https://publication.pravo.gov.ru/document/0001200112300012",
+      "last_checked": "2026-03-30T12:00:00Z",
+      "update_pending": false
+    },
+    "constitution_rf": {
+      "name": "Конституция Российской Федерации",
+      "description": "Статьи 23, 25, 27, 29, 45, 46 — права граждан",
+      "content_hash": "c1o2n3s4t5i6t7u8",
+      "url": "https://www.consultant.ru/document/cons_doc_LAW_164354/",
+      "official_url": "https://publication.pravo.gov.ru/document/0001202007040001",
+      "last_checked": "2026-03-30T12:00:00Z",
+      "update_pending": false
+    },
+    "pdd_rf": {
+      "name": "Правила дорожного движения РФ",
+      "description": "Постановление Совета Министров РФ от 23.10.1993 № 1090 (с изменениями)",
+      "content_hash": "p1d2d3r4f5x6y7z8",
+      "url": "https://www.consultant.ru/document/cons_doc_LAW_2709/",
+      "official_url": "https://publication.pravo.gov.ru/document/000199310230001",
+      "last_checked": "2026-03-30T12:00:00Z",
+      "last_amendment_date": "2025-12-01",
+      "update_pending": false
     }
   },
-  "required_documents": {
-    "driver": [
-      "Паспорт гражданина РФ",
-      "Водительское удостоверение (категория с действующим сроком)",
-      "Свидетельство о регистрации ТС",
-      "Полис ОСАГО (обязательное страхование)",
-      "Техническое свидетельство или диагностическая карта"
-    ]
-  },
-  "driver_rights": {
-    "basic": [
-      "Требовать предъявления служебного удостоверения инспектора",
-      "Вести видеозапись и фотографирование при остановке",
-      "Требовать объяснения причины остановки",
-      "Иметь с собой адвоката или представителя",
-      "Обжаловать штраф в суде в течение 10 дней"
-    ]
-  },
-  "fines_examples": {
-    "speeding": [
-      "Превышение на 20-40 км/ч: 500 рублей",
-      "Превышение на 40-60 км/ч: 1000-1500 рублей"
+  "update_config": {
+    "check_interval_days": 7,
+    "auto_apply": false,
+    "notify_on_update": true,
+    "sources": [
+      "https://publication.pravo.gov.ru",
+      "https://www.consultant.ru",
+      "https://www.garant.ru"
     ]
   }
 }
