@@ -3,177 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Smart Aid | Помощник водителя</title>
+    <title>Помощник в дороге | Road Smart Aid</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a56db">
     <style>
-        :root { --primary: #1a56db; --bg: #f3f4f6; --text: #1f2937; --card: #ffffff; }
+        :root { --primary: #1a56db; --secondary: #0e3a8c; --bg: #f3f4f6; --text: #1f2937; --card: #ffffff; --border: #e5e7eb; }
         @media (prefers-color-scheme: dark) {
-            :root { --primary: #3b82f6; --bg: #111827; --text: #f3f4f6; --card: #1f2937; }
+            :root { --primary: #3b82f6; --secondary: #1e40af; --bg: #111827; --text: #f3f4f6; --card: #1f2937; --border: #374151; }
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.5; }
-        header { background: var(--primary); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        h1 { margin: 0; font-size: 1.25rem; }
-        .container { max-width: 800px; margin: 0 auto; padding: 1rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .card { background: var(--card); padding: 1.5rem; border-radius: 12px; text-align: center; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .card:hover { transform: translateY(-3px); }
-        .card-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
-        .card-title { font-weight: bold; display: block; }
-        .section { display: none; background: var(--card); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; animation: fadeIn 0.3s; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        /* Header */
+        header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 1.5rem 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        header h1 { margin: 0 0 0.5rem 0; font-size: 1.5rem; }
+        header p { margin: 0; opacity: 0.9; font-size: 0.9rem; }
+        
+        /* Container */
+        .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+        
+        /* Main Menu Grid */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .menu-card { background: var(--card); padding: 1.5rem; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 2px solid transparent; }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-color: var(--primary); }
+        .menu-icon { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+        .menu-title { font-weight: 600; font-size: 0.95rem; display: block; }
+        
+        /* Sections */
+        .section { display: none; background: var(--card); padding: 1.5rem; border-radius: 12px; margin: 1rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); animation: fadeIn 0.3s; }
         .section.active { display: block; }
-        .btn { display: inline-block; background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 1rem; border: none; cursor: pointer; width: 100%; box-sizing: border-box; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Headings */
+        h2 { color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--border); padding-bottom: 0.75rem; }
+        h3 { color: var(--secondary); margin: 1.5rem 0 0.75rem 0; }
+        
+        /* Steps */
+        .steps { counter-reset: step; }
+        .step { position: relative; padding-left: 3rem; margin: 1rem 0; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .step:last-child { border-bottom: none; }
+        .step::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .step-reference { display: inline-block; background: #dbeafe; color: #1e40af; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 500; }
+        @media (prefers-color-scheme: dark) { .step-reference { background: #1e3a8a; color: #93c5fd; } }
+        
+        /* Cards */
+        .info-card { background: var(--bg); border-left: 4px solid var(--primary); padding: 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0; }
+        .info-card.warning { border-left-color: #f59e0b; background: #fffbeb; }
+        .info-card.danger { border-left-color: #dc2626; background: #fef2f2; }
+        .info-card.success { border-left-color: #16a34a; background: #f0fdf4; }
+        @media (prefers-color-scheme: dark) { 
+            .info-card.warning { background: #451a03; }
+            .info-card.danger { background: #450a0a; }
+            .info-card.success { background: #052e16; }
+        }
+        
+        /* Buttons */
+        .btn { display: inline-block; background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 0.5rem 0.5rem 0.5rem 0; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn:hover { background: var(--secondary); transform: translateY(-2px); }
         .btn-danger { background: #dc2626; }
-        .btn-secondary { background: #4b5563; }
-        .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid; }
-        .alert-red { background: #fef2f2; border-color: #dc2626; color: #991b1b; }
-        .alert-green { background: #f0fdf4; border-color: #16a34a; color: #166534; }
-        footer { text-align: center; padding: 2rem 1rem; font-size: 0.8rem; opacity: 0.7; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #update-banner { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: white; padding: 1rem; z-index: 1000; text-align: center; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .btn-full { width: 100%; margin: 0.5rem 0; }
+        
+        /* Emergency Numbers */
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .emergency-card { background: linear-gradient(135deg, #dc2626, #991b1b); color: white; padding: 1.5rem; border-radius: 12px; text-align: center; }
+        .emergency-number { font-size: 2rem; font-weight: bold; margin: 0.5rem 0; }
+        .emergency-label { opacity: 0.9; font-size: 0.9rem; }
+        
+        /* Powers List */
+        .powers-list { list-style: none; padding: 0; }
+        .powers-list li { padding: 1rem; margin: 0.75rem 0; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary); }
+        .powers-list strong { color: var(--primary); display: block; margin-bottom: 0.5rem; }
+        .powers-list small { color: #6b7280; display: block; margin-top: 0.5rem; font-style: italic; }
+        
+        /* Footer */
+        footer { text-align: center; padding: 2rem 1rem; font-size: 0.85rem; opacity: 0.8; border-top: 1px solid var(--border); margin-top: 2rem; }
+        footer a { color: var(--primary); text-decoration: none; }
+        
+        /* Back Button */
+        .back-btn { display: inline-flex; align-items: center; margin-bottom: 1rem; color: var(--primary); cursor: pointer; font-weight: 500; }
+        .back-btn:hover { text-decoration: underline; }
+        
+        /* Update Banner */
+        #update-banner { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: white; padding: 1rem; z-index: 1000; text-align: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
         #update-banner button { background: #3b82f6; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; margin-left: 10px; cursor: pointer; }
+        
+        /* Responsive */
+        @media (max-width: 640px) {
+            .menu-grid { grid-template-columns: repeat(2, 1fr); }
+            .emergency-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.25rem; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🚗 Road Smart Aid</h1>
-    <div style="font-size: 0.8rem; opacity: 0.9;">Правовой гид водителя (РФ)</div>
+    <h1>🚗 Помощник в дороге</h1>
+    <p>Ваш карманный юрист • Приказ МВД №264</p>
 </header>
 
 <div class="container">
+
     <!-- Главное меню -->
-    <div id="main-menu" class="grid">
-        <div class="card" onclick="showSection('stop')">
-            <span class="card-icon">🛑</span>
-            <span class="card-title">Остановка ДПС</span>
+    <div id="main-menu" class="menu-grid">
+        <div class="menu-card" onclick="showSection('stop')">
+            <span class="menu-icon">🛑</span>
+            <span class="menu-title">Остановка</span>
         </div>
-        <div class="card" onclick="showSection('docs')">
-            <span class="card-icon">📄</span>
-            <span class="card-title">Документы</span>
+        <div class="menu-card" onclick="showSection('powers')">
+            <span class="menu-icon">⚡</span>
+            <span class="menu-title">Полномочия</span>
         </div>
-        <div class="card" onclick="showSection('search')">
-            <span class="card-icon">🔍</span>
-            <span class="card-title">Осмотр/Досмотр</span>
+        <div class="menu-card" onclick="showSection('docs')">
+            <span class="menu-icon">📄</span>
+            <span class="menu-title">Документы</span>
         </div>
-        <div class="card" onclick="showSection('accident')">
-            <span class="card-icon">🚗💥</span>
-            <span class="card-title">ДТП</span>
+        <div class="menu-card" onclick="showSection('search')">
+            <span class="menu-icon">🔍</span>
+            <span class="menu-title">Осмотр и досмотр</span>
         </div>
-        <div class="card" onclick="showSection('rights')">
-            <span class="card-icon">⚖️</span>
-            <span class="card-title">Ваши права</span>
+        <div class="menu-card" onclick="showSection('accident')">
+            <span class="menu-icon">🚗💥</span>
+            <span class="menu-title">ДТП</span>
+        </div>
+        <div class="menu-card" onclick="showSection('rights')">
+            <span class="menu-icon">⚖️</span>
+            <span class="menu-title">Ваши права</span>
         </div>
     </div>
 
-    <!-- Разделы контента -->
+    <!-- Экстренные номера (всегда видны на главной) -->
+    <div id="emergency-main">
+        <h2>📞 Экстренные номера</h2>
+        <div class="emergency-grid">
+            <div class="emergency-card">
+                <div class="emergency-number">112</div>
+                <div class="emergency-label">Единый экстренный</div>
+            </div>
+            <div class="emergency-card" style="background: linear-gradient(135deg, #1e40af, #1e3a8a);">
+                <div class="emergency-number">102</div>
+                <div class="emergency-label">Полиция</div>
+            </div>
+            <div class="emergency-card" style="background: linear-gradient(135deg, #059669, #047857);">
+                <div class="emergency-number">8(800)222-74-47</div>
+                <div class="emergency-label">Горячая линия МВД</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- РАЗДЕЛ: Порядок остановки -->
     <div id="stop" class="section">
-        <h2>Вас остановил инспектор</h2>
-        <div class="alert alert-green">✅ Законно: Инспектор должен представиться и назвать причину.</div>
-        <ol>
-            <li>Остановитесь в безопасном месте.</li>
-            <li>Опустите стекло.</li>
-            <li>Попросите предъявить удостоверение (в раскрытом виде).</li>
-            <li>Зафиксируйте номер жетона.</li>
-        </ol>
-        <button class="btn btn-danger" onclick="alert('Набираем 112...')">📞 Позвонить 112</button>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
+        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+        <h2>🛑 Порядок действий инспектора при остановке</h2>
+        
+        <div class="steps">
+            <div class="step">
+                <strong>Представился, назвал должность, звание и фамилию</strong>
+                <span class="step-reference">п. 45 Приказа №264</span>
+            </div>
+            <div class="step">
+                <strong>Предъявил служебное удостоверение по требованию</strong>
+                <span class="step-reference">п. 45 Приказа №264</span>
+            </div>
+            <div class="step">
+                <strong>Сообщил причину и цель обращения</strong>
+                <span class="step-reference">п. 45 Приказа №264</span>
+            </div>
+            <div class="step">
+                <strong>Разъяснил права и обязанности участника</strong>
+                <span class="step-reference">п. 11 Приказа №264</span>
+            </div>
+            <div class="step">
+                <strong>Предъявил нагрудный знак</strong>
+                <span class="step-reference">п. 44 Приказа №264</span>
+            </div>
+            <div class="step">
+                <strong>Не препятствует видеосъёмке</strong>
+                <span class="step-reference">ч. 4 ст. 29 Конституции РФ, ФЗ «О полиции»</span>
+            </div>
+            <div class="step">
+                <strong>Общается вежливо и корректно</strong>
+                <span class="step-reference">п. 44 Приказа №264</span>
+            </div>
+        </div>
+
+        <div class="info-card warning">
+            <strong>⚠️ Важно:</strong> Если инспектор не выполнил эти действия — вы имеете право уточнить его полномочия и зафиксировать нарушение.
+        </div>
+
+        <button class="btn btn-full btn-danger" onclick="alert('Набираем 112...')">📞 Позвонить 112</button>
+        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
+    <!-- РАЗДЕЛ: Полномочия -->
+    <div id="powers" class="section">
+        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+        <h2>⚡ Основные полномочия инспектора</h2>
+
+        <h3>🛑 Остановка транспортного средства <small style="font-size:0.7rem; color:#6b7280;">п. 84 Приказа №264</small></h3>
+        <ul class="powers-list">
+            <li>
+                <strong>Нарушения ПДД</strong>
+                Установленные визуально или зафиксированные техническими средствами признаки нарушений
+                <small>п. 84.1</small>
+            </li>
+            <li>
+                <strong>Ориентировки</strong>
+                Наличие данных о причастности водителя, пассажиров к совершению ДТП, преступления или правонарушения
+                <small>п. 84.2</small>
+            </li>
+            <li>
+                <strong>Розыск ТС</strong>
+                Наличие данных о том, что транспортное средство находится в розыске или используется в противоправных целях
+                <small>п. 84.3</small>
+            </li>
+            <li>
+                <strong>Опрос</strong>
+                Необходимость опроса водителя или пассажиров об обстоятельствах ДТП, правонарушения
+                <small>п. 84.4</small>
+            </li>
+            <li>
+                <strong>Понятой</strong>
+                Необходимость привлечения участника дорожного движения в качестве понятого
+                <small>п. 84.5</small>
+            </li>
+            <li>
+                <strong>Проверка документов</strong>
+                Проверка документов на право пользования и управления ТС, документов на ТС и перевозимый груз
+                <small>п. 84.13</small>
+            </li>
+        </ul>
+
+        <div class="info-card danger">
+            <strong>⚠️ ВАЖНО:</strong> Основанием для проверки документов является сама остановка (п. 84.13 Приказа №264). Остановка допускается в любом месте несения службы.
+        </div>
+
+        <h3>📋 Другие полномочия</h3>
+        <ul class="powers-list">
+            <li><strong>Проверка документов</strong><small>п. 84.13, п. 53 Приказа №264</small></li>
+            <li><strong>Выход из автомобиля</strong><small>п. 10, 89, 91, 93 Приказа №264</small></li>
+            <li><strong>Осмотр и досмотр ТС</strong><small>п. 17 Приказа №264, ст. 27.9 КоАП РФ</small></li>
+            <li><strong>Использование видеозаписи</strong><small>ч. 4 ст. 29 Конституции РФ</small></li>
+            <li><strong>Медицинское освидетельствование</strong><small>п. 227–243 Приказа №264</small></li>
+            <li><strong>Составление протокола</strong><small>п. 167–179 Приказа №264</small></li>
+            <li><strong>Задержание ТС</strong><small>п. 244–257 Приказа №264, ст. 27.13 КоАП РФ</small></li>
+        </ul>
+
+        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+    </div>
+
+    <!-- РАЗДЕЛ: Документы -->
     <div id="docs" class="section">
-        <h2>Какие документы возить с собой?</h2>
+        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+        <h2>📄 Документы для проверки</h2>
+
+        <div class="info-card success">
+            <strong>✅ Обязательно иметь с собой:</strong>
+        </div>
         <ul>
-            <li>✅ Водительское удостоверение</li>
-            <li>✅ СТС (Свидетельство о регистрации)</li>
-            <li>✅ Полис ОСАГО (можно в электронном виде)</li>
+            <li><strong>Водительское удостоверение</strong> — документ на право управления ТС</li>
+            <li><strong>СТС</strong> — свидетельство о регистрации транспортного средства</li>
+            <li><strong>Полис ОСАГО</strong> — можно в электронном виде на телефоне</li>
         </ul>
-        <div class="alert alert-red">⚠️ Права на машину (ПТС) возить с собой НЕ нужно!</div>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
+
+        <div class="info-card">
+            <strong>ℹ️ Не обязательно возить:</strong><br>
+            ПТС (паспорт транспортного средства) — хранится дома
+        </div>
+
+        <h3>Передача управления</h3>
+        <p>При передаче управления ТС другому лицу необходимо:</p>
+        <ul>
+            <li>Передать документы на ТС</li>
+            <li>Убедиться, что водитель имеет действующие права</li>
+            <li>Проверить наличие ОСАГО (или что вы вписаны)</li>
+        </ul>
+
+        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
+    <!-- РАЗДЕЛ: Осмотр и досмотр -->
     <div id="search" class="section">
-        <h2>Осмотр и Досмотр</h2>
-        <p><strong>Осмотр</strong> — визуальный осмотр без открытия багажника. Протокол не нужен.</p>
-        <p><strong>Досмотр</strong> — вскрытие авто. Требует:</p>
+        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+        <h2>🔍 Осмотр и досмотр ТС</h2>
+
+        <h3>👁️ Осмотр</h3>
+        <div class="info-card">
+            <strong>Осмотр</strong> — визуальное обследование ТС <strong>без вскрытия</strong> и без прикосновения к вещам
+        </div>
         <ul>
-            <li>Понятых (2 чел) ИЛИ видеозапись</li>
-            <li>Протокола досмотра</li>
+            <li>Не требует понятых</li>
+            <li>Не требует протокола</li>
+            <li>Только внешний осмотр</li>
         </ul>
-        <button class="btn" onclick="alert('Режим записи включен (имитация)')">🎥 Начать видеозапись</button>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
+
+        <h3>🔎 Досмотр</h3>
+        <div class="info-card warning">
+            <strong>Досмотр</strong> — обследование ТС <strong>со вскрытием</strong> и проверкой содержимого
+        </div>
+        <p><strong>Требует:</strong></p>
+        <ul>
+            <li>✅ Понятых (2 человека) <strong>ИЛИ</strong> видеозаписи</li>
+            <li>✅ Протокола досмотра</li>
+            <li>✅ Указания конкретных причин (ориентировка, запах и т.п.)</li>
+        </ul>
+
+        <div class="info-card danger">
+            <strong>⚠️ Важно:</strong> Досмотр без понятых/видео и протокола — незаконен!
+        </div>
+
+        <button class="btn btn-full" onclick="alert('Режим видеозаписи включен (имитация)')">🎥 Начать видеозапись</button>
+        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
+    <!-- РАЗДЕЛ: ДТП -->
     <div id="accident" class="section">
-        <h2>Произошло ДТП</h2>
-        <div class="alert alert-red">🛑 Немедленно включите аварийку и выставьте знак!</div>
-        <ol>
-            <li>Проверьте наличие пострадавших.</li>
-            <li>Если нет пострадавших и ущерб небольшой — оформите Европротокол.</li>
-            <li>Сфотографируйте положение машин, повреждения, номера.</li>
-        </ol>
-        <button class="btn btn-danger" onclick="alert('Вызов скорой и ГИБДД...')">🚑 Экстренный вызов</button>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
+        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+        <h2>🚗💥 Действия при ДТП</h2>
+
+        <div class="info-card danger">
+            <strong>🛑 НЕМЕДЛЕННО:</strong><br>
+            1. Включите аварийную сигнализацию<br>
+            2. Выставьте знак аварийной остановки
+        </div>
+
+        <h3>Порядок действий:</h3>
+        <div class="steps">
+            <div class="step">
+                <strong>Проверьте наличие пострадавших</strong>
+                При необходимости окажите первую помощь и вызовите скорую (103)
+            </div>
+            <div class="step">
+                <strong>Зафиксируйте обстановку</strong>
+                Сфотографируйте положение ТС, повреждения, номера, следы торможения
+            </div>
+            <div class="step">
+                <strong>Определитесь с оформлением</strong>
+                Если нет пострадавших и ущерб небольшой — Европротокол
+            </div>
+        </div>
+
+        <h3>Европротокол</h3>
+        <div class="info-card success">
+            <strong>✅ Можно оформить без ГИБДД, если:</strong><br>
+            • Нет пострадавших<br>
+            • Ущерб до 100 000 руб. (до 400 000 в Москве и СПб)<br>
+            • Оба водителя согласны с обстоятельствами<br>
+            • Есть ОСАГО у обоих
+        </div>
+
+        <button class="btn btn-full btn-danger" onclick="alert('Вызов экстренных служб...')">🚑 Экстренный вызов</button>
+        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
+    <!-- РАЗДЕЛ: Права -->
     <div id="rights" class="section">
-        <h2>Ваши права</h2>
-        <p>Согласно Приказу МВД № 264:</p>
-        <ul>
-            <li>Вы имеете право снимать инспектора на видео.</li>
-            <li>Вы не обязаны выходить из машины (кроме случаев досмотра или составления протокола вне авто).</li>
-            <li>Вы можете не подписывать протокол, если не согласны (пишите "Не согласен").</li>
+        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+        <h2>⚖️ Ваши права</h2>
+
+        <div class="info-card success">
+            <strong>Согласно Приказу МВД № 264 и законодательству РФ:</strong>
+        </div>
+
+        <ul class="powers-list">
+            <li>
+                <strong>Право на видеосъёмку</strong>
+                Вы имеете право снимать действия инспектора на видео (ч. 4 ст. 29 Конституции РФ, ФЗ «О полиции»)
+            </li>
+            <li>
+                <strong>Не выходить из авто</strong>
+                Вы не обязаны выходить из машины, кроме случаев досмотра или составления протокола вне авто (п. 93 Приказа №264)
+            </li>
+            <li>
+                <strong>Не подписывать протокол</strong>
+                Вы можете не подписывать протокол, если не согласны. Пишите «Не согласен» и свои возражения
+            </li>
+            <li>
+                <strong>Помощь адвоката</strong>
+                Вы имеете право на юридическую помощь с момента составления протокола
+            </li>
+            <li>
+                <strong>Обжалование</strong>
+                Вы можете обжаловать действия инспектора в вышестоящий орган или суд в течение 10 дней
+            </li>
         </ul>
-        <button class="btn btn-secondary" onclick="showSection('main')">← Назад</button>
+
+        <div class="info-card warning">
+            <strong>💡 Совет:</strong> Всегда сохраняйте спокойствие и вежливость. Фиксируйте нарушения действий инспектора.
+        </div>
+
+        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <p>Основано на Приказе МВД РФ № 264 от 02.05.2023.<br>
-        Данные проверены: <span id="last-check">Загрузка...</span><br>
-        <small>Не является юридической консультацией.</small></p>
+        <p><strong>Приказ МВД России № 264 от 02.05.2023</strong></p>
+        <p>Базовый нормативный акт для работы сотрудников ГИБДД/ДПС</p>
+        <p style="margin-top: 1rem;">Данные проверены: <span id="last-check">Загрузка...</span></p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+            ⚠️ Не является юридической консультацией.<br>
+            Проверьте актуальность на <a href="https://publication.pravo.gov.ru" target="_blank">pravo.gov.ru</a>
+        </p>
     </footer>
+
 </div>
 
 <!-- Баннер обновлений -->
 <div id="update-banner">
-    <span>🔄 Доступно обновление базы правил!</span>
+    <span>🔄 Доступно обновление базы!</span>
     <button onclick="applyUpdate()">Обновить</button>
-    <button onclick="dismissUpdate()" style="background:transparent; border:1px solid #fff;">Позже</button>
+    <button onclick="dismissUpdate()">Позже</button>
 </div>
 
 <script>
-    // Функция переключения разделов
+    // Переключение разделов
     function showSection(id) {
-        // Скрыть все разделы
         document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-        // Показать главное меню или нужный раздел
+        document.getElementById('main-menu').style.display = 'none';
+        document.getElementById('emergency-main').style.display = 'none';
+        
         if (id === 'main') {
             document.getElementById('main-menu').style.display = 'grid';
+            document.getElementById('emergency-main').style.display = 'block';
         } else {
-            document.getElementById('main-menu').style.display = 'none';
             const section = document.getElementById(id);
             if (section) section.classList.add('active');
         }
-        // Прокрутка наверх
         window.scrollTo(0, 0);
     }
 
-    // Загрузка даты обновления из JSON
-    function loadLastVerified() {
-        fetch('data/legal-base.json?t=' + Date.now())
-            .then(r => r.json())
-            .then(data => {
-                const el = document.getElementById('last-check');
-                if (el && data.metadata && data.metadata.last_verified) {
-                    el.innerText = data.metadata.last_verified.split('T')[0];
-                }
-            })
-            .catch(() => {
-                const el = document.getElementById('last-check');
-                if (el) el.innerText = "Онлайн";
-            });
+    // Загрузка даты проверки
+    fetch('data/legal-base.json?t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            const el = document.getElementById('last-check');
+            if (el && data.metadata && data.metadata.last_verified) {
+                el.innerText = data.metadata.last_verified.split('T')[0];
+            }
+        })
+        .catch(() => {
+            const el = document.getElementById('last-check');
+            if (el) el.innerText = "Онлайн";
+        });
+
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW error', err));
+        });
     }
 
-    // Функции баннера обновлений
+    // Баннер обновлений
     function applyUpdate() {
         if ('caches' in window) {
             caches.keys().then(names => names.forEach(name => caches.delete(name)));
@@ -183,20 +468,6 @@
     function dismissUpdate() {
         document.getElementById('update-banner').style.display = 'none';
     }
-
-    // Регистрация Service Worker для офлайн-режима
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('SW registered:', reg.scope))
-                .catch(err => console.log('SW error:', err));
-        });
-    }
-
-    // Инициализация при загрузке
-    document.addEventListener('DOMContentLoaded', () => {
-        loadLastVerified();
-    });
 </script>
 
 </body>
