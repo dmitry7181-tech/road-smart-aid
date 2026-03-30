@@ -551,68 +551,196 @@
 
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
-        <!-- РАЗДЕЛ: Осмотр и досмотр -->
+            <!-- РАЗДЕЛ: Осмотр и досмотр -->
     <div id="search" class="section">
         <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
-        <h2>🔍 Осмотр и досмотр транспортного средства</h2>
+        <h2>🔍 Осмотр и досмотр: в чём разница</h2>
         
         <div class="info-card success">
-            <strong>📘 Важнейшее различие</strong><br>
-            <em>Осмотр ≠ Досмотр (это разные процедуры!)</em>
+            <strong>📘 Главное правило</strong><br>
+            <em>Осмотр ≠ Досмотр. Это разные процедуры с разными правилами!</em>
         </div>
 
+        <!-- 🔴 Блок 1: Осмотр -->
         <h3>👁️ Осмотр транспортного средства</h3>
         <div class="info-card" style="border-left-color: #16a34a;">
             <strong>✅ Что это:</strong><br>
-            Визуальное обследование ТС <strong>без вскрытия</strong>.
+            Визуальное обследование автомобиля <strong>без вскрытия</strong> и без вмешательства.
         </div>
+        
+        <div class="info-card">
+            <strong>📋 Нормативная база:</strong><br>
+            • ФЗ «О полиции» ст. 13<br>
+            • Приказ МВД №264 (полномочия контроля)
+        </div>
+        
         <div class="info-card success">
-            <strong>✅ Требования:</strong><br>
-            • <strong>Не требует</strong> понятых<br>
-            • <strong>Не требует</strong> протокола
+            <strong>✅ Как проводится:</strong><br>
+            • ❌ Без понятых<br>
+            • ❌ Без протокола<br>
+            • ❌ Видео не обязательно
+        </div>
+        
+        <div class="info-card">
+            <strong>👁️ Что МОЖЕТ делать инспектор:</strong><br>
+            • Посмотреть салон через стекло<br>
+            • Проверить номер кузова / VIN<br>
+            • Осмотреть внешний вид авто
+        </div>
+        
+        <div class="info-card danger">
+            <strong>❌ Что НЕ имеет права:</strong><br>
+            • Открывать багажник, двери, бардачок<br>
+            • Трогать ваши вещи, перекладывать их
+        </div>
+        
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>💡 Простое объяснение:</strong><br>
+            <em>Осмотр = «посмотрел глазами, не трогая»</em>
         </div>
 
+        <!-- 🔴 Блок 2: Досмотр -->
         <h3>🔎 Досмотр транспортного средства</h3>
         <div class="info-card danger">
             <strong>⚠️ Что это:</strong><br>
-            Обследование ТС <strong>со вскрытием</strong> (багажник, салон).
+            Обследование ТС <strong>со вскрытием</strong> (багажник, салон, бардачок).<br>
+            Это официальная процедура с жёсткими требованиями.
         </div>
+        
+        <div class="info-card">
+            <strong>📋 Нормативная база:</strong><br>
+            • <strong>ст. 27.9 КоАП РФ</strong> — досмотр ТС
+        </div>
+        
         <div class="info-card warning">
-            <strong>⚠️ Требования (ОБЯЗАТЕЛЬНО):</strong><br>
-            1️⃣ <strong>Понятые</strong> (2 чел) <strong>ИЛИ</strong> видеозапись<br>
-            2️⃣ <strong>Протокол досмотра</strong> (ст. 27.9 КоАП РФ)
+            <strong>⚠️ Основания для досмотра:</strong><br>
+            • Подозрение в правонарушении<br>
+            • Наличие запрещённых предметов (оружие, наркотики)<br>
+            • Ориентировка на автомобиль
+        </div>
+        
+        <div class="info-card warning">
+            <strong>🔐 ОБЯЗАТЕЛЬНЫЕ УСЛОВИЯ (одно из двух):</strong><br>
+            <strong>ВАРИАНТ А:</strong><br>
+            • ✅ Протокол досмотра (ст. 27.9 КоАП)<br>
+            • ✅ Понятые (минимум 2 человека)<br>
+            • ✅ Присутствие водителя (обязательно)<br><br>
+            <strong>ВАРИАНТ Б:</strong><br>
+            • ✅ Протокол досмотра (ст. 27.9 КоАП)<br>
+            • ✅ Видеозапись процесса (вместо понятых)<br>
+            • ✅ Присутствие водителя (обязательно)
+        </div>
+        
+        <div class="info-card">
+            <strong>🔎 Что МОЖЕТ делать инспектор:</strong><br>
+            • Открывать багажник, двери, бардачок<br>
+            • Проверять содержимое, вещи
         </div>
         
         <div class="info-card danger">
-            <strong>❌ Досмотр БЕЗ понятых/видео — НЕЗАКОНЕН!</strong><br>
-            Спокойно укажите на нарушение, зафиксируйте на видео, обжалуйте позже.
+            <strong>❌ Ограничения:</strong><br>
+            • Нельзя разбирать автомобиль<br>
+            • Нельзя повреждать детали<br>
+            • Нельзя вскрывать без законных оснований
         </div>
-
-        <h3>💬 Что говорить инспектору</h3>
+        
         <div class="info-card" style="border-left-color: #8b5cf6;">
-            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
-                «Прошу составить протокол досмотра и пригласить понятых»
-            </code>
-            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
-                «Досмотр без понятых или видео нарушает ст. 27.9 КоАП РФ»
-            </code>
+            <strong>💡 Простое объяснение:</strong><br>
+            <em>Досмотр = «официальный обыск автомобиля»</em>
         </div>
 
+        <!-- 🔴 Блок 3: Сравнение -->
+        <h3>📊 Главное отличие: таблица</h3>
+        <div style="overflow-x: auto;">
+            <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--bg);">
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Критерий</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Осмотр</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Досмотр</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Основание</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Не требуется жёсткое</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✅ Обязательно</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Протокол</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✅ Обязателен</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Понятые</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✅ Или видео</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Открытие авто</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✅ Да</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Вмешательство</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✅ Есть</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 🔴 Блок 4: Манипуляции и фразы -->
+        <h3>🚨 Частая манипуляция</h3>
+        <div class="info-card danger">
+            <strong>❗ Инспектор говорит:</strong><br>
+            <em>«Откройте багажник — это просто осмотр»</em><br><br>
+            <strong>👉 Это НЕПРАВДА!</strong><br>
+            Если открывают багажник, двери, бардачок — это уже <strong>досмотр</strong> (ст. 27.9 КоАП РФ).
+        </div>
+        
+        <h3>💬 Что говорить (правильно)</h3>
+        
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>🔹 Фраза №1 — если просят открыть багажник:</strong><br>
+            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
+                «Это будет досмотр. Прошу оформить по ст. 27.9 КоАП РФ с понятыми или видеозаписью»
+            </code>
+        </div>
+        
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>🔹 Фраза №2 — если давят:</strong><br>
+            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
+                «Готов выполнить законные требования при соблюдении процедуры»
+            </code>
+        </div>
+        
+        <div class="info-card warning">
+            <strong>⚠️ Важно про отказ:</strong><br>
+            Отказ от досмотра может привести к подозрению и усложнению ситуации.<br><br>
+            <strong>✅ Лучшая тактика:</strong><br>
+            Не отказываться, а требовать соблюдения процедуры (понятые/видео + протокол).
+        </div>
+
+        <!-- 🔴 Блок 5: Нормативная база -->
         <div class="info-card" style="border-left-color: #8b5cf6;">
             <strong>📚 Нормативная база:</strong><br>
             • КоАП РФ: ст. 27.9 (досмотр ТС)<br>
-            • Приказ МВД №264: п. 89, 91, 93
+            • ФЗ «О полиции» №3-ФЗ: ст. 13 (полномочия)<br>
+            • Приказ МВД №264: п. 89, 91, 93 (выход из авто)
         </div>
         
         <div class="info-card success">
-            <strong>📌 Главный вывод:</strong><br>
-            ✔️ <strong>Осмотр</strong> — визуально, без вскрытия<br>
-            ✔️ <strong>Досмотр</strong> — со вскрытием, ТРЕБУЕТ понятых ИЛИ видео + протокол<br>
-            ✔️ Всегда ведите видеозапись
+            <strong>📌 Финальный вывод:</strong><br>
+            ✔️ <strong>Осмотр</strong> = просто посмотрели глазами (без вскрытия)<br>
+            ✔️ <strong>Досмотр</strong> = открыли и проверили (нужен протокол + понятые/видео)<br>
+            ✔️ <strong>Любое открытие авто = досмотр</strong> → требуйте процедуру!<br>
+            ✔️ Всегда ведите видеозапись — это ваша защита
         </div>
 
         <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+    </div>
     </div>
     <!-- РАЗДЕЛ: ДТП -->
     <div id="accident" class="section">
