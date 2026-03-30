@@ -414,33 +414,143 @@
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
-    <!-- РАЗДЕЛ: Документы -->
+       <!-- РАЗДЕЛ: Документы -->
     <div id="docs" class="section">
         <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
-        <h2>📄 Документы</h2>
-        <div class="info-card success"><strong>✅ Обязательно:</strong></div>
-        <ul>
-            <li><strong>Водительское удостоверение</strong></li>
-            <li><strong>СТС</strong></li>
-            <li><strong>Полис ОСАГО</strong></li>
-        </ul>
-        <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
-    </div>
-
-    <!-- РАЗДЕЛ: Осмотр и досмотр -->
-    <div id="search" class="section">
-        <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
-        <h2>🔍 Осмотр и досмотр</h2>
-        <div class="info-card"><strong>Осмотр</strong> — визуально, без вскрытия.</div>
-        <div class="info-card warning"><strong>Досмотр</strong> — со вскрытием. Требует понятых ИЛИ видеозаписи + протокол.</div>
-        <div class="info-card danger"><strong>⚠️ Важно:</strong> Досмотр без понятых/видео — незаконен!</div>
-        <div class="info-card" style="border-left-color: #6b7280;">
-            <strong>📹 Как записать видео:</strong><br>
-            Используйте стандартное приложение «Камера» на телефоне. Убедитесь, что есть место на диске.
+        <h2>📄 Обязательные документы водителя</h2>
+        
+        <div class="info-card success">
+            <strong>📘 Пункт 2.1.1 ПДД РФ</strong><br>
+            <em>Водитель обязан иметь при себе и передавать для проверки:</em>
         </div>
+
+        <!-- 🔴 Блок 1: Три обязательных документа -->
+        <h3>✅ Что всегда должно быть в машине</h3>
+        
+        <div class="info-card" style="border-left-color: #16a34a;">
+            <strong>1️⃣ Водительское удостоверение</strong><br>
+            <small>Подтверждает ваше право управлять ТС</small>
+        </div>
+        
+        <div class="info-card" style="border-left-color: #16a34a;">
+            <strong>2️⃣ СТС (Свидетельство о регистрации)</strong><br>
+            <small>Подтверждает регистрацию автомобиля</small>
+        </div>
+        
+        <div class="info-card" style="border-left-color: #16a34a;">
+            <strong>3️⃣ Полис ОСАГО</strong><br>
+            <small>Можно показывать с телефона — электронный полис законен</small>
+        </div>
+
+        <!-- 🔴 Блок 2: Что будет если нет документов -->
+        <h3>⚖️ Ответственность: штрафы и последствия</h3>
+        
+        <div class="info-card warning">
+            <strong>⚠️ Главная опасность:</strong><br>
+            Не штраф (500–800 ₽), а <strong>задержание ТС и эвакуация</strong>.
+        </div>
+
+        <div style="overflow-x: auto; margin: 1rem 0;">
+            <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--bg);">
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Документ</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Нарушение</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Штраф</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Эвакуация</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ВУ</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Нет при себе</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">500 ₽</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✔️ Возможно</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ВУ</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Нет прав вообще</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">5–15 тыс ₽</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✔️ Обязательно</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>СТС</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Нет при себе</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">500 ₽</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">✔️ Возможно</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ОСАГО</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Нет при себе</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">500 ₽</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ОСАГО</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Нет вообще</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">800 ₽</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 🔴 Блок 3: Когда эвакуируют, а когда нет -->
+        <h3>🚛 Эвакуация: когда заберут машину</h3>
+        
+        <div class="info-card" style="border-left-color: #16a34a;">
+            <strong>✅ НЕ эвакуируют, если:</strong><br>
+            • Документы можно быстро привезти (родственник, друг)<br>
+            • Рядом есть водитель с правами, который может управлять авто<br>
+            • Нарушение можно устранить на месте
+        </div>
+        
+        <div class="info-card danger">
+            <strong>⚠️ ЭВАКУИРУЮТ, если:</strong><br>
+            • Нет водителя, который может управлять (нет прав у всех)<br>
+            • Нет документов на ТС (невозможно подтвердить законность)<br>
+            • Нет права управления (лишение, никогда не было прав)
+        </div>
+
+        <!-- 🔴 Блок 4: Практические нюансы -->
+        <h3>💡 Важные нюансы</h3>
+        
+        <div class="info-card">
+            <strong>📱 Электронный ОСАГО</strong><br>
+            Можно показывать с телефона — это <strong>законно</strong> (п. 2.1.1 ПДД).
+        </div>
+        
+        <div class="info-card warning">
+            <strong>📸 Фото документов</strong><br>
+            ❌ Не заменяют оригинал. Инспектор вправе потребовать оригинал ВУ и СТС.
+        </div>
+        
+        <div class="info-card">
+            <strong>🔄 Если забыли документы дома</strong><br>
+            1. Спокойно объясните ситуацию.<br>
+            2. Предложите привезти документы (родственник, друг).<br>
+            3. Если инспектор настаивает на эвакуации — требуйте протокол задержания ТС (ст. 27.13 КоАП).
+        </div>
+
+        <!-- 🔴 Блок 5: Нормативная база -->
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>📚 Нормативная база:</strong><br>
+            • ПДД РФ: п. 2.1.1 (обязанность иметь документы)<br>
+            • КоАП РФ: ст. 12.3 ч.1 (нет документов при себе — 500 ₽)<br>
+            • КоАП РФ: ст. 12.7 (нет права управления — 5–15 тыс ₽)<br>
+            • КоАП РФ: ст. 12.37 (нет ОСАГО — 500/800 ₽)<br>
+            • КоАП РФ: ст. 27.12–27.13 (отстранение, задержание ТС)
+        </div>
+
+        <div class="info-card success">
+            <strong>📌 Простой вывод:</strong><br>
+            ✔️ Всегда возите: ВУ + СТС + ОСАГО (можно электронный)<br>
+            ✔️ Штрафы небольшие (500–800 ₽), но эвакуация — дорого и долго<br>
+            ✔️ Если забыли — предложите привезти, это часто решает проблему
+        </div>
+
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
-
     <!-- РАЗДЕЛ: ДТП -->
     <div id="accident" class="section">
         <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
