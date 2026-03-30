@@ -237,16 +237,150 @@
 <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
-    <!-- РАЗДЕЛ: Полномочия -->
+       <!-- РАЗДЕЛ: Полномочия -->
     <div id="powers" class="section">
         <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
-        <h2>⚡ Полномочия инспектора</h2>
-        <ul class="powers-list">
-            <li><strong>Нарушения ПДД</strong><small>п. 84.1</small></li>
-            <li><strong>Ориентировки</strong><small>п. 84.2</small></li>
-            <li><strong>Проверка документов</strong><small>п. 84.13</small></li>
+        <h2>⚡ Полномочия инспектора и основания остановки</h2>
+        
+        <div class="info-card success">
+            <strong>📘 Приказ МВД №264 от 02.05.2023</strong><br>
+            <em>Действующий регламент (заменяет старый №664)</em>
+        </div>
+
+        <!-- 🔴 Блок 1: Когда можно НЕ выходить -->
+        <h3>🚗 Когда можно НЕ выходить из машины</h3>
+        <div class="info-card" style="border-left-color: #16a34a;">
+            <strong>✅ Ключевой принцип:</strong><br>
+            Водитель <strong>НЕ обязан</strong> выходить из ТС по умолчанию.<br>
+            Выход — это исключение, а не правило.
+        </div>
+        <p><strong>Вы вправе остаться в машине, если:</strong></p>
+        <ul>
+            <li>📄 Обычная проверка документов (передайте через окно)</li>
+            <li>❓ Инспектор не назвал законную причину выхода</li>
+            <li>🚫 Не проводятся процессуальные действия (досмотр, задержание)</li>
         </ul>
-        <div class="info-card danger"><strong>⚠️ ВАЖНО:</strong> Основанием для проверки документов является сама остановка (п. 84.13).</div>
+
+        <div class="info-card warning">
+            <strong>⚠️ Когда ВЫЙТИ ОБЯЗАТЕЛЬНО:</strong><br>
+            • Оформляется протокол / устранение неисправности<br>
+            • Проводится досмотр ТС (с понятыми или видео)<br>
+            • Подозрение на опьянение (освидетельствование)<br>
+            • Задержание транспортного средства или водителя<br>
+            • Угроза безопасности (неисправность, опасный груз)
+        </div>
+
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>💡 Как ответить инспектору:</strong><br>
+            Спокойно спросите: <em>«На каком основании требуется покинуть транспортное средство?»</em><br>
+            Требование должно быть обосновано ссылкой на норму права.
+        </div>
+
+        <!-- 🔴 Блок 2: Основания остановки -->
+        <h3>🛑 Законные основания для остановки ТС</h3>
+        <div class="info-card" style="border-left-color: #f59e0b;">
+            <strong>❗ Инспектор НЕ может останавливать «просто так»</strong><br>
+            Всегда должно быть конкретное основание из Приказа №264.
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <strong>Нарушение ПДД</strong>
+                <span class="step-reference">п. 84.1 Приказа №264</span>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                    <em>Примеры:</em> превышение скорости, не включён поворотник, ремень не пристёгнут
+                </div>
+            </div>
+            <div class="step">
+                <strong>Ориентировка / розыск</strong>
+                <span class="step-reference">п. 84.2 Приказа №264</span>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                    <em>Примеры:</em> машина в розыске, похожа по описанию, причастность к ДТП
+                </div>
+            </div>
+            <div class="step">
+                <strong>Спецмероприятие</strong>
+                <span class="step-reference">п. 84.3 Приказа №264</span>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                    <em>Примеры:</em> «Перехват», «Нетрезвый водитель», антитеррор
+                </div>
+            </div>
+            <div class="step">
+                <strong>Проверка документов</strong>
+                <span class="step-reference">п. 84.13 Приказа №264</span>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                    <strong>⚠️ Важно:</strong> В №264 это НЕ отдельное основание, а действие ПОСЛЕ законной остановки.
+                </div>
+            </div>
+            <div class="step">
+                <strong>Опрос свидетеля</strong>
+                <span class="step-reference">п. 84.4 Приказа №264</span>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                    <em>Примеры:</em> ДТП рядом, преступление поблизости
+                </div>
+            </div>
+            <div class="step">
+                <strong>Угроза безопасности</strong>
+                <span class="step-reference">п. 84.7 Приказа №264</span>
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                    <em>Примеры:</em> дым из машины, плохо закреплён груз, неисправность
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔴 Блок 3: Алгоритм разговора -->
+        <h3>📌 Чек-лист: как разговаривать с инспектором</h3>
+        <div class="info-card success">
+            <strong>🟢 ШАГ 1: Остановка</strong><br>
+            Сразу спросите: <em>«Назовите причину остановки согласно приказу МВД №264»</em>
+        </div>
+        <div class="info-card">
+            <strong>🟢 ШАГ 2: Проверка ответа</strong><br>
+            <table style="width:100%; font-size:0.85rem; margin-top:0.5rem;">
+                <tr><td>«Нарушили ПДД»</td><td>✅ Законно</td></tr>
+                <tr><td>«Ориентировка»</td><td>✅ Законно</td></tr>
+                <tr><td>«Мероприятие»</td><td>✅ Законно (попросите назвать)</td></tr>
+                <tr><td>«Просто проверка»</td><td>⚠️ Слабое основание</td></tr>
+            </table>
+        </div>
+        <div class="info-card">
+            <strong>🟢 ШАГ 3: Документы</strong><br>
+            Если остановка законна — предъявите: права, СТС, полис ОСАГО.
+        </div>
+        <div class="info-card warning">
+            <strong>🟢 ШАГ 4: Фиксация</strong><br>
+            Если сомнения — включите видео, запишите ФИО и звание инспектора.
+        </div>
+        <div class="info-card danger">
+            <strong>🟢 ШАГ 5: Если нарушение со стороны инспектора</strong><br>
+            Скажите: <em>«Прошу разъяснить правовое основание остановки согласно приказу МВД №264»</em>
+        </div>
+
+        <!-- 🔴 Блок 4: Нормативная база -->
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>📚 Нормативная база:</strong><br>
+            • Приказ МВД №264: п. 10, 13, 52, 84, 89, 91, 93<br>
+            • КоАП РФ: ст. 19.3 (неповиновение), ст. 27.9 (досмотр)<br>
+            • Конституция РФ: ст. 27 (свобода передвижения)
+        </div>
+
+        <div class="info-card danger">
+            <strong>❌ Что НЕЛЬЗЯ делать:</strong><br>
+            • Хамить или провоцировать инспектора<br>
+            • Отказываться предъявлять документы без причины<br>
+            • Выходить из машины без законного требования
+        </div>
+
+        <div class="info-card success">
+            <strong>📌 Жёсткий практический вывод:</strong><br>
+            1️⃣ Старые пункты 84.* из №664 — не действуют<br>
+            2️⃣ Основание остановки — обязательно к названию<br>
+            3️⃣ «Проверка документов» — НЕ причина, а следствие остановки<br>
+            4️⃣ «Просто проверка» — слабая формулировка, можно оспорить
+        </div>
+
+        <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
+        <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
 
