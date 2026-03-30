@@ -1,75 +1,151 @@
-// sw.js - Service Worker для Road Smart Aid
+// ===================================
+// ROAD SMART AID - JavaScript
 // Версия: 3.1
+// ===================================
 
-const CACHE_NAME = 'road-aid-v3.1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/data/legal-base.json'
+// 🔍 Данные для умного поиска
+const searchData = [
+    {
+        section: 'stop',
+        title: '🛑 Остановка инспектором',
+        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п. 13', 'п. 52'],
+        content: 'Порядок действий инспектора при остановке: представиться, назвать причину, предъявить удостоверение'
+    },
+    {
+        section: 'powers',
+        title: '⚡ Полномочия инспектора',
+        keywords: ['полномочия', 'права', 'инспектор', 'п. 84', 'остановка тс', 'проверка'],
+        content: 'Основные полномочия: остановка ТС, проверка документов, освидетельствование'
+    },
+    {
+        section: 'docs',
+        title: '📄 Документы',
+        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 84.13'],
+        content: 'Обязательные документы: водительское удостоверение, СТС, полис ОСАГО'
+    },
+    {
+        section: 'search',
+        title: '🔍 Осмотр и досмотр',
+        keywords: ['осмотр', 'досмотр', 'багажник', 'понятые', 'видео', 'протокол', 'ст. 27.9', 'коап'],
+        content: 'Осмотр — визуально, досмотр — со вскрытием (требует понятых или видео)'
+    },
+    {
+        section: 'accident',
+        title: '🚗💥 ДТП',
+        keywords: ['дтп', 'авария', 'европротокол', '112', '102', 'знак', 'аварийка'],
+        content: 'Действия при ДТП: аварийка, знак, фото, европротокол или ГИБДД'
+    },
+    {
+        section: 'rights',
+        title: '⚖️ Ваши права',
+        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 29', 'конституция'],
+        content: 'Право на видеосъёмку, не выходить из авто, не подписывать протокол'
+    },
+    {
+        section: 'emergency-main',
+        title: '📞 Экстренные номера',
+        keywords: ['112', '102', 'мвд', 'телефон', 'вызов', 'экстренный'],
+        content: '112 — единый экстренный, 102 — полиция, 8(800)222-74-47 — горячая линия МВД'
+    },
+    {
+        section: 'main-menu',
+        title: '📚 Главное меню',
+        keywords: ['меню', 'разделы', 'навигация'],
+        content: 'Все разделы приложения: Остановка, Полномочия, Документы, Осмотр, ДТП, Права'
+    }
 ];
 
-// 🔹 Установка: кэшируем основные файлы
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('✅ Кэш открыт:', CACHE_NAME);
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
-      .then(() => self.skipWaiting())
-  );
-});
-
-// 🔹 Активация: удаляем старые кэши
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      );
-    }).then(() => self.clients.claim())
-  );
-});
-
-// 🔹 Запросы: сначала кэш, потом сеть (offline-first)
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        // Если есть в кэше — возвращаем сразу
-        if (cachedResponse) {
-          return cachedResponse;
+// 🔍 Функция поиска
+function searchContent() {
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('search-results');
+    
+    // Если запрос пустой — скрываем результаты
+    if (query.length < 2) {
+        if (resultsContainer) resultsContainer.style.display = 'none';
+        return;
+    }
+    
+    // Ищем совпадения
+    const results = searchData.filter(item => {
+        return item.keywords.some(k => k.toLowerCase().includes(query)) ||
+               item.title.toLowerCase().includes(query) ||
+               item.content.toLowerCase().includes(query);
+    });
+    
+    // Отображаем результаты
+    if (resultsContainer) {
+        if (results.length > 0) {
+            resultsContainer.innerHTML = results.map(item => `
+                <div class="search-result-item" onclick="showSection('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
+                    <div class="search-result-title">${item.title}</div>
+                    <div class="search-result-text">${highlightText(item.content, query)}</div>
+                    <div class="search-result-meta">🔑 Ключевые слова: ${item.keywords.slice(0, 5).join(', ')}</div>
+                </div>
+            `).join('');
+            resultsContainer.style.display = 'block';
+        } else {
+            resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте: "п. 10", "досмотр", "112", "права"</small></div>';
+            resultsContainer.style.display = 'block';
         }
-        // Если нет — загружаем из сети и кэшируем
-        return fetch(event.request)
-          .then((networkResponse) => {
-            // Кэшируем только успешные ответы и только свои файлы
-            if (networkResponse && networkResponse.status === 200) {
-              const responseClone = networkResponse.clone();
-              caches.open(CACHE_NAME)
-                .then((cache) => cache.put(event.request, responseClone));
-            }
-            return networkResponse;
-          })
-          .catch(() => {
-            // Если нет сети и нет в кэше — возвращаем заглушку
-            if (event.request.mode === 'navigate') {
-              return caches.match('/index.html');
-            }
-          });
-      })
-  );
+    }
+}
+
+// 🔍 Подсветка найденного текста
+function highlightText(text, query) {
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, '<span class="search-highlight">$1</span>');
+}
+
+// Закрыть поиск при клике вне
+document.addEventListener('click', function(e) {
+    const searchInput = document.getElementById('search-input');
+    const resultsContainer = document.getElementById('search-results');
+    if (searchInput && resultsContainer) {
+        const searchContainer = searchInput.parentElement;
+        if (!searchContainer.contains(e.target)) {
+            resultsContainer.style.display = 'none';
+        }
+    }
 });
 
-// 🔹 Обновление кэша по сигналу от приложения
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-  if (event.data && event.data.type === 'CLEAR_CACHE') {
-    caches.delete(CACHE_NAME);
-  }
-});
+//  Переключение разделов
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    var menu = document.getElementById('main-menu');
+    var emergency = document.getElementById('emergency-main');
+    if(menu) menu.style.display = 'none';
+    if(emergency) emergency.style.display = 'none';
+    
+    if (id === 'main') {
+        if(menu) menu.style.display = 'grid';
+        if(emergency) emergency.style.display = 'block';
+    } else {
+        var section = document.getElementById(id);
+        if (section) section.classList.add('active');
+    }
+    window.scrollTo(0, 0);
+}
+
+// 📅 Загрузка даты обновления
+fetch('data/legal-base.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+        var el = document.getElementById('last-check');
+        if (el && data.metadata && data.metadata.last_verified) {
+            el.innerText = data.metadata.last_verified.split('T')[0];
+        }
+    })
+    .catch(() => {
+        var el = document.getElementById('last-check');
+        if (el) el.innerText = "Онлайн";
+    });
+
+// 📱 Service Worker (офлайн-режим)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('✅ SW registered:', reg.scope))
+            .catch(err => console.log('❌ SW error:', err));
+    });
+}
