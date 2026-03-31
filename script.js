@@ -1,6 +1,5 @@
 // ===================================
 // ROAD SMART AID - JavaScript
-// Версия: 3.1
 // ===================================
 
 // 🔍 Данные для умного поиска
@@ -8,19 +7,19 @@ const searchData = [
     {
         section: 'stop',
         title: '🛑 Остановка инспектором',
-        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п. 13', 'п. 52'],
+        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п. 52'],
         content: 'Порядок действий инспектора при остановке: представиться, назвать причину, предъявить удостоверение'
     },
     {
         section: 'powers',
         title: '⚡ Полномочия инспектора',
-        keywords: ['полномочия', 'права', 'инспектор', 'п. 84', 'остановка тс', 'проверка'],
+        keywords: ['полномочия', 'права', 'инспектор', 'п. 47', 'остановка тс', 'проверка'],
         content: 'Основные полномочия: остановка ТС, проверка документов, освидетельствование'
     },
     {
         section: 'docs',
         title: '📄 Документы',
-        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 84.13'],
+        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 2.1.1'],
         content: 'Обязательные документы: водительское удостоверение, СТС, полис ОСАГО'
     },
     {
@@ -38,14 +37,14 @@ const searchData = [
     {
         section: 'rights',
         title: '⚖️ Ваши права',
-        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 29', 'конституция'],
+        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 51', 'конституция'],
         content: 'Право на видеосъёмку, не выходить из авто, не подписывать протокол'
     },
     {
         section: 'emergency-main',
         title: '📞 Экстренные номера',
-        keywords: ['112', '102', 'мвд', 'телефон', 'вызов', 'экстренный'],
-        content: '112 — единый экстренный, 102 — полиция, 8(800)222-74-47 — горячая линия МВД'
+        keywords: ['112', '102', '103', 'мвд', 'телефон', 'вызов', 'экстренный'],
+        content: '112 — единый экстренный, 102 — полиция, 103 — скорая, 8(800)222-74-47 — телефон доверия МВД'
     },
     {
         section: 'main-menu',
@@ -109,21 +108,30 @@ document.addEventListener('click', function(e) {
     }
 });
 
-//  Переключение разделов
+// 📱 Переключение разделов
 function showSection(id) {
+    // Скрываем все разделы
     document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    
+    // Скрываем главное меню и экстренные номера
     var menu = document.getElementById('main-menu');
     var emergency = document.getElementById('emergency-main');
     if(menu) menu.style.display = 'none';
     if(emergency) emergency.style.display = 'none';
     
-    if (id === 'main') {
+    // Показываем нужный раздел или главное меню
+    if (id === 'main-menu' || id === 'main') {
         if(menu) menu.style.display = 'grid';
         if(emergency) emergency.style.display = 'block';
     } else {
         var section = document.getElementById(id);
-        if (section) section.classList.add('active');
+        if (section) {
+            section.classList.add('active');
+            section.style.display = 'block';
+        }
     }
+    
+    // Прокрутка вверх
     window.scrollTo(0, 0);
 }
 
@@ -149,3 +157,9 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.log('❌ SW error:', err));
     });
 }
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Показываем главное меню
+    showSection('main-menu');
+});
