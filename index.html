@@ -6,7 +6,6 @@
     <title>Помощник в дороге | Road Smart Aid</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a56db">
-    <link rel="stylesheet" href="styles.css">
     <style>
         :root {
             --primary: #1a56db;
@@ -410,7 +409,7 @@
             <p>Ваш карманный юрист • Приказ МВД №264</p>
             
             <!-- 🔍 Поисковая строка -->
-            <input type="text" id="search-input" placeholder="🔍 Поиск: п. 10, ст. 5, досмотр, 112..." 
+            <input type="text" id="search-input" placeholder="🔍 Поиск: п. 47.3, ст. 5, досмотр, 112..." 
                    oninput="searchContent()">
             <div id="search-results"></div>
         </header>
@@ -452,7 +451,8 @@
         </div>
 
         <!-- Экстренные номера -->
-        <div id="emergency-main">
+        <div id="emergency-main" class="section">
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>📞 Экстренные номера</h2>
             <div class="emergency-grid">
                 <a href="tel:112" class="emergency-card">
@@ -472,11 +472,12 @@
                     <div class="emergency-label">Телефон доверия МВД</div>
                 </a>
             </div>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: Остановка -->
         <div id="stop" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>🛑 Порядок действий инспектора при остановке</h2>
             
             <div class="info-card success">
@@ -554,12 +555,12 @@
             <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; text-align: center;">
                 На сайте: выберите «Главное управление по обеспечению безопасности дорожного движения» → следуйте инструкциям
             </div>
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: Полномочия -->
         <div id="powers" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>⚡ Полномочия инспектора и основания остановки</h2>
             
             <div class="info-card success">
@@ -600,7 +601,8 @@
                     <strong>Проверка документов</strong>
                     <span class="step-reference">п. 47.3 Приказа №264</span>
                     <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
-                        <strong>⚠️ Важно:</strong> В №264 это НЕ отдельное основание, а действие ПОСЛЕ законной остановки.
+                        <strong>✅ Самостоятельное основание для остановки.</strong><br>
+                        Инспектор вправе остановить именно с этой целью.
                     </div>
                 </div>
                 <div class="step">
@@ -658,12 +660,12 @@
 
             <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
             <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: Документы -->
         <div id="docs" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>📄 Обязательные документы водителя</h2>
             
             <div class="info-card success">
@@ -749,12 +751,12 @@
                 • КоАП РФ: ст. 27.12–27.13 (отстранение, задержание ТС)
             </div>
 
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: Осмотр и досмотр -->
         <div id="search" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>🔍 Осмотр и досмотр: в чём разница</h2>
             
             <div class="info-card success">
@@ -815,12 +817,12 @@
             </div>
 
             <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: ДТП -->
         <div id="accident" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>🚗💥 Что делать при ДТП</h2>
             
             <div class="info-card danger">
@@ -898,6 +900,33 @@
                 • Сомневаешься в чём-либо
             </div>
 
+            <h3>⚖️ 5. Ответственность за нарушения при ДТП</h3>
+            
+            <div style="overflow-x: auto;">
+                <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg);">
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Нарушение</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Наказание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Не выполнил обязанности (ст. 12.27 ч.1)</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Штраф 1000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Уехал с места ДТП (ст. 12.27 ч.2)</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Лишение прав до 1.5 лет <strong>ИЛИ</strong> арест до 15 суток</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Употребил алкоголь после ДТП (ст. 12.27 ч.3)</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Штраф 30 000 ₽ + лишение прав</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <div class="info-card" style="border-left-color: #8b5cf6;">
                 <strong>📚 Нормативная база:</strong><br>
                 • ПДД РФ: п. 2.5, 2.6, 2.6.1<br>
@@ -908,12 +937,12 @@
 
             <a href="tel:112" class="btn btn-full btn-danger">🚑 Вызов 112</a>
             <a href="tel:102" class="btn btn-full btn-secondary">👮 Вызов ГИБДД</a>
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: Ваши права -->
         <div id="rights" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>⚖️ Ваши права и регламент МВД</h2>
             
             <div class="info-card danger">
@@ -1171,13 +1200,14 @@
                   - п. 16 (запрет оскорблений, дискриминации)<br>
                   - п. 17 (документы без обложек)<br>
                   - п. 18 (запрет пользоваться телефоном водителя)<br>
+                  - п. 47-47.7 (основания остановки)<br>
                   - п. 51 (место остановки)<br>
                   - п. 52 (подход после остановки)<br>
                   - <strong>п. 53.1 (выход из авто — требование)</strong><br>
                   - <strong>п. 53.2 (перемещение ТС — требование)</strong><br>
                   - <strong>п. 54 (предложение — можно отказаться)</strong><br>
                 • ПДД РФ: п. 2.1.1<br>
-                • КоАП РФ: ст. 19.3, ст. 25.1, ст. 27.9
+                • КоАП РФ: ст. 19.3, ст. 25.1, ст. 27.9, ст. 12.27
             </div>
             
             <div class="info-card success">
@@ -1190,12 +1220,12 @@
 
             <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
             <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- РАЗДЕЛ: Законы -->
         <div id="laws" class="section">
-            <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>📚 Нормативная база</h2>
             
             <div class="info-card">
@@ -1214,7 +1244,7 @@
                 • <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline;">КоАП РФ на Consultant.ru</a>
             </div>
             
-            <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- FOOTER -->
