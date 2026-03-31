@@ -1240,15 +1240,225 @@
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
     </div>
     <!-- РАЗДЕЛ: Права -->
+        <!-- РАЗДЕЛ: Ваши права -->
     <div id="rights" class="section">
         <div class="back-btn" onclick="showSection('main')">← Назад к меню</div>
-        <h2>⚖️ Ваши права</h2>
-        <ul class="powers-list">
-            <li><strong>Видеосъёмка</strong><small>ч. 4 ст. 29 Конституции РФ</small></li>
-            <li><strong>Не выходить из авто</strong><small>п. 93 Приказа №264</small></li>
-            <li><strong>Не подписывать протокол</strong><small>пишите «Не согласен»</small></li>
-        </ul>
+        <h2>⚖️ Ваши права и регламент МВД</h2>
+        
+        <div class="info-card danger">
+            <strong>🛡️ Главная задача:</strong><br>
+            Убрать «подводные камни», из-за которых можно получить протокол за <strong>неповиновение (ст. 19.3 КоАП РФ)</strong>.
+        </div>
+
+        <!-- 🔴 Блок 1: Остановка ТС -->
+        <h3>🛑 1. Остановка ТС (п. 47–48 Приказа №264)</h3>
+        
+        <div class="info-card success">
+            <strong>✅ Право водителя:</strong><br>
+            Знать причину остановки.<br>
+            <small>ст. 5 ФЗ «О полиции»</small>
+        </div>
+        
+        <div class="info-card">
+            <strong>📋 Нюанс регламента:</strong><br>
+            Теперь остановка для проверки документов <strong>разрешена везде</strong>, а не только на постах.<br>
+            Инспектор не обязан иметь при себе «план перехват», чтобы остановить вас.
+        </div>
+        
+        <div class="info-card warning">
+            <strong>💡 В приложение:</strong><br>
+            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
+                «Остановка законна в любом месте. Сразу требуйте назвать причину (п. 51)»
+            </code>
+        </div>
+
+        <!-- 🔴 Блок 2: Требование выйти из авто -->
+        <h3>🚗 2. Требование выйти из авто (п. 52–53 Приказа №264)</h3>
+        
+        <div class="info-card danger">
+            <strong>⚠️ Самый конфликтный момент!</strong><br>
+            Регламент разделяет <strong>«предложение»</strong> и <strong>«требование»</strong>.
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--bg);">
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Ситуация</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Тип</th>
+                        <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Ваши действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Замер тонировки</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">🟡 Предложение</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Можете отказать</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Сверка номеров (VIN)</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">🟡 Предложение</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Можете отказать</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Составление протокола в патрульном авто</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">🟡 Предложение</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Можете отказать</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Признаки опьянения</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">🔴 Требование</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Обязан выйти (иначе ст. 19.3 КоАП)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Личный досмотр / досмотр авто</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">🔴 Требование</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Обязан выйти (иначе ст. 19.3 КоАП)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Устранение неисправности (не горит фара)</strong></td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">🔴 Требование</td>
+                        <td style="padding:0.5rem; border:1px solid var(--border);">Обязан выйти (иначе ст. 19.3 КоАП)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>💡 В приложение:</strong><br>
+            Сделайте таблицу-сравнение <strong>«Могу остаться»</strong> vs <strong>«Обязан выйти»</strong>
+        </div>
+
+        <!-- 🔴 Блок 3: Передача документов -->
+        <h3>📑 3. Передача документов (п. 45 Приказа №264)</h3>
+        
+        <div class="info-card warning">
+            <strong>⚠️ Конфликт:</strong><br>
+            Водители часто используют цепочки или зажимы, чтобы инспектор не унес документы.
+        </div>
+        
+        <div class="info-card">
+            <strong>📋 Регламент:</strong><br>
+            Документы передаются <strong>«без обложек и удерживающих устройств»</strong>.<br>
+            Инспектор обязан вернуть их вам, если они закреплены, и потребовать передать их «чистыми».
+        </div>
+        
+        <div class="info-card success">
+            <strong>💡 Совет:</strong><br>
+            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
+                «Снимите обложку заранее, чтобы не провоцировать конфликт по ст. 19.3»
+            </code>
+        </div>
+
+        <!-- 🔴 Блок 4: Видеозапись -->
+        <h3>📹 4. Видеозапись (п. 43 Приказа №264)</h3>
+        
+        <div class="info-card success">
+            <strong>✅ Право водителя:</strong><br>
+            Снимать можно всё, что не запрещено законом.<br>
+            <small>ст. 29 Конституции РФ, ст. 8 ФЗ «О полиции»</small>
+        </div>
+        
+        <div class="info-card warning">
+            <strong>⚠️ Нюанс:</strong><br>
+            Если инспектор говорит <strong>«снимать запрещено»</strong>, он обязан назвать конкретный нормативный акт (например, режим КТО).<br>
+            Простая ссылка на <strong>«внутреннее распоряжение»</strong> или <strong>«тайну»</strong> — незаконна.
+        </div>
+        
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>💡 Кнопка «Инспектор запрещает съемку?»:</strong><br>
+            <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
+                «Попросите назвать статью закона, запрещающую съемку в данном месте (п. 51 Регламента)»
+            </code>
+        </div>
+
+        <!-- 🔴 Блок 5: Курение и общение -->
+        <h3>🚬 5. Курение и общение (п. 42 Приказа №264)</h3>
+        
+        <div class="info-card">
+            <strong>📋 Интересный факт:</strong><br>
+            Инспектору <strong>запрещено курить</strong> при общении с участником дорожного движения.<br>
+            Также он обязан быть <strong>вежливым и тактичным</strong>.
+        </div>
+        
+        <div class="info-card warning">
+            <strong>⚠️ Если инспектор нарушает:</strong><br>
+            • Курит при общении → зафиксируйте на видео<br>
+            • Хамит → запишите ФИО, подайте жалобу<br>
+            • Это не даёт права не выполнять законные требования!
+        </div>
+
+        <!-- 🔴 Блок 6: Представление сотрудника -->
+        <h3>🪪 6. Представление сотрудника (п. 10 Приказа №264)</h3>
+        
+        <div class="info-card success">
+            <strong>✅ Ваше право:</strong><br>
+            Знать, кто перед вами.<br>
+            <small>ст. 5 ФЗ «О полиции»</small>
+        </div>
+        
+        <div class="info-card">
+            <strong>📋 Обязанность инспектора (подойдя к машине):</strong><br>
+            1️⃣ Назвать должность, звание и фамилию<br>
+            2️⃣ Кратко сообщить причину и цель обращения<br>
+            3️⃣ По вашему требованию предъявить удостоверение в развернутом виде, не выпуская его из рук
+        </div>
+
+        <!-- 🔴 Блок 7: Протокол и Конституция -->
+        <h3>📝 7. Протокол и статья 51 Конституции</h3>
+        
+        <div class="info-card success">
+            <strong>✅ Ваше право:</strong><br>
+            Не свидетельствовать против себя и близких.<br>
+            <small>ст. 51 Конституции РФ</small>
+        </div>
+        
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>💡 Тактика:</strong><br>
+            • Если не согласны — пишите: <code style="background:#f3f4f6; padding:0.25rem; border-radius:3px;">«С нарушением не согласен. ПДД не нарушал. Требую помощи адвоката»</code><br>
+            • <strong>Никогда не оставляйте пустых мест:</strong> ставьте прочерк буквой «Z» в пустых полях<br>
+            • В графе «права разъяснены» ставьте подпись только если инспектор их реально зачитал. Если нет — пишите «права не разъяснены»
+        </div>
+
+        <!-- 🔴 Блок 8: Чек-лист при конфликте -->
+        <h3>🚨 Чек-лист при конфликте</h3>
+        
+        <div class="info-card warning">
+            <strong>✅ Что делать:</strong><br>
+            1️⃣ <strong>Не выходите</strong>, пока не озвучена законная причина (п. 52–53)<br>
+            2️⃣ <strong>Передавайте документы</strong> без цепочек, через приоткрытое окно<br>
+            3️⃣ <strong>Включите запись</strong> сразу (п. 43)<br>
+            4️⃣ <strong>Требуйте понятых или видеозапись</strong> при любом досмотре
+        </div>
+
+        <!-- 🔴 Блок 9: Нормативная база -->
+        <div class="info-card" style="border-left-color: #8b5cf6;">
+            <strong>📚 Нормативная база (ИСПРАВЛЕНО):</strong><br>
+            • Конституция РФ: ст. 29, ст. 51<br>
+            • ФЗ «О полиции» №3-ФЗ: ст. 5, ст. 8<br>
+            • <strong>Приказ МВД №264:</strong><br>
+              - п. 42 (курение, общение)<br>
+              - п. 43 (видеозапись)<br>
+              - п. 45 (передача документов)<br>
+              - п. 47–48 (остановка ТС)<br>
+              - п. 51 (причина остановки)<br>
+              - п. 52–53-53.1 (выход из авто)<br>
+            • ПДД РФ: п. 2.1.1<br>
+            • КоАП РФ: ст. 19.3 (неповиновение), ст. 27.9 (досмотр)
+        </div>
+        
+        <div class="info-card success">
+            <strong>📌 Финальный вывод:</strong><br>
+            ✔️ Знайте свои права, но не нарушайте законные требования инспектора<br>
+            ✔️ Всегда ведите видеозапись (п. 43)<br>
+            ✔️ Выходите из авто только при требовании (п. 52–53)<br>
+            ✔️ В протоколе пишите «Не согласен», если это так
+        </div>
+
+        <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
+        <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
         <button class="btn btn-full btn-secondary" onclick="showSection('main')">← Назад</button>
+    </div>
     </div>
 
     <!-- 🔥 ПОЛНЫЙ FOOTER СО ВСЕМИ ССЫЛКАМИ И ДИСКЛЕЙМЕРАМИ -->
