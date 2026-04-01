@@ -179,7 +179,7 @@ header p {
 
 /* Sections */
 .section {
-    display: none;
+    display: none !important;
     background: var(--card);
     padding: 1.5rem;
     border-radius: 12px;
@@ -189,7 +189,7 @@ header p {
 }
 
 .section.active {
-    display: block;
+    display: block !important;
 }
 
 @keyframes fadeIn {
