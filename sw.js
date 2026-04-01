@@ -1,70 +1,68 @@
-// sw.js
+// ===================================
+// ROAD SMART AID - Service Worker
+// Версия: 2.0 (с авто-очисткой кэша)
+// ===================================
 
-const CACHE_NAME = 'cache-v1';
-const urlsToCache = [
+const CACHE_NAME = 'road-smart-aid-v' + Date.now();
+
+const ASSETS_TO_CACHE = [
+    '/',
     '/index.html',
+    '/скрипт.js',
     '/styles.css',
-    '/script.js',
+    '/manifest.json'
 ];
 
-// Install Service Worker
+// 📥 Установка Service Worker
 self.addEventListener('install', event => {
+    console.log('✅ SW: Установка начата');
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
-            })
-            .catch(err => console.error('Cache open failed:', err))
+        caches.open(CACHE_NAME).then(cache => {
+            console.log('✅ SW: Кэш открыт:', CACHE_NAME);
+            return cache.addAll(ASSETS_TO_CACHE).then(() => {
+                console.log('✅ SW: Ресурсы закэшированы');
+            });
+        }).catch(err => {
+            console.error('❌ SW: Ошибка кэширования:', err);
+        })
     );
+    // Сразу активируем новую версию
+    self.skipWaiting();
 });
 
-// Fetch events
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
-                    console.log('Serving from cache:', event.request.url);
-                    return response;
-                }
-                return fetch(event.request)
-                    .then(response => {
-                        if (!response || response.status !== 200) {
-                            console.error('Fetch failed:', response.statusText);
-                            return response;
-                        }
-                        return caches.open(CACHE_NAME)
-                            .then(cache => {
-                                cache.put(event.request, response.clone());
-                                return response;
-                            });
-                    });
-            })
-            .catch(err => {
-                console.error('Fetch error:', err);
-                // Optionally return a fallback response
-                return new Response('Service Unavailable', {
-                    status: 503,
-                    statusText: 'Service Unavailable'
-                });
-            })
-    );
-});
-
-// Activate Service Worker
+// 🔄 Активация Service Worker (очистка старого кэша)
 self.addEventListener('activate', event => {
-    const cacheWhitelist = [CACHE_NAME];
+    console.log('✅ SW: Активация начата');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        console.log('Deleting old cache:', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
+                cacheNames
+                    .filter(name => name !== CACHE_NAME)
+                    .map(name => {
+                        console.log('🗑️ SW: Удаляем старый кэш:', name);
+                        return caches.delete(name);
+                    })
             );
+        }).then(() => {
+            console.log('✅ SW: Старый кэш очищен');
+            return self.clients.claim();
+        })
+    );
+});
+
+// 🌐 Перехват запросов
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            if (response) {
+                console.log('💾 SW: Найдено в кэше:', event.request.url);
+                return response;
+            }
+            console.log('🌐 SW: Загрузка из сети:', event.request.url);
+            return fetch(event.request).catch(err => {
+                console.error('❌ SW: Ошибка сети:', err);
+                // Можно вернуть офлайн-страницу если есть
+            });
         })
     );
 });
