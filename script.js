@@ -151,11 +151,29 @@ fetch('data/legal-base.json?t=' + Date.now())
         if (el) el.innerText = "Онлайн";
     });
 
-// 📱 Service Worker (офлайн-режим)
+// 📱 Service Worker (офлайн-режим с авто-очисткой кэша)
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('✅ SW registered:', reg.scope))
+            .then(reg => {
+                console.log('✅ SW registered:', reg.scope);
+                
+                // Проверяем обновления
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    console.log('🔄 SW: Найдено обновление...');
+                    
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('🔄 SW: Доступно обновление! Перезагрузите страницу.');
+                            // Можно показать уведомление пользователелю
+                            if (confirm('🔄 Доступна новая версия приложения! Перезагрузить?')) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+            })
             .catch(err => console.log('❌ SW error:', err));
     });
 }
