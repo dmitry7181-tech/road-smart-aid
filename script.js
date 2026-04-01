@@ -1,11 +1,8 @@
 // ===================================
-// ROAD SMART AID - JavaScript
-// ===================================
-// ===================================
-// 🔍 УЛУЧШЕННЫЙ ПОИСК (v2.0)
+// ROAD SMART AID - JavaScript v2.0
 // ===================================
 
-// 📚 Словарь синонимов
+// 📚 Словарь синонимов для поиска
 const searchSynonyms = {
     'дпс': ['гаи', 'гибдд', 'полиция', 'инспектор'],
     'гаи': ['дпс', 'гибдд', 'полиция', 'инспектор'],
@@ -42,7 +39,7 @@ function normalizeText(text) {
     return text.toLowerCase().replace(/ё/g, 'е').replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-// 🎯 Функция нечёткого поиска
+// 🎯 Функция нечёткого поиска (Levenshtein)
 function fuzzyMatch(query, text, threshold = 0.6) {
     query = normalizeText(query);
     text = normalizeText(text);
@@ -79,7 +76,7 @@ function levenshteinDistance(str1, str2) {
     return matrix[str2.length][str1.length];
 }
 
-// 🔍 Подсветка найденного текста
+// 🔍 Подсветка найденного текста (с синонимами)
 function highlightText(text, query) {
     const terms = [query, ...(searchSynonyms[query] || [])];
     let highlighted = text;
@@ -90,64 +87,8 @@ function highlightText(text, query) {
     return highlighted;
 }
 
-// ===================================
 // 🔍 Данные для умного поиска
 const searchData = [
-// 🔍 Данные для умного поиска
-const searchData = [
-    {
-        section: 'stop',
-        title: '🛑 Остановка инспектором',
-        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п. 52'],
-        content: 'Порядок действий инспектора при остановке: представиться, назвать причину, предъявить удостоверение'
-    },
-    {
-        section: 'powers',
-        title: '⚡ Полномочия инспектора',
-        keywords: ['полномочия', 'права', 'инспектор', 'п. 47', 'остановка тс', 'проверка'],
-        content: 'Основные полномочия: остановка ТС, проверка документов, освидетельствование'
-    },
-    {
-        section: 'docs',
-        title: '📄 Документы',
-        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 2.1.1'],
-        content: 'Обязательные документы: водительское удостоверение, СТС, полис ОСАГО'
-    },
-    {
-        section: 'search',
-        title: '🔍 Осмотр и досмотр',
-        keywords: ['осмотр', 'досмотр', 'багажник', 'понятые', 'видео', 'протокол', 'ст. 27.9', 'коап'],
-        content: 'Осмотр — визуально, досмотр — со вскрытием (требует понятых или видео)'
-    },
-    {
-        section: 'accident',
-        title: '🚗💥 ДТП',
-        keywords: ['дтп', 'авария', 'европротокол', '112', '102', 'знак', 'аварийка'],
-        content: 'Действия при ДТП: аварийка, знак, фото, европротокол или ГИБДД'
-    },
-    {
-        section: 'rights',
-        title: '⚖️ Ваши права',
-        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 51', 'конституция'],
-        content: 'Право на видеосъёмку, не выходить из авто, не подписывать протокол'
-    },
-    {
-        section: 'emergency-main',
-        title: '📞 Экстренные номера',
-        keywords: ['112', '102', '103', 'мвд', 'телефон', 'вызов', 'экстренный'],
-        content: '112 — единый экстренный, 102 — полиция, 103 — скорая, 8(800)222-74-47 — телефон доверия МВД'
-    },
-    {
-        section: 'main-menu',
-        title: '📚 Главное меню',
-        keywords: ['меню', 'разделы', 'навигация'],
-        content: 'Все разделы приложения: Остановка, Полномочия, Документы, Осмотр, ДТП, Права'
-    }
-];
-
-// 🔍 Функция поиска
-function searchContent() {
-    const searchData = [
     {
         section: 'stop',
         title: '🛑 Остановка инспектором',
@@ -188,20 +129,83 @@ function searchContent() {
         section: 'emergency-main',
         title: '📞 Экстренные номера',
         keywords: ['112', '102', '103', 'мвд', 'телефон', 'вызов', 'экстренный'],
-        content: '112 — единый экстренный, 102 — полиция, 103 — скорая'
+        content: '112 — единый экстренный, 102 — полиция, 103 — скорая, 8(800)222-74-47 — телефон доверия МВД'
     },
     {
         section: 'main-menu',
         title: '📚 Главное меню',
         keywords: ['меню', 'разделы', 'навигация'],
-        content: 'Все разделы приложения'
+        content: 'Все разделы приложения: Остановка, Полномочия, Документы, Осмотр, ДТП, Права'
     }
 ];
 
-// 🔍 Подсветка найденного текста
-function highlightText(text, query) {
-    const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<span class="search-highlight">$1</span>');
+// 🔍 УЛУЧШЕННАЯ функция поиска
+function searchContent() {
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('search-results');
+    
+    if (query.length < 2) {
+        if (resultsContainer) resultsContainer.style.display = 'none';
+        return;
+    }
+    
+    // Получаем синонимы
+    let searchTerms = [query];
+    Object.keys(searchSynonyms).forEach(key => {
+        if (query.includes(key) || searchSynonyms[key].includes(query)) {
+            searchTerms = searchTerms.concat(searchSynonyms[key]);
+        }
+    });
+    
+    // Поиск в searchData
+    const searchDataResults = searchData.filter(item => {
+        const searchText = (item.title + ' ' + item.content + ' ' + item.keywords.join(' ')).toLowerCase();
+        return searchTerms.some(term => searchText.includes(term.toLowerCase()));
+    });
+    
+    // Поиск по содержимому разделов
+    const sectionResults = [];
+    document.querySelectorAll('.section').forEach(section => {
+        const sectionId = section.id;
+        const sectionTitle = section.querySelector('h2')?.textContent || '';
+        const sectionText = section.textContent || '';
+        
+        searchTerms.forEach(term => {
+            if (sectionText.toLowerCase().includes(term.toLowerCase())) {
+                const relevance = fuzzyMatch(term, sectionText);
+                if (relevance > 0.3) {
+                    sectionResults.push({
+                        section: sectionId,
+                        title: sectionTitle,
+                        content: sectionText.substring(0, 150) + '...',
+                        relevance: relevance
+                    });
+                }
+            }
+        });
+    });
+    
+    // Объединяем и сортируем
+    const allResults = [...searchDataResults, ...sectionResults];
+    allResults.sort((a, b) => (b.relevance || 1) - (a.relevance || 1));
+    const uniqueResults = allResults.filter((v, i, a) => a.findIndex(t => t.section === v.section) === i);
+    
+    // Отображаем
+    if (resultsContainer) {
+        if (uniqueResults.length > 0) {
+            resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => `
+                <div class="search-result-item" onclick="showSection('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
+                    <div class="search-result-title">${item.title}</div>
+                    <div class="search-result-text">${highlightText(item.content, query)}</div>
+                    <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
+                </div>
+            `).join('');
+            resultsContainer.style.display = 'block';
+        } else {
+            resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте синонимы: "дпс" → "гаи", "дтп" → "авария"</small></div>';
+            resultsContainer.style.display = 'block';
+        }
+    }
 }
 
 // Закрыть поиск при клике вне
@@ -218,19 +222,16 @@ document.addEventListener('click', function(e) {
 
 // 📱 Переключение разделов
 function showSection(id) {
-    // Скрываем все разделы через setProperty с !important
     document.querySelectorAll('.section').forEach(el => {
         el.classList.remove('active');
         el.style.setProperty('display', 'none', 'important');
     });
     
-    // Скрываем главное меню и экстренные номера
     var menu = document.getElementById('main-menu');
     var emergency = document.getElementById('emergency-main');
     if(menu) menu.style.setProperty('display', 'none', 'important');
     if(emergency) emergency.style.setProperty('display', 'none', 'important');
     
-    // Показываем нужный раздел или главное меню
     if (id === 'main-menu' || id === 'main') {
         if(menu) menu.style.setProperty('display', 'grid', 'important');
         if(emergency) emergency.style.setProperty('display', 'block', 'important');
@@ -241,10 +242,9 @@ function showSection(id) {
             section.style.setProperty('display', 'block', 'important');
         }
     }
-    
-    // Прокрутка вверх
     window.scrollTo(0, 0);
 }
+
 // 📅 Загрузка даты обновления
 fetch('data/legal-base.json?t=' + Date.now())
     .then(r => r.json())
@@ -259,25 +259,17 @@ fetch('data/legal-base.json?t=' + Date.now())
         if (el) el.innerText = "Онлайн";
     });
 
-// 📱 Service Worker (офлайн-режим с авто-очисткой кэша)
+// 📱 Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('sw.js')
             .then(reg => {
                 console.log('✅ SW registered:', reg.scope);
-                
-                // Проверяем обновления
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
-                    console.log('🔄 SW: Найдено обновление...');
-                    
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('🔄 SW: Доступно обновление! Перезагрузите страницу.');
-                            // Можно показать уведомление пользователелю
-                            if (confirm('🔄 Доступна новая версия приложения! Перезагрузить?')) {
-                                window.location.reload();
-                            }
+                            console.log('🔄 SW: Доступно обновление!');
                         }
                     });
                 });
@@ -286,8 +278,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Инициализация при загрузке
+// Инициализация
 document.addEventListener('DOMContentLoaded', function() {
-    // Показываем главное меню
     showSection('main-menu');
 });
