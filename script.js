@@ -110,31 +110,33 @@ document.addEventListener('click', function(e) {
 
 // 📱 Переключение разделов
 function showSection(id) {
-    // Скрываем все разделы
-    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    // Скрываем все разделы через setProperty с !important
+    document.querySelectorAll('.section').forEach(el => {
+        el.classList.remove('active');
+        el.style.setProperty('display', 'none', 'important');
+    });
     
     // Скрываем главное меню и экстренные номера
     var menu = document.getElementById('main-menu');
     var emergency = document.getElementById('emergency-main');
-    if(menu) menu.style.display = 'none';
-    if(emergency) emergency.style.display = 'none';
+    if(menu) menu.style.setProperty('display', 'none', 'important');
+    if(emergency) emergency.style.setProperty('display', 'none', 'important');
     
     // Показываем нужный раздел или главное меню
     if (id === 'main-menu' || id === 'main') {
-        if(menu) menu.style.display = 'grid';
-        if(emergency) emergency.style.display = 'block';
+        if(menu) menu.style.setProperty('display', 'grid', 'important');
+        if(emergency) emergency.style.setProperty('display', 'block', 'important');
     } else {
         var section = document.getElementById(id);
         if (section) {
             section.classList.add('active');
-            section.style.display = 'block';
+            section.style.setProperty('display', 'block', 'important');
         }
     }
     
     // Прокрутка вверх
     window.scrollTo(0, 0);
 }
-
 // 📅 Загрузка даты обновления
 fetch('data/legal-base.json?t=' + Date.now())
     .then(r => r.json())
