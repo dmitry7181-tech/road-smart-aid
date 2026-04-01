@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v2.0
+// ROAD SMART AID - JavaScript v2.1
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -27,16 +27,53 @@ const searchSynonyms = {
     '102': ['полиция', 'дпс', 'милиция'],
     '103': ['скорая', 'врач', 'медицина'],
     'жалоба': ['заявление', 'обращение'],
-    'п. 10': ['пункт 10', 'параграф 10'],
-    'п. 47': ['пункт 47', 'параграф 47'],
-    'п. 52': ['пункт 52', 'параграф 52'],
+    'п 10': ['п. 10', 'пункт 10', 'параграф 10'],
+    'п. 10': ['п 10', 'пункт 10', 'параграф 10'],
+    'п 47': ['п. 47', 'пункт 47', 'параграф 47'],
+    'п. 47': ['п 47', 'пункт 47', 'параграф 47'],
+    'п 48': ['п. 48', 'пункт 48', 'параграф 48'],
+    'п. 48': ['п 48', 'пункт 48', 'параграф 48'],
+    'п 49': ['п. 49', 'пункт 49', 'параграф 49'],
+    'п. 49': ['п 49', 'пункт 49', 'параграф 49'],
+    'п 50': ['п. 50', 'пункт 50', 'параграф 50'],
+    'п. 50': ['п 50', 'пункт 50', 'параграф 50'],
+    'п 51': ['п. 51', 'пункт 51', 'параграф 51'],
+    'п. 51': ['п 51', 'пункт 51', 'параграф 51'],
+    'п 52': ['п. 52', 'пункт 52', 'параграф 52'],
+    'п. 52': ['п 52', 'пункт 52', 'параграф 52'],
+    'п 53': ['п. 53', 'пункт 53', 'параграф 53'],
+    'п. 53': ['п 53', 'пункт 53', 'параграф 53'],
+    'п 54': ['п. 54', 'пункт 54', 'параграф 54'],
+    'п. 54': ['п 54', 'пункт 54', 'параграф 54'],
+    'ст 5': ['ст. 5', 'статья 5'],
+    'ст. 5': ['ст 5', 'статья 5'],
+    'ст 27': ['ст. 27', 'статья 27'],
+    'ст. 27': ['ст 27', 'статья 27'],
+    'ст 51': ['ст. 51', 'статья 51'],
+    'ст. 51': ['ст 51', 'статья 51'],
     'коап': ['кодекс', 'административный', 'нарушение'],
     'пдд': ['правила', 'дорожное', 'движение']
 };
 
+// 🔤 Функция нормализации запроса (добавляет точки к п./ст.)
+function normalizeQuery(query) {
+    let normalized = query.toLowerCase();
+    // п 48 → п. 48, ст 5 → ст. 5
+    normalized = normalized.replace(/(\bп)\s+(\d+)/gi, '$1. $2');
+    normalized = normalized.replace(/(\bст)\s+(\d+)/gi, '$1. $2');
+    // убираем лишние пробелы
+    normalized = normalized.replace(/\s+/g, ' ').trim();
+    return normalized;
+}
+
 // 🔤 Функция нормализации текста
 function normalizeText(text) {
-    return text.toLowerCase().replace(/ё/g, 'е').replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ').replace(/\s+/g, ' ').trim();
+    return text
+        .toLowerCase()
+        .replace(/ё/g, 'е')
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 }
 
 // 🎯 Функция нечёткого поиска (Levenshtein)
@@ -69,7 +106,11 @@ function levenshteinDistance(str1, str2) {
             if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
                 matrix[i][j] = matrix[i - 1][j - 1];
             } else {
-                matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
             }
         }
     }
@@ -78,11 +119,14 @@ function levenshteinDistance(str1, str2) {
 
 // 🔍 Подсветка найденного текста (с синонимами)
 function highlightText(text, query) {
-    const terms = [query, ...(searchSynonyms[query] || [])];
+    const normalizedQuery = normalizeQuery(query);
+    const terms = [query, normalizedQuery, ...(searchSynonyms[query] || []), ...(searchSynonyms[normalizedQuery] || [])];
     let highlighted = text;
     terms.forEach(term => {
-        const regex = new RegExp(`(${term})`, 'gi');
-        highlighted = highlighted.replace(regex, '<span class="search-highlight">$1</span>');
+        if (term && term.length > 1) {
+            const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            highlighted = highlighted.replace(regex, '<span class="search-highlight">$1</span>');
+        }
     });
     return highlighted;
 }
@@ -92,38 +136,38 @@ const searchData = [
     {
         section: 'stop',
         title: '🛑 Остановка инспектором',
-        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п. 52', 'гаи', 'дпс', 'гибдд', 'жест'],
-        content: 'Порядок действий инспектора при остановке: представиться, назвать причину, предъявить удостоверение'
+        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п 10', 'п. 52', 'п 52', 'гаи', 'дпс', 'гибдд', 'жест', 'п. 48', 'п 48', 'п. 49', 'п 49'],
+        content: 'Порядок действий инспектора при остановке: представиться (п. 10), назвать причину, предъявить удостоверение, п. 48-52 Приказа №264'
     },
     {
         section: 'powers',
         title: '⚡ Полномочия инспектора',
-        keywords: ['полномочия', 'права', 'инспектор', 'п. 47', 'остановка тс', 'проверка', 'гаи', 'дпс'],
-        content: 'Основные полномочия: остановка ТС, проверка документов, освидетельствование'
+        keywords: ['полномочия', 'права', 'инспектор', 'п. 47', 'п 47', 'остановка тс', 'проверка', 'гаи', 'дпс', 'п. 53', 'п 53'],
+        content: 'Основные полномочия: остановка ТС (п. 47), проверка документов, освидетельствование, выход из авто (п. 53)'
     },
     {
         section: 'docs',
         title: '📄 Документы',
-        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 2.1.1', 'страховка'],
-        content: 'Обязательные документы: водительское удостоверение, СТС, полис ОСАГО'
+        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 2.1.1', 'страховка', 'пдд'],
+        content: 'Обязательные документы: водительское удостоверение, СТС, полис ОСАГО (ПДД п. 2.1.1)'
     },
     {
         section: 'search',
         title: '🔍 Осмотр и досмотр',
-        keywords: ['осмотр', 'досмотр', 'багажник', 'понятые', 'видео', 'протокол', 'ст. 27.9', 'коап'],
-        content: 'Осмотр — визуально, досмотр — со вскрытием (требует понятых или видео)'
+        keywords: ['осмотр', 'досмотр', 'багажник', 'понятые', 'видео', 'протокол', 'ст. 27.9', 'ст 27', 'коап'],
+        content: 'Осмотр — визуально, досмотр — со вскрытием (ст. 27.9 КоАП, требует понятых или видео)'
     },
     {
         section: 'accident',
         title: '🚗💥 ДТП',
-        keywords: ['дтп', 'авария', 'европротокол', '112', '102', 'знак', 'аварийка'],
-        content: 'Действия при ДТП: аварийка, знак, фото, европротокол или ГИБДД'
+        keywords: ['дтп', 'авария', 'европротокол', '112', '102', 'знак', 'аварийка', 'ст. 12.27'],
+        content: 'Действия при ДТП: аварийка, знак, фото, европротокол или ГИБДД (ст. 12.27 КоАП)'
     },
     {
         section: 'rights',
         title: '⚖️ Ваши права',
-        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 51', 'конституция'],
-        content: 'Право на видеосъёмку, не выходить из авто, не подписывать протокол'
+        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 51', 'ст 51', 'конституция', 'п. 11', 'п 11'],
+        content: 'Право на видеосъёмку, не выходить из авто, не свидетельствовать против себя (ст. 51 Конституции, п. 11)'
     },
     {
         section: 'emergency-main',
@@ -141,7 +185,8 @@ const searchData = [
 
 // 🔍 УЛУЧШЕННАЯ функция поиска
 function searchContent() {
-    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    const rawQuery = document.getElementById('search-input').value.trim();
+    const query = normalizeQuery(rawQuery);
     const resultsContainer = document.getElementById('search-results');
     
     if (query.length < 2) {
@@ -149,10 +194,10 @@ function searchContent() {
         return;
     }
     
-    // Получаем синонимы
-    let searchTerms = [query];
+    // Получаем синонимы + варианты с/без точек
+    let searchTerms = [query, rawQuery];
     Object.keys(searchSynonyms).forEach(key => {
-        if (query.includes(key) || searchSynonyms[key].includes(query)) {
+        if (query.includes(key) || searchSynonyms[key].includes(query) || rawQuery.includes(key)) {
             searchTerms = searchTerms.concat(searchSynonyms[key]);
         }
     });
@@ -160,7 +205,7 @@ function searchContent() {
     // Поиск в searchData
     const searchDataResults = searchData.filter(item => {
         const searchText = (item.title + ' ' + item.content + ' ' + item.keywords.join(' ')).toLowerCase();
-        return searchTerms.some(term => searchText.includes(term.toLowerCase()));
+        return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
     // Поиск по содержимому разделов
@@ -171,7 +216,7 @@ function searchContent() {
         const sectionText = section.textContent || '';
         
         searchTerms.forEach(term => {
-            if (sectionText.toLowerCase().includes(term.toLowerCase())) {
+            if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
                 const relevance = fuzzyMatch(term, sectionText);
                 if (relevance > 0.3) {
                     sectionResults.push({
@@ -196,13 +241,13 @@ function searchContent() {
             resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => `
                 <div class="search-result-item" onclick="showSection('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
                     <div class="search-result-title">${item.title}</div>
-                    <div class="search-result-text">${highlightText(item.content, query)}</div>
+                    <div class="search-result-text">${highlightText(item.content, rawQuery)}</div>
                     <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
                 </div>
             `).join('');
             resultsContainer.style.display = 'block';
         } else {
-            resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте синонимы: "дпс" → "гаи", "дтп" → "авария"</small></div>';
+            resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте: "п 48", "ст 5", "гаи", "дтп"</small></div>';
             resultsContainer.style.display = 'block';
         }
     }
