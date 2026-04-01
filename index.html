@@ -178,7 +178,7 @@
         }
 
         .section {
-            display: none !important;
+            display: none;
             background: var(--card);
             padding: 1.5rem;
             border-radius: 12px;
@@ -188,7 +188,7 @@
         }
 
         .section.active {
-            display: block !important;
+            display: block;
         }
 
         @keyframes fadeIn {
@@ -342,6 +342,32 @@
             font-size: 0.9rem;
         }
 
+        .powers-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .powers-list li {
+            padding: 1rem;
+            margin: 0.75rem 0;
+            background: var(--bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .powers-list strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .powers-list small {
+            color: #6b7280;
+            display: block;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
         footer {
             text-align: center;
             padding: 2rem 1rem;
@@ -411,11 +437,15 @@
             </div>
             <div class="menu-card" onclick="showSection('rights')">
                 <span class="menu-icon">⚖️</span>
-                <span class="menu-title">Справочник законов</span>
+                <span class="menu-title">Ваши права</span>
             </div>
             <div class="menu-card" onclick="showSection('emergency-main')">
                 <span class="menu-icon">📞</span>
                 <span class="menu-title">Экстренно</span>
+            </div>
+            <div class="menu-card" onclick="showSection('laws')">
+                <span class="menu-icon">📚</span>
+                <span class="menu-title">Законы</span>
             </div>
         </div>
 
@@ -444,10 +474,10 @@
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
-        <!-- РАЗДЕЛ: Остановка ДПС -->
+        <!-- РАЗДЕЛ: Остановка -->
         <div id="stop" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
-            <h2>🛑 Порядок действий при остановке ДПС</h2>
+            <h2>🛑 Порядок действий инспектора при остановке</h2>
             
             <div class="info-card success">
                 <strong>📘 Пункт 10 Приказа №264 — базовая обязанность</strong><br>
@@ -468,18 +498,163 @@
                     <span class="step-reference">п. 10 Приказа №264</span>
                 </div>
                 <div class="step">
-                    <strong>При остановке ТС — подойти к водителю</strong>
+                    <strong>При остановке ТС — подойти к водителю и выполнить п. 10</strong>
                     <span class="step-reference">п. 52 Приказа №264</span>
+                </div>
+                <div class="step">
+                    <strong>Если вы обратились первым — инспектор тоже обязан представиться</strong>
+                    <span class="step-reference">п. 13 Приказа №264</span>
+                </div>
+                <div class="step">
+                    <strong>Не препятствует видеосъёмке</strong>
+                    <span class="step-reference">ч. 4 ст. 29 Конституции РФ, п. 6-7 Приказа №264</span>
                 </div>
             </div>
 
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📚 Нормативная база:</strong><br>
+                • Приказ МВД №264: п. 10, 13, 52<br>
+                • ФЗ «О полиции»: ст. 5 ч. 4, ст. 8<br>
+                • Конституция РФ: ст. 29 ч. 4
+            </div>
+
+            <div class="info-card warning">
+                <strong>⚠️ Что делать если инспектор нарушил порядок?</strong><br><br>
+                <strong>1. Это нарушение регламента</strong><br>
+                Если инспектор не представился и не назвал причину — он нарушил п. 10 Приказа №264.<br><br>
+                <strong>2. Это даёт вам право:</strong><br>
+                • Зафиксировать нарушение (видео, аудиозапись)<br>
+                • Подать жалобу в прокуратуру или МВД<br>
+                • Оспорить штраф в суде<br><br>
+                <strong>3. Важное уточнение:</strong><br>
+                Нарушение п. 10 <strong>не делает действия инспектора автоматически незаконными</strong>.<br>
+                Но это <strong>серьёзное процессуальное нарушение</strong>, которое может быть использовано в вашу пользу при обжаловании.
+            </div>
+
             <div class="info-card danger">
-                <strong>🛡️ Если инспектор нарушил порядок:</strong><br><br>
+                <strong>🛡️ Алгоритм действий при нарушении:</strong><br><br>
                 <strong>Шаг 1:</strong> Спокойно скажите: «Вы не представились и не назвали причину. Прошу выполнить п. 10 Приказа №264».<br>
-                <strong>Шаг 2:</strong> Включите видеозапись.<br>
-                <strong>Шаг 3:</strong> Запишите ФИО инспектора.<br>
-                <strong>Шаг 4:</strong> Подайте жалобу через сайт МВД.<br>
-                <strong>Шаг 5:</strong> Сохраните видео для суда.
+                <strong>Шаг 2:</strong> Включите видеозапись (сообщите об этом инспектору).<br>
+                <strong>Шаг 3:</strong> Если инспектор отказывается — запишите его ФИО (с жетона/удостоверения).<br>
+                <strong>Шаг 4:</strong> После остановки подайте жалобу через сайт МВД или в прокуратуру.<br>
+                <strong>Шаг 5:</strong> Сохраните видео — это доказательство в суде.
+            </div>
+
+            <div class="info-card" style="border-left-color: #16a34a;">
+                <strong>✅ Правильная последовательность действий инспектора:</strong><br><br>
+                1️⃣ Остановил ТС (по основаниям из п. 47-47.7)<br>
+                2️⃣ Подошёл к водителю (п. 52)<br>
+                3️⃣ Представился (п. 10)<br>
+                4️⃣ Назвал причину остановки (п. 10)<br>
+                5️⃣ Только после этого — требования (документы, выход из авто и т.д.)
+            </div>
+
+            <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
+            <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
+            <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; text-align: center;">
+                На сайте: выберите «Главное управление по обеспечению безопасности дорожного движения» → следуйте инструкциям
+            </div>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
+        </div>
+
+        <!-- РАЗДЕЛ: Полномочия -->
+        <div id="powers" class="section">
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
+            <h2>⚡ Полномочия инспектора и основания остановки</h2>
+            
+            <div class="info-card success">
+                <strong>📘 Приказ МВД №264 от 02.05.2023</strong><br>
+                <em>Действующий регламент (заменяет старый №664)</em>
+            </div>
+
+            <h3>🛑 Законные основания для остановки ТС (п. 47-47.7)</h3>
+            
+            <div class="info-card" style="border-left-color: #f59e0b;">
+                <strong>❗ Инспектор НЕ может останавливать «просто так»</strong><br>
+                Всегда должно быть конкретное основание из Приказа №264.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <strong>Нарушение ПДД</strong>
+                    <span class="step-reference">п. 47.1 Приказа №264</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                        <em>Примеры:</em> превышение скорости, не включён поворотник, ремень не пристёгнут
+                    </div>
+                </div>
+                <div class="step">
+                    <strong>Ориентировка / розыск</strong>
+                    <span class="step-reference">п. 47.1 Приказа №264</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                        <em>Примеры:</em> машина в розыске, похожа по описанию, причастность к ДТП
+                    </div>
+                </div>
+                <div class="step">
+                    <strong>Спецмероприятие</strong>
+                    <span class="step-reference">п. 47.7 Приказа №264</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                        <em>Примеры:</em> «Перехват», «Нетрезвый водитель», антитеррор
+                    </div>
+                </div>
+                <div class="step">
+                    <strong>Проверка документов</strong>
+                    <span class="step-reference">п. 47.3 Приказа №264</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                        <strong>✅ Самостоятельное основание для остановки.</strong><br>
+                        Инспектор вправе остановить именно с этой целью.
+                    </div>
+                </div>
+                <div class="step">
+                    <strong>Опрос свидетеля</strong>
+                    <span class="step-reference">п. 47.2 Приказа №264</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                        <em>Примеры:</em> ДТП рядом, преступление поблизости
+                    </div>
+                </div>
+                <div class="step">
+                    <strong>Угроза безопасности</strong>
+                    <span class="step-reference">п. 47.6 Приказа №264</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;">
+                        <em>Примеры:</em> дым из машины, плохо закреплён груз, неисправность
+                    </div>
+                </div>
+            </div>
+
+            <h3>🚗 Выход из автомобиля (п. 53-54)</h3>
+            
+            <div class="info-card danger">
+                <strong>⚠️ Важно:</strong> Регламент разделяет <strong>«требование»</strong> (обязан выполнить) и <strong>«предложение»</strong> (можно отказаться).
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg);">
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Тип</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Пункт</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Обязан ли?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 ТРЕБОВАНИЕ</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">п. 53.1</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">✅ ДА (иначе ст. 19.3 КоАП)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🟡 ПРЕДЛОЖЕНИЕ</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">п. 54.1</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">❌ НЕТ (можно отказаться)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📚 Нормативная база:</strong><br>
+                • Приказ МВД №264: п. 47-47.7, 52, 53.1, 53.2, 54.1, 54.2<br>
+                • КоАП РФ: ст. 19.3 (неповиновение), ст. 27.9 (досмотр)<br>
+                • Конституция РФ: ст. 27 (свобода передвижения)
             </div>
 
             <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
@@ -487,67 +662,92 @@
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
-        <!-- РАЗДЕЛ: Полномочия -->
-        <div id="powers" class="section">
-            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
-            <h2>⚡ Полномочия инспектора</h2>
-            
-            <div class="info-card" style="border-left-color: #f59e0b;">
-                <strong>❗ Инспектор НЕ может останавливать «просто так»</strong><br>
-                Всегда должно быть основание из п. 47-47.7 Приказа №264.
-            </div>
-
-            <div class="steps">
-                <div class="step">
-                    <strong>Нарушение ПДД</strong>
-                    <span class="step-reference">п. 47.1</span>
-                </div>
-                <div class="step">
-                    <strong>Ориентировка / розыск</strong>
-                    <span class="step-reference">п. 47.1</span>
-                </div>
-                <div class="step">
-                    <strong>Спецмероприятие</strong>
-                    <span class="step-reference">п. 47.7</span>
-                </div>
-                <div class="step">
-                    <strong>Проверка документов</strong>
-                    <span class="step-reference">п. 47.3</span>
-                </div>
-                <div class="step">
-                    <strong>Опрос свидетеля</strong>
-                    <span class="step-reference">п. 47.2</span>
-                </div>
-                <div class="step">
-                    <strong>Угроза безопасности</strong>
-                    <span class="step-reference">п. 47.6</span>
-                </div>
-            </div>
-
-            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
-        </div>
-
         <!-- РАЗДЕЛ: Документы -->
         <div id="docs" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
-            <h2>📄 Обязательные документы</h2>
+            <h2>📄 Обязательные документы водителя</h2>
             
             <div class="info-card success">
                 <strong>📘 Пункт 2.1.1 ПДД РФ</strong><br>
-                <em>Водитель обязан иметь при себе:</em>
+                <em>Водитель обязан иметь при себе и передавать для проверки:</em>
             </div>
 
+            <h3>✅ Что всегда должно быть в машине</h3>
+            
             <div class="info-card" style="border-left-color: #16a34a;">
-                <strong>1️⃣ Водительское удостоверение</strong>
+                <strong>1️⃣ Водительское удостоверение</strong><br>
+                <small>Подтверждает ваше право управлять ТС</small>
             </div>
             
             <div class="info-card" style="border-left-color: #16a34a;">
-                <strong>2️⃣ СТС (Свидетельство о регистрации)</strong>
+                <strong>2️⃣ СТС (Свидетельство о регистрации)</strong><br>
+                <small>Подтверждает регистрацию автомобиля</small>
             </div>
             
             <div class="info-card" style="border-left-color: #16a34a;">
                 <strong>3️⃣ Полис ОСАГО</strong><br>
-                <small>Можно показывать с телефона</small>
+                <small>Можно показывать с телефона — электронный полис законен</small>
+            </div>
+
+            <h3>⚖️ Ответственность: штрафы и последствия</h3>
+            
+            <div class="info-card warning">
+                <strong>⚠️ Главная опасность:</strong><br>
+                Не штраф (500–800 ₽), а <strong>задержание ТС и эвакуация</strong>.
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg);">
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Документ</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Нарушение</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Штраф</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Эвакуация</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ВУ</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Нет при себе</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">500 ₽</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">✔️ Возможно</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ВУ</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Нет прав вообще</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">5–15 тыс ₽</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">✔️ Обязательно</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>СТС</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Нет при себе</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">500 ₽</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">✔️ Возможно</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ОСАГО</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Нет при себе</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">500 ₽</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>ОСАГО</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Нет вообще</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">800 ₽</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">❌ Нет</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📚 Нормативная база:</strong><br>
+                • ПДД РФ: п. 2.1.1 (обязанность иметь документы)<br>
+                • КоАП РФ: ст. 12.3 ч.1 (нет документов при себе — 500 ₽)<br>
+                • КоАП РФ: ст. 12.7 (нет права управления — 5–15 тыс ₽)<br>
+                • КоАП РФ: ст. 12.37 (нет ОСАГО — 500/800 ₽)<br>
+                • КоАП РФ: ст. 27.12–27.13 (отстранение, задержание ТС)
             </div>
 
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
@@ -556,28 +756,66 @@
         <!-- РАЗДЕЛ: Осмотр и досмотр -->
         <div id="search" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
-            <h2>🔍 Осмотр и досмотр</h2>
+            <h2>🔍 Осмотр и досмотр: в чём разница</h2>
             
             <div class="info-card success">
                 <strong>📘 Главное правило</strong><br>
-                <em>Осмотр ≠ Досмотр!</em>
+                <em>Осмотр ≠ Досмотр. Это разные процедуры с разными правилами!</em>
             </div>
 
-            <h3>👁️ Осмотр</h3>
+            <h3>👁️ Осмотр транспортного средства</h3>
             <div class="info-card" style="border-left-color: #16a34a;">
-                <strong>✅ Визуально, без вскрытия</strong><br>
-                • Без понятых<br>
-                • Без протокола
+                <strong>✅ Что это:</strong><br>
+                Визуальное обследование автомобиля <strong>без вскрытия</strong> и без вмешательства.
+            </div>
+            
+            <div class="info-card success">
+                <strong>✅ Как проводится:</strong><br>
+                • ❌ Без понятых<br>
+                • ❌ Без протокола<br>
+                • ❌ Видео не обязательно
+            </div>
+            
+            <div class="info-card danger">
+                <strong>❌ Что НЕ имеет права:</strong><br>
+                • Открывать багажник, двери, бардачок<br>
+                • Трогать ваши вещи, перекладывать их
             </div>
 
-            <h3>🔎 Досмотр</h3>
+            <h3>🔎 Досмотр транспортного средства</h3>
+            <div class="info-card danger">
+                <strong>⚠️ Что это:</strong><br>
+                Обследование ТС <strong>со вскрытием</strong> (багажник, салон, бардачок).<br>
+                Это официальная процедура с жёсткими требованиями.
+            </div>
+            
             <div class="info-card warning">
-                <strong>⚠️ Со вскрытием (багажник, салон)</strong><br>
-                • ✅ Протокол (ст. 27.9 КоАП)<br>
-                • ✅ Понятые (2 чел) ИЛИ видео<br>
-                • ✅ Присутствие водителя
+                <strong>🔐 ОБЯЗАТЕЛЬНЫЕ УСЛОВИЯ (одно из двух):</strong><br>
+                <strong>ВАРИАНТ А:</strong><br>
+                • ✅ Протокол досмотра (ст. 27.9 КоАП)<br>
+                • ✅ Понятые (минимум 2 человека)<br>
+                • ✅ Присутствие водителя (обязательно)<br><br>
+                <strong>ВАРИАНТ Б:</strong><br>
+                • ✅ Протокол досмотра (ст. 27.9 КоАП)<br>
+                • ✅ Видеозапись процесса (вместо понятых)<br>
+                • ✅ Присутствие водителя (обязательно)
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📚 Нормативная база:</strong><br>
+                • КоАП РФ: ст. 27.9 (досмотр ТС)<br>
+                • Приказ МВД №264: п. 6, 7, 94, 110, 111
+            </div>
+            
+            <div class="info-card success">
+                <strong>📌 Финальный вывод:</strong><br>
+                ✔️ <strong>Осмотр</strong> = просто посмотрели глазами (без вскрытия)<br>
+                ✔️ <strong>Досмотр</strong> = открыли и проверили (нужен протокол + понятые/видео)<br>
+                ✔️ <strong>Любое открытие авто = досмотр</strong> → требуйте процедуру!<br>
+                ✔️ Всегда ведите видеозапись — это ваша защита
             </div>
 
+            <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
@@ -591,214 +829,437 @@
                 <em>Обезопасить → Помочь → Зафиксировать → Оформить</em>
             </div>
 
+            <h3>🔴 1. Сразу после ДТП (обязательно!)</h3>
+            
             <div class="info-card warning">
                 <strong>✅ Ты обязан:</strong><br>
-                • Остановиться<br>
-                • Не покидать место ДТП<br>
+                • Немедленно остановиться<br>
+                • <strong>Не покидать место ДТП</strong> (лишение прав до 1.5 лет!)<br>
                 • Включить аварийку<br>
-                • Выставить знак (город 15м / трасса 30м)
+                • Выставить знак аварийной остановки
             </div>
-
-            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
-        </div>
-
-        <!-- РАЗДЕЛ: Справочник законов -->
-        <div id="rights" class="section">
-            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
-            <h2>⚖️ Справочник законов</h2>
             
             <div class="info-card">
-                <strong>📋 Все статьи Приказа МВД №264 и законы о ПДД</strong>
+                <strong>📍 Расстояние для знака:</strong><br>
+                • 🏙️ В городе — от <strong>15 м</strong><br>
+                • 🛣️ На трассе — от <strong>30 м</strong>
             </div>
 
-            <h3>📘 Приказ МВД №264 от 02.05.2023</h3>
+            <h3>🔴 2. Оцени ситуацию</h3>
             
-            <div class="info-card">
-                <strong>п. 6 — Видеозапись действий сотрудника</strong><br>
-                Сотрудник обязан по возможности фиксировать свои действия системами видеонаблюдения.
+            <div class="info-card danger">
+                <strong>🩺 ЕСТЬ ПОСТРАДАВШИЕ?</strong><br><br>
+                <strong>✅ Ты обязан:</strong><br>
+                1. Оказать первую помощь<br>
+                2. Вызвать скорую (103) и полицию (102)<br>
+                3. Записать свидетелей<br>
+                4. При необходимости — доставить пострадавшего в больницу<br><br>
+                <strong>⚠️ Важно:</strong> После доставки в больницу <strong>обязан вернуться на место ДТП</strong>!
             </div>
 
-            <div class="info-card">
-                <strong>п. 7 — Видео вместо понятых</strong><br>
-                Процессуальные действия без понятых проводятся с обязательным применением видеозаписи.
+            <h3>🔴 3. Фиксация (ОБЯЗАТЕЛЬНО перед любыми действиями!)</h3>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📸 Сделай фото/видео:</strong><br>
+                • Положение машин (общий план)<br>
+                • Все повреждения (крупно)<br>
+                • Номера автомобилей<br>
+                • Дорога, разметка, знаки<br>
+                • Тормозной путь (если есть)<br>
+                • Привязку к местности (адреса, ориентиры)
             </div>
 
-            <div class="info-card">
-                <strong>п. 10 — Представление сотрудника</strong><br>
-                При обращении к участнику дорожного движения сотрудник называет свои должность, звание, фамилию, предъявляет по требованию служебное удостоверение, после чего сообщает причину и цель обращения.
+            <h3>🔴 4. Выбор способа оформления</h3>
+            
+            <div class="info-card" style="border-left-color: #16a34a;">
+                <strong>🟢 ВАРИАНТ 1 — Европротокол</strong><br>
+                <em>Быстро, без полиции</em>
+            </div>
+            
+            <div class="info-card success">
+                <strong>✅ Можно, если ВСЕ условия:</strong><br>
+                • 2 автомобиля<br>
+                • Нет пострадавших<br>
+                • Есть ОСАГО у обоих<br>
+                • Нет спора о виновности<br>
+                • Ущерб до 100 тыс. ₽ (до 400 тыс. ₽ при фотофиксации)
+            </div>
+            
+            <div class="info-card" style="border-left-color: #f59e0b;">
+                <strong>🟡 ВАРИАНТ 2 — Через ГИБДД</strong><br>
+                <em>Дольше, но надёжнее</em>
+            </div>
+            
+            <div class="info-card warning">
+                <strong>✅ Вызывай полицию, если:</strong><br>
+                • Есть спор о виновности<br>
+                • Более 2 автомобилей<br>
+                • Нет ОСАГО у одного из участников<br>
+                • Есть пострадавшие<br>
+                • Сомневаешься в чём-либо
             </div>
 
-            <div class="info-card">
-                <strong>п. 11 — Разъяснение прав</strong><br>
-                В случае применения мер, ограничивающих права, сотрудник разъясняет причину и основания, а также возникающие права и обязанности.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 12 — Обращение к водителю</strong><br>
-                Обращение осуществляется со стороны места нахождения водителя. При угрозе безопасности — с противоположной стороны.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 15 — Вежливость</strong><br>
-                Сотрудник обязан быть вежливым и тактичным, обращаться на «Вы».
-            </div>
-
-            <div class="info-card">
-                <strong>п. 16 — Запрет дискриминации</strong><br>
-                Запрещены высказывания дискриминационного характера и оскорбления.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 17 — Документы</strong><br>
-                Документы принимаются без обложек, денег и удерживающих устройств. Обращаться аккуратно.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 18 — Запрет пользоваться телефоном водителя</strong><br>
-                За исключением случаев, не терпящих отлагательства.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 47 — Основания остановки ТС</strong><br>
-                47.1 — Нарушение ПДД / причастность к правонарушению<br>
-                47.2 — Опрос свидетеля<br>
-                47.3 — Проверка документов (самостоятельное основание!)<br>
-                47.4 — Проверка личности<br>
-                47.5 — Использование ТС в неотложных случаях<br>
-                47.6 — Регулирование движения<br>
-                47.7 — Спецмероприятия
-            </div>
-
-            <div class="info-card">
-                <strong>п. 48 — Сигнал остановки</strong><br>
-                Требование подаётся жестом руки, жезлом, диском или через громкоговорящую установку.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 49 — Указание места остановки</strong><br>
-                При подаче сигнала должно быть указано место остановки.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 50 — Остановка по ПДД</strong><br>
-                Остановка осуществляется с соблюдением требований ПДД.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 51 — Запрет остановки в запрещённых местах</strong><br>
-                Не допускается останавливать ТС где остановка запрещена ПДД, кроме случаев пресечения преступления, регулирования, предотвращения вреда, или если место обозначено патрульным авто с мигалкой.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 52 — Подход к водителю</strong><br>
-                Остановив ТС, сотрудник должен незамедлительно подойти к водителю, представиться (п. 11), сообщить причину, изложить требование о документах.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 53.1 — Требование выйти из ТС</strong><br>
-                Сотрудник вправе ПОТРЕБОВАТЬ выйти в случаях:<br>
-                • Задержание / пресечение преступления<br>
-                • Доставление, задержание, отстранение, досмотр<br>
-                • Признаки опьянения (запах, поза, речь, цвет кожи, поведение)<br>
-                • Угроза безопасности сотрудника
-            </div>
-
-            <div class="info-card">
-                <strong>п. 53.2 — Перемещение ТС</strong><br>
-                Сотрудник вправе потребовать переместить ТС если оно создаёт угрозу безопасности или помеху движению.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 54.1 — Предложение выйти из ТС</strong><br>
-                Сотрудник вправе ПРЕДЛОЖИТЬ выйти (можно отказаться):<br>
-                • Участие в процессуальных действиях<br>
-                • Болезненное/утомленное состояние водителя<br>
-                • Осмотр ТС при подозрении в противоправном использовании<br>
-                • Идентификация ТС в присутствии водителя<br>
-                • Устранение технической неисправности
-            </div>
-
-            <div class="info-card">
-                <strong>п. 54.2 — Предложение пройти в патрульное авто</strong><br>
-                Для оформления процессуальных документов (можно отказаться).
-            </div>
-
-            <h3>📕 Федеральный закон «О полиции» №3-ФЗ</h3>
-
-            <div class="info-card">
-                <strong>ст. 5 ч. 4 — Обязанности полиции</strong><br>
-                Сотрудник обязан назвать должность, звание, фамилию, предъявить удостоверение, сообщить причину.
-            </div>
-
-            <div class="info-card">
-                <strong>ст. 8 — Открытость и публичность</strong><br>
-                Деятельность полиции открыта для общественного контроля. Граждане имеют право снимать.
-            </div>
-
-            <div class="info-card">
-                <strong>ст. 13 — Права полиции</strong><br>
-                Проверять документы, останавливать ТС, осуществлять досмотр.
-            </div>
-
-            <h3>📗 КоАП РФ</h3>
-
-            <div class="info-card">
-                <strong>ст. 19.3 — Неповиновение</strong><br>
-                Невыполнение законного требования сотрудника → штраф или арест до 15 суток.
-            </div>
-
-            <div class="info-card">
-                <strong>ст. 25.1 — Права лица</strong><br>
-                Знакомиться с материалами, давать объяснения, представлять доказательства, пользоваться помощью защитника.
-            </div>
-
-            <div class="info-card">
-                <strong>ст. 27.9 — Досмотр ТС</strong><br>
-                Проводится с понятыми (2 чел) ИЛИ видеозаписью. Составляется протокол.
-            </div>
-
-            <div class="info-card">
-                <strong>ст. 51 Конституции — Право не свидетельствовать против себя</strong>
-            </div>
-
-            <h3>📘 ПДД РФ</h3>
-
-            <div class="info-card">
-                <strong>п. 2.1.1 — Обязанности водителя</strong><br>
-                Иметь при себе и передавать: ВУ, СТС, ОСАГО.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 2.5 — Действия при ДТП</strong><br>
-                Остановиться, включить аварийку, выставить знак, не перемещать предметы.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 2.6 — Если есть пострадавшие</strong><br>
-                Вызвать скорую, оказать помощь, записать свидетелей.
-            </div>
-
-            <div class="info-card">
-                <strong>п. 2.6.1 — Европротокол</strong><br>
-                Оформление ДТП без полиции при определённых условиях.
+            <h3>⚖️ 5. Ответственность за нарушения при ДТП</h3>
+            
+            <div style="overflow-x: auto;">
+                <table style="width:100%; font-size:0.85rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg);">
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Нарушение</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Наказание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Не выполнил обязанности (ст. 12.27 ч.1)</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Штраф 1000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Уехал с места ДТП (ст. 12.27 ч.2)</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Лишение прав до 1.5 лет <strong>ИЛИ</strong> арест до 15 суток</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>Употребил алкоголь после ДТП (ст. 12.27 ч.3)</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Штраф 30 000 ₽ + лишение прав</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="info-card" style="border-left-color: #8b5cf6;">
-                <strong>📌 Официальные источники:</strong><br>
-                • <a href="http://publication.pravo.gov.ru/document/0001202306300035" target="_blank" style="color: var(--primary);">Приказ МВД №264 на pravo.gov.ru</a><br>
-                • <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" style="color: var(--primary);">ФЗ «О полиции» на Consultant.ru</a><br>
-                • <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" style="color: var(--primary);">КоАП РФ на Consultant.ru</a>
+                <strong>📚 Нормативная база:</strong><br>
+                • ПДД РФ: п. 2.5, 2.6, 2.6.1<br>
+                • КоАП РФ: ст. 12.27 (ответственность)<br>
+                • ФЗ «Об ОСАГО» №40-ФЗ (европротокол)<br>
+                • ГК РФ: ст. 1064 (возмещение вреда)
             </div>
 
+            <a href="tel:112" class="btn btn-full btn-danger">🚑 Вызов 112</a>
+            <a href="tel:102" class="btn btn-full btn-secondary">👮 Вызов ГИБДД</a>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
+        </div>
+
+        <!-- РАЗДЕЛ: Ваши права -->
+        <div id="rights" class="section">
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
+            <h2>⚖️ Ваши права и регламент МВД</h2>
+            
+            <div class="info-card danger">
+                <strong>🛡️ Главная задача:</strong><br>
+                Убрать «подводные камни», из-за которых можно получить протокол за <strong>неповиновение (ст. 19.3 КоАП РФ)</strong>.
+            </div>
+
+            <h3>🛑 1. Место остановки (п. 51–52 Приказа №264)</h3>
+            
+            <div class="info-card">
+                <strong>📍 Общее правило:</strong><br>
+                Инспектор может остановить вас в любом месте (не только на постах).
+            </div>
+            
+            <div class="info-card warning">
+                <strong>⚠️ Запрет (п. 51):</strong><br>
+                Инспектору <strong>запрещено</strong> останавливать вас там, где остановка запрещена ПДД (под знаками, на мостах, в тоннелях).
+            </div>
+            
+            <div class="info-card success">
+                <strong>✅ Исключения:</strong><br>
+                Остановка в запрещенном месте допустима ТОЛЬКО если:<br>
+                1. Пресечение преступления/правонарушения (п. 51)<br>
+                2. Предотвращение вреда жизни/здоровью (п. 51)<br>
+                3. Регулирование движения (п. 51)<br>
+                4. Место обозначено патрульным авто с включенными спецсигналами («люстрой») (п. 51)
+            </div>
+            
+            <div class="info-card">
+                <strong>📋 После остановки (п. 52):</strong><br>
+                Сотрудник должен незамедлительно подойти к водителю.
+            </div>
+
+            <h3>🪪 2. Представление и причина (п. 10 Приказа №264)</h3>
+            
+            <div class="info-card success">
+                <strong>✅ Право:</strong><br>
+                Знать, кто перед вами и зачем остановили.<br>
+                <small>ст. 5 ФЗ «О полиции»</small>
+            </div>
+            
+            <div class="info-card">
+                <strong>📋 Обязанность инспектора (п. 10):</strong><br>
+                1️⃣ Назвать должность, звание, фамилию (п. 10)<br>
+                2️⃣ Предъявить по требованию служебное удостоверение (п. 10)<br>
+                3️⃣ Сообщить причину и цель обращения (п. 10)
+            </div>
+            
+            <div class="info-card">
+                <strong>📋 Подход к авто (п. 12):</strong><br>
+                Обращение должно быть со стороны места водителя.<br>
+                Исключение — угроза безопасности или загрязнение дороги (п. 12).
+            </div>
+
+            <h3>📑 3. Передача документов (п. 17 Приказа №264)</h3>
+            
+            <div class="info-card">
+                <strong>📋 Правило (п. 17):</strong><br>
+                Документы принимаются <strong>без обложек, денег, посторонних предметов и удерживающих устройств</strong> (цепочек, зажимов).<br>
+                С документами следует обращаться аккуратно.
+            </div>
+            
+            <div class="info-card">
+                <strong>📋 Запрет (п. 18):</strong><br>
+                Инспектору запрещено пользоваться телефоном водителя (кроме экстренных случаев).
+            </div>
+            
+            <div class="info-card danger">
+                <strong>❗ Риск:</strong><br>
+                Использование цепочек дает право вернуть документы и потребовать снять устройство.<br>
+                Повторный отказ → <strong>ст. 19.3 КоАП (неповиновение)</strong>.
+            </div>
+            
+            <div class="info-card success">
+                <strong>💡 Совет:</strong><br>
+                Снимайте обложку заранее.<br>
+                <small>ПДД п. 2.1.1 (обязанность передать) + Приказ №264 п. 17 (как передавать)</small>
+            </div>
+
+            <h3>🚗 4. Выход из автомобиля (п. 53.1 Приказа №264)</h3>
+            
+            <div class="info-card danger">
+                <strong>⚠️ Важно:</strong><br>
+                Это <strong>ТРЕБОВАНИЕ</strong>. Отказ → ст. 19.3 КоАП (неповиновение).
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table style="width:100%; font-size:0.8rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg);">
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Основание</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Описание</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Пример</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 Задержание</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Задержание подозреваемого, пресечение преступления, преследование (п. 53.1)</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Ориентировка на угнанное авто</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 Процессуальные действия</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Доставление, административное задержание, отстранение от управления, задержание ТС, личный досмотр, досмотр вещей/авто/груза (п. 53.1)</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Оформление протокола задержания</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 Признаки опьянения</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Запах алкоголя, неустойчивость позы, нарушение речи, изменение цвета кожи, неадекватное поведение (п. 53.1)</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Инспектор чувствует запах</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 Угроза безопасности</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Поведение водителя создаёт угрозу личной безопасности сотрудника (п. 53.1)</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Агрессия, рука в бардачке</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>💡 Совет:</strong><br>
+                Не выходите, пока не озвучена конкретная причина из п. 53.1. Фиксируйте на видео.
+            </div>
+
+            <h3>🚛 5. Перемещение ТС (п. 53.2 Приказа №264)</h3>
+            
+            <div class="info-card warning">
+                <strong>⚠️ Важно:</strong><br>
+                Инспектор вправе потребовать <strong>переместить автомобиль</strong> в другое место.
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table style="width:100%; font-size:0.8rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg);">
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Основание</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Описание</th>
+                            <th style="padding:0.5rem; text-align:left; border:1px solid var(--border);">Пример</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 Угроза безопасности</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Нахождение ТС создаёт угрозу (в т.ч. личной безопасности инспектора) (п. 53.2)</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Остановка на скоростной трассе</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem; border:1px solid var(--border);"><strong>🔴 Помеха движению</strong></td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">ТС создаёт помеху другим участникам дорожного движения (п. 53.2)</td>
+                            <td style="padding:0.5rem; border:1px solid var(--border);">Остановка на проезжей части в потоке</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>💡 Совет:</strong><br>
+                Если требуют переместить авто — включите видео, зафиксируйте причину. После перемещения требуйте продолжить оформление на новом месте.
+            </div>
+
+            <h3>🟡 6. Предложение (п. 54 Приказа №264) — МОЖНО ОТКАЗАТЬ</h3>
+            
+            <div class="info-card success">
+                <strong>✅ Можно отказаться (это НЕ неповиновение):</strong><br>
+                • Сесть в патрульное авто для оформления документов (п. 54.2)<br>
+                • Быть понятым при процессуальных действиях (п. 54.1)
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>💡 Совет:</strong><br>
+                Вы имеете полное право отказаться. Это не ст. 19.3 КоАП.
+            </div>
+
+            <h3>📹 7. Видеозапись (п. 6–7 Приказа №264, ст. 8 ФЗ «О полиции»)</h3>
+            
+            <div class="info-card">
+                <strong>📋 Обязанность инспектора (п. 6):</strong><br>
+                Сотрудник обязан по возможности фиксировать свои действия системами видеонаблюдения (носимыми или в авто).
+            </div>
+            
+            <div class="info-card warning">
+                <strong>⚠️ Без понятых (п. 7):</strong><br>
+                Процессуальные действия без понятых проводятся с <strong>обязательным применением видеозаписи</strong>.
+            </div>
+            
+            <div class="info-card success">
+                <strong>✅ Право водителя:</strong><br>
+                Снимать можно всё, что не запрещено законом.<br>
+                <small>ст. 29 Конституции, ст. 8 ФЗ «О полиции», ст. 24.3 КоАП</small>
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>💡 Совет:</strong><br>
+                <code style="background:#f3f4f6; padding:0.5rem; border-radius:4px; display:block; margin:0.5rem 0;">
+                    «Инспектор, вы обязаны фиксировать действия по п. 6 Регламента. Я также веду запись по ст. 8 ФЗ О полиции»
+                </code>
+            </div>
+
+            <h3>🤝 8. Этика и поведение инспектора (п. 15–16 Приказа №264)</h3>
+            
+            <div class="info-card">
+                <strong>📋 Требование (п. 15):</strong><br>
+                Обязательны вежливость и тактичность, обращение на «Вы».
+            </div>
+            
+            <div class="info-card danger">
+                <strong>📋 Запрет (п. 16):</strong><br>
+                Категорически запрещены дискриминационные высказывания (пол, возраст, раса, религия) и оскорбления.
+            </div>
+            
+            <div class="info-card warning">
+                <strong>⚠️ Действие:</strong><br>
+                Зафиксируйте нарушение на видео, подайте жалобу. Это не дает права не выполнять законные требования.
+            </div>
+
+            <h3>📝 9. Протокол и ст. 51 Конституции</h3>
+            
+            <div class="info-card success">
+                <strong>✅ Право:</strong><br>
+                Не свидетельствовать против себя.<br>
+                <small>ст. 51 Конституции РФ</small>
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>💡 Тактика:</strong><br>
+                • Пишите: <code style="background:#f3f4f6; padding:0.25rem; border-radius:3px;">«С нарушением не согласен. ПДД не нарушал. Требую адвоката»</code><br>
+                • Пустые поля прочеркивайте буквой «Z»<br>
+                • В графе «права разъяснены» — подпись только если зачитали. Иначе: «права не разъяснены» (нарушение ст. 25.1 КоАП)
+            </div>
+
+            <h3>🚨 10. Чек-лист при конфликте</h3>
+            
+            <div class="info-card warning">
+                <strong>✅ Что делать:</strong><br>
+                1️⃣ Не выходите без законной причины (п. 53.1)<br>
+                2️⃣ Передавайте документы без цепочек (п. 17)<br>
+                3️⃣ Включите запись сразу (ст. 8 ФЗ «О полиции», п. 6 Регламента)<br>
+                4️⃣ Требуйте понятых или видео при досмотре (ст. 27.9 КоАП, п. 7 Регламента)<br>
+                5️⃣ Если требуют переместить ТС — зафиксируйте причину (п. 53.2)
+            </div>
+
+            <h3>📚 11. Нормативная база (ОКОНЧАТЕЛЬНО ИСПРАВЛЕНО)</h3>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📚 Нормативная база:</strong><br>
+                • Конституция РФ: ст. 29, ст. 51<br>
+                • ФЗ «О полиции» №3-ФЗ: ст. 5, ст. 8, ст. 13<br>
+                • <strong>Приказ МВД №264 от 02.05.2023:</strong><br>
+                  - п. 6 (видеофиксация действий сотрудника)<br>
+                  - п. 7 (видео вместо понятых)<br>
+                  - п. 10 (представление, причина)<br>
+                  - п. 11 (разъяснение прав при ограничении)<br>
+                  - п. 12 (подход к автомобилю)<br>
+                  - п. 13 (если водитель обратился первым)<br>
+                  - п. 15 (вежливость, обращение на «Вы»)<br>
+                  - п. 16 (запрет оскорблений, дискриминации)<br>
+                  - п. 17 (документы без обложек)<br>
+                  - п. 18 (запрет пользоваться телефоном водителя)<br>
+                  - п. 47-47.7 (основания остановки)<br>
+                  - п. 51 (место остановки)<br>
+                  - п. 52 (подход после остановки)<br>
+                  - <strong>п. 53.1 (выход из авто — требование)</strong><br>
+                  - <strong>п. 53.2 (перемещение ТС — требование)</strong><br>
+                  - <strong>п. 54.1, 54.2 (предложение — можно отказаться)</strong><br>
+                • ПДД РФ: п. 2.1.1, 2.5, 2.6, 2.6.1<br>
+                • КоАП РФ: ст. 19.3, ст. 25.1, ст. 27.9, ст. 12.27, ст. 12.3, ст. 12.7, ст. 12.37
+            </div>
+            
+            <div class="info-card success">
+                <strong>📌 Вывод:</strong><br>
+                ✔️ Знайте права, но не нарушайте законные требования (п. 53.1)<br>
+                ✔️ Снимайте видео (ст. 8 ФЗ «О полиции», п. 6 Регламента)<br>
+                ✔️ Выходите только при требовании (п. 53.1)<br>
+                ✔️ Фиксируйте несогласие в протоколе
+            </div>
+
+            <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
+            <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
+        </div>
+
+        <!-- РАЗДЕЛ: Законы -->
+        <div id="laws" class="section">
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
+            <h2>📚 Нормативная база</h2>
+            
+            <div class="info-card">
+                <strong>📋 Основные документы:</strong><br>
+                • Приказ МВД России от 02.05.2023 № 264 (вступил в силу после отмены №664)<br>
+                • Федеральный закон «О полиции» № 3-ФЗ от 07.02.2011<br>
+                • Кодекс РФ об административных правонарушениях (КоАП)<br>
+                • Правила дорожного движения РФ (утв. Постановлением №1090)<br>
+                • Конституция Российской Федерации
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>📌 Официальные источники:</strong><br>
+                • <a href="http://publication.pravo.gov.ru/document/0001202306300035" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline;">Приказ МВД №264 на pravo.gov.ru</a><br>
+                • <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline;">ФЗ «О полиции» на Consultant.ru</a><br>
+                • <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline;">КоАП РФ на Consultant.ru</a>
+            </div>
+            
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
         <!-- FOOTER -->
         <footer>
-            <p>Последнее обновление: <span id="last-check">Загрузка...</span></p>
-            <p style="font-size: 0.75rem; opacity: 0.7;">
-                ⚠️ Информация предоставлена в ознакомительных целях.<br>
-                Приложение основано на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.
+            <p>Последнее обновление базы: <span id="last-check">Загрузка...</span></p>
+            <p>
+                <a href="http://publication.pravo.gov.ru/document/0001202306300035" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a> | 
+                <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" rel="noopener noreferrer">ФЗ «О полиции»</a> | 
+                <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer">КоАП РФ</a>
+            </p>
+            <p style="font-size: 0.75rem; margin-top: 1rem; opacity: 0.7;">
+                ⚠️ Информация предоставлена в ознакомительных целях и не является юридической консультацией.<br>
+                Приложение основано на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.<br>
+                Разработано с соблюдением ст. 2 Конституции РФ (права и свободы человека).
             </p>
         </footer>
     </div>
