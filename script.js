@@ -1,7 +1,98 @@
 // ===================================
 // ROAD SMART AID - JavaScript
 // ===================================
+// ===================================
+// 🔍 УЛУЧШЕННЫЙ ПОИСК (v2.0)
+// ===================================
 
+// 📚 Словарь синонимов
+const searchSynonyms = {
+    'дпс': ['гаи', 'гибдд', 'полиция', 'инспектор'],
+    'гаи': ['дпс', 'гибдд', 'полиция', 'инспектор'],
+    'гибдд': ['дпс', 'гаи', 'полиция', 'инспектор'],
+    'штраф': ['наказание', 'санкция', 'взыскание', 'лишение'],
+    'наказание': ['штраф', 'санкция', 'взыскание'],
+    'досмотр': ['осмотр', 'проверка', 'обыск', 'багажник'],
+    'осмотр': ['досмотр', 'проверка', 'визуальный'],
+    'права': ['удостоверение', 'водительское', 'в/у'],
+    'водительское': ['права', 'удостоверение'],
+    'документы': ['права', 'стс', 'осаго', 'бумаги'],
+    'стс': ['регистрация', 'свидетельство', 'птс', 'документы'],
+    'осаго': ['страховка', 'полис', 'каско', 'документы'],
+    'дтп': ['авария', 'столкновение', 'происшествие', 'удар'],
+    'авария': ['дтп', 'столкновение', 'происшествие'],
+    'понятые': ['свидетели', 'люди'],
+    'видео': ['запись', 'камера', 'съёмка', 'видеозапись'],
+    'протокол': ['документ', 'бумага', 'постановление'],
+    'выход': ['выйти', 'покинуть', 'выйти из авто'],
+    'остановка': ['остановили', 'требуют', 'жест'],
+    '112': ['экстренный', 'мчс', 'помощь', 'звонок'],
+    '102': ['полиция', 'дпс', 'милиция'],
+    '103': ['скорая', 'врач', 'медицина'],
+    'жалоба': ['заявление', 'обращение'],
+    'п. 10': ['пункт 10', 'параграф 10'],
+    'п. 47': ['пункт 47', 'параграф 47'],
+    'п. 52': ['пункт 52', 'параграф 52'],
+    'коап': ['кодекс', 'административный', 'нарушение'],
+    'пдд': ['правила', 'дорожное', 'движение']
+};
+
+// 🔤 Функция нормализации текста
+function normalizeText(text) {
+    return text.toLowerCase().replace(/ё/g, 'е').replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// 🎯 Функция нечёткого поиска
+function fuzzyMatch(query, text, threshold = 0.6) {
+    query = normalizeText(query);
+    text = normalizeText(text);
+    if (text.includes(query)) return 1.0;
+    const words1 = query.split(' ');
+    const words2 = text.split(' ');
+    let matches = 0;
+    words1.forEach(w1 => {
+        words2.forEach(w2 => {
+            if (w1.length > 2 && w2.length > 2) {
+                const distance = levenshteinDistance(w1, w2);
+                const similarity = 1 - (distance / Math.max(w1.length, w2.length));
+                if (similarity >= threshold) matches++;
+            }
+        });
+    });
+    return matches / words1.length;
+}
+
+// 📏 Расстояние Левенштейна
+function levenshteinDistance(str1, str2) {
+    const matrix = [];
+    for (let i = 0; i <= str2.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= str1.length; j++) matrix[0][j] = j;
+    for (let i = 1; i <= str2.length; i++) {
+        for (let j = 1; j <= str1.length; j++) {
+            if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+            }
+        }
+    }
+    return matrix[str2.length][str1.length];
+}
+
+// 🔍 Подсветка найденного текста
+function highlightText(text, query) {
+    const terms = [query, ...(searchSynonyms[query] || [])];
+    let highlighted = text;
+    terms.forEach(term => {
+        const regex = new RegExp(`(${term})`, 'gi');
+        highlighted = highlighted.replace(regex, '<span class="search-highlight">$1</span>');
+    });
+    return highlighted;
+}
+
+// ===================================
+// 🔍 Данные для умного поиска
+const searchData = [
 // 🔍 Данные для умного поиска
 const searchData = [
     {
