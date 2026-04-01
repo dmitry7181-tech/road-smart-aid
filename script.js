@@ -147,39 +147,56 @@ const searchData = [
 
 // 🔍 Функция поиска
 function searchContent() {
-    const query = document.getElementById('search-input').value.toLowerCase().trim();
-    const resultsContainer = document.getElementById('search-results');
-    
-    // Если запрос пустой — скрываем результаты
-    if (query.length < 2) {
-        if (resultsContainer) resultsContainer.style.display = 'none';
-        return;
+    const searchData = [
+    {
+        section: 'stop',
+        title: '🛑 Остановка инспектором',
+        keywords: ['остановка', 'инспектор', 'представился', 'удостоверение', 'причина', 'п. 10', 'п. 52', 'гаи', 'дпс', 'гибдд', 'жест'],
+        content: 'Порядок действий инспектора при остановке: представиться, назвать причину, предъявить удостоверение'
+    },
+    {
+        section: 'powers',
+        title: '⚡ Полномочия инспектора',
+        keywords: ['полномочия', 'права', 'инспектор', 'п. 47', 'остановка тс', 'проверка', 'гаи', 'дпс'],
+        content: 'Основные полномочия: остановка ТС, проверка документов, освидетельствование'
+    },
+    {
+        section: 'docs',
+        title: '📄 Документы',
+        keywords: ['документы', 'права', 'стс', 'осаго', 'птс', 'п. 2.1.1', 'страховка'],
+        content: 'Обязательные документы: водительское удостоверение, СТС, полис ОСАГО'
+    },
+    {
+        section: 'search',
+        title: '🔍 Осмотр и досмотр',
+        keywords: ['осмотр', 'досмотр', 'багажник', 'понятые', 'видео', 'протокол', 'ст. 27.9', 'коап'],
+        content: 'Осмотр — визуально, досмотр — со вскрытием (требует понятых или видео)'
+    },
+    {
+        section: 'accident',
+        title: '🚗💥 ДТП',
+        keywords: ['дтп', 'авария', 'европротокол', '112', '102', 'знак', 'аварийка'],
+        content: 'Действия при ДТП: аварийка, знак, фото, европротокол или ГИБДД'
+    },
+    {
+        section: 'rights',
+        title: '⚖️ Ваши права',
+        keywords: ['права', 'видео', 'съёмка', 'протокол', 'адвокат', 'ст. 51', 'конституция'],
+        content: 'Право на видеосъёмку, не выходить из авто, не подписывать протокол'
+    },
+    {
+        section: 'emergency-main',
+        title: '📞 Экстренные номера',
+        keywords: ['112', '102', '103', 'мвд', 'телефон', 'вызов', 'экстренный'],
+        content: '112 — единый экстренный, 102 — полиция, 103 — скорая'
+    },
+    {
+        section: 'main-menu',
+        title: '📚 Главное меню',
+        keywords: ['меню', 'разделы', 'навигация'],
+        content: 'Все разделы приложения'
     }
-    
-    // Ищем совпадения
-    const results = searchData.filter(item => {
-        return item.keywords.some(k => k.toLowerCase().includes(query)) ||
-               item.title.toLowerCase().includes(query) ||
-               item.content.toLowerCase().includes(query);
-    });
-    
-    // Отображаем результаты
-    if (resultsContainer) {
-        if (results.length > 0) {
-            resultsContainer.innerHTML = results.map(item => `
-                <div class="search-result-item" onclick="showSection('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
-                    <div class="search-result-title">${item.title}</div>
-                    <div class="search-result-text">${highlightText(item.content, query)}</div>
-                    <div class="search-result-meta">🔑 Ключевые слова: ${item.keywords.slice(0, 5).join(', ')}</div>
-                </div>
-            `).join('');
-            resultsContainer.style.display = 'block';
-        } else {
-            resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте: "п. 10", "досмотр", "112", "права"</small></div>';
-            resultsContainer.style.display = 'block';
-        }
-    }
-}
+];
 
 // 🔍 Подсветка найденного текста
 function highlightText(text, query) {
