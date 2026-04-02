@@ -377,3 +377,33 @@ window.addEventListener('appinstalled', () => {
     const btn = document.getElementById('install-pwa-btn');
     if (btn) btn.remove();
 });
+// 🔍 PWA Debug: Проверка условий установки
+async function checkPWAStatus() {
+    console.log('🔍 PWA Debug: Проверка...');
+    
+    // 1. manifest.json
+    const manifest = await fetch('manifest.json').then(r => r.json()).catch(() => null);
+    console.log('📋 manifest.json:', manifest ? '✅ Загружен' : '❌ Ошибка');
+    
+    // 2. Service Worker
+    if ('serviceWorker' in navigator) {
+        const reg = await navigator.serviceWorker.getRegistration();
+        console.log('🔧 Service Worker:', reg ? '✅ Активен' : '❌ Не активен');
+    }
+    
+    // 3. HTTPS
+    console.log('🔒 HTTPS:', location.protocol === 'https:' ? '✅ Да' : '❌ Нет');
+    
+    // 4. Иконки
+    if (manifest?.icons) {
+        for (const icon of manifest.icons) {
+            const img = new Image();
+            img.src = icon.src;
+            img.onload = () => console.log(`🖼️ Иконка ${icon.src}: ✅ Загружена`);
+            img.onerror = () => console.log(`🖼️ Иконка ${icon.src}: ❌ 404`);
+        }
+    }
+}
+
+// Запустить проверку через 3 секунды после загрузки
+setTimeout(checkPWAStatus, 3000);
