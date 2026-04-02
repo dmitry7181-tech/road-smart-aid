@@ -327,3 +327,53 @@ if ('serviceWorker' in navigator) {
 document.addEventListener('DOMContentLoaded', function() {
     showSection('main-menu');
 });
+// ===================================
+// 📱 PWA: Установка приложения
+// ===================================
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('✅ PWA: Готова к установке');
+    showInstallButton();
+});
+
+function showInstallButton() {
+    if (document.getElementById('install-pwa-btn')) return;
+    
+    const installBtn = document.createElement('button');
+    installBtn.id = 'install-pwa-btn';
+    installBtn.textContent = '📱 Установить приложение';
+    installBtn.className = 'btn btn-full';
+    installBtn.style.cssText = 'position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 90%; max-width: 400px;';
+    
+    installBtn.onclick = installApp;
+    document.body.appendChild(installBtn);
+}
+
+async function installApp() {
+    if (!deferredPrompt) {
+        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
+        return;
+    }
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+        console.log('✅ PWA: Пользователь установил приложение');
+        const btn = document.getElementById('install-pwa-btn');
+        if (btn) btn.remove();
+    }
+    
+    deferredPrompt = null;
+}
+
+window.addEventListener('appinstalled', () => {
+    console.log('✅ PWA: Приложение установлено!');
+    deferredPrompt = null;
+    const btn = document.getElementById('install-pwa-btn');
+    if (btn) btn.remove();
+});
