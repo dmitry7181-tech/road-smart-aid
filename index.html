@@ -414,50 +414,28 @@
             <div id="search-results"></div>
         </header>
 
+       
         <!-- ГЛАВНОЕ МЕНЮ -->
-        <div id="main-menu" class="menu-grid">
-            <div class="menu-card" onclick="showSection('stop')">
-                <span class="menu-icon">🛑</span>
-                <span class="menu-title">Остановка ДПС</span>
-            </div>
-            <div class="menu-card" onclick="showSection('powers')">
-                <span class="menu-icon">⚡</span>
-                <span class="menu-title">Полномочия</span>
-            </div>
-            <div class="menu-card" onclick="showSection('docs')">
-                <span class="menu-icon">📄</span>
-                <span class="menu-title">Документы</span>
-            </div>
-            <div class="menu-card" onclick="showSection('search')">
-                <span class="menu-icon">🔍</span>
-                <span class="menu-title">Осмотр и досмотр</span>
-            </div>
-            <div class="menu-card" onclick="showSection('accident')">
-                <span class="menu-icon">🚗💥</span>
-                <span class="menu-title">ДТП</span>
-            </div>
-            <div class="menu-card" onclick="showSection('rights')">
-                <span class="menu-icon">⚖️</span>
-                <span class="menu-title">Ваши права</span>
-            </div>
-            <div class="menu-card" onclick="showSection('emergency-main')">
-                <span class="menu-icon">📞</span>
-                <span class="menu-title">Экстренно</span>
-            </div>
-            <div class="menu-card" onclick="showSection('laws')">
-                <span class="menu-icon">📚</span>
-                <span class="menu-title">Законы</span>
-            </div>
-            <div class="info-card success" style="text-align: center; margin-top: 1rem;">
-        <!-- ГЛАВНОЕ МЕНЮ -->
+               <!-- ГЛАВНОЕ МЕНЮ -->
         <div id="main-menu" class="menu-grid">
             <div class="menu-card" onclick="showSection('stop')">...</div>
             <div class="menu-card" onclick="showSection('powers')">...</div>
             ... (все карточки меню) ...
-            <div class="menu-card" onclick="showSection('laws')">...</div>
-        </div>  ← ✅ Закрываем menu-grid здесь
-        
-        
+            <div class="menu-card" onclick="showSection('laws')">
+                <span class="menu-icon">📚</span>
+                <span class="menu-title">Законы</span>
+            </div>
+                        <div class="menu-card" onclick="showSection('install-app')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <span class="menu-icon">📱</span>
+                <span class="menu-title">Установить</span>
+            </div>
+            <!-- ✅   НОВая КАРТОЧКА     </div>) -->
+            <div class="menu-card" onclick="showSection('install-app')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <span class="menu-icon">📱</span>
+                <span class="menu-title">Установить</span>
+            </div>
+            
+        </div>  ← закрывающий тег menu-grid
         <!-- Экстренные номера -->
         <div id="emergency-main" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
@@ -1317,8 +1295,37 @@
             
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
+                <!-- СЕКЦИЯ: Установка приложения -->
+        <div id="install-app" class="section">
+            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
+            <h2>📱 Установите приложение</h2>
+            
+            <div class="info-card success">
+                <strong>Android (Chrome, Яндекс):</strong><br><br>
+                1️⃣ Нажмите меню <strong>⋮</strong> (три точки)<br>
+                2️⃣ Выберите <strong>«Добавить на главный экран»</strong><br>
+                3️⃣ Нажмите <strong>«Установить»</strong>
+            </div>
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
+                <strong>iPhone (Safari):</strong><br><br>
+                1️⃣ Нажмите <strong>📤</strong> (кнопка «Поделиться»)<br>
+                2️⃣ Выберите <strong>«На экран «Домой»»</strong><br>
+                3️⃣ Нажмите <strong>«Добавить»</strong>
+            </div>
+            
+            <div class="info-card" style="border-left-color: #16a34a;">
+                <strong>✅ Преимущества:</strong><br>
+                • Работает без интернета<br>
+                • Быстрый доступ с главного экрана<br>
+                • Не занимает место в памяти<br>
+                • Всегда актуальная версия
+            </div>
+            
+            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
+        </div>
         <!-- РАЗДЕЛ: Законы -->
-        <div id="laws" class="section">
+            <div id="laws" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>📚 Нормативная база</h2>
             
@@ -1354,7 +1361,7 @@
                 <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer">КоАП РФ</a>
             </p>
             <p style="font-size: 0.75rem; margin-top: 1rem; opacity: 0.7; line-height: 1.5;">
-                ⚠️ Информация основана на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.<br>
+                ⚠️ Информация основана на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.<br></p>
             <p style="font-size: 0.75rem; margin-top: 1rem; opacity: 0.8; border-top: 1px solid var(--border); padding-top: 1rem;">
                 🤝 <strong>Социальный проект</strong><br>
                 Приложение разработано на некоммерческой основе для повышения правовой грамотности граждан.<br>
