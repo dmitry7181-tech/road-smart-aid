@@ -404,6 +404,153 @@
             .emergency-grid { grid-template-columns: 1fr; }
             header h1 { font-size: 1.25rem; }
         }
+                /* 📚 Аккордеон для законов */
+        .law-accordion {
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--card);
+        }
+
+        .law-accordion-header {
+            padding: 1rem;
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            list-style: none;
+            user-select: none;
+        }
+
+        .law-accordion-header::-webkit-details-marker {
+            display: none;
+        }
+
+        .law-accordion-header::after {
+            content: '▼';
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+
+        .law-accordion[open] .law-accordion-header::after {
+            transform: rotate(180deg);
+        }
+
+        .law-icon {
+            font-size: 1.25rem;
+        }
+
+        .law-count {
+            margin-left: auto;
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: normal;
+        }
+
+        .law-accordion-content {
+            padding: 0 1rem 1rem;
+        }
+
+        .law-item {
+            margin: 0.5rem 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .law-item-header {
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            cursor: pointer;
+            font-weight: 500;
+            list-style: none;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .law-item-header::-webkit-details-marker {
+            display: none;
+        }
+
+        .law-item-header::after {
+            content: '▶';
+            margin-left: auto;
+            font-size: 0.8rem;
+            transition: transform 0.2s;
+        }
+
+        .law-item[open] .law-item-header::after {
+            transform: rotate(90deg);
+        }
+
+        .law-item-content {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .law-item-content p {
+            margin: 0.5rem 0;
+        }
+
+        .law-item-content ul,
+        .law-item-content ol {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .law-item-content code {
+            background: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .law-item-content code {
+                background: #374151;
+            }
+        }
+
+        /* 🔍 Результаты поиска по законам */
+        .law-search-result {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .law-search-result:hover {
+            background: var(--bg);
+        }
+
+        .law-search-result:last-child {
+            border-bottom: none;
+        }
+
+        .law-search-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .law-search-text {
+            font-size: 0.85rem;
+            color: var(--text);
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .law-search-highlight {
+            background: #fef3c7;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
