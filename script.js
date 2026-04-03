@@ -321,6 +321,93 @@ if ('serviceWorker' in navigator) {
             })
             .catch(err => console.log('❌ SW error:', err));
     });
+    // ===================================
+// 📚 Поиск по законам
+// ===================================
+
+function searchLaws() {
+    const query = document.getElementById('law-search').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('law-search-results');
+    
+    if (query.length < 2) {
+        resultsContainer.style.display = 'none';
+        resultsContainer.innerHTML = '';
+        return;
+    }
+    
+    const results = [];
+    
+    // Ищем по всем пунктам законов
+    document.querySelectorAll('.law-item').forEach(item => {
+        const header = item.querySelector('.law-item-header')?.textContent || '';
+        const content = item.querySelector('.law-item-content')?.textContent || '';
+        const fullText = header + ' ' + content;
+        
+        if (fullText.toLowerCase().includes(query)) {
+            // Подсветка найденного
+            const highlighted = content.substring(0, 150).replace(
+                new RegExp(`(${query})`, 'gi'), 
+                '<span class="law-search-highlight">$1</span>'
+            );
+            
+            results.push({
+                title: header.trim(),
+                content: highlighted + '...',
+                element: item
+            });
+        }
+    });
+    
+    // Отображаем результаты
+    if (results.length > 0) {
+        resultsContainer.innerHTML = results.slice(0, 5).map(r => `
+            <div class="law-search-result" onclick="scrollToLawItem(this)">
+                <div class="law-search-title">${r.title}</div>
+                <div class="law-search-text">${r.content}</div>
+            </div>
+        `).join('');
+        resultsContainer.style.display = 'block';
+    } else {
+        resultsContainer.innerHTML = '<div style="padding: 0.5rem; color: #6b7280;">Ничего не найдено 😕</div>';
+        resultsContainer.style.display = 'block';
+    }
+}
+
+// Прокрутка к найденному пункту
+function scrollToLawItem(el) {
+    const index = Array.from(el.parentElement.children).indexOf(el);
+    const query = document.getElementById('law-search').value.toLowerCase().trim();
+    
+    const allItems = document.querySelectorAll('.law-item');
+    let matchIndex = 0;
+    
+    allItems.forEach(item => {
+        const header = item.querySelector('.law-item-header')?.textContent || '';
+        const content = item.querySelector('.law-item-content')?.textContent || '';
+        if ((header + ' ' + content).toLowerCase().includes(query)) {
+            if (matchIndex === index) {
+                item.closest('.law-accordion')?.setAttribute('open', '');
+                item.setAttribute('open', '');
+                item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                item.style.backgroundColor = '#fef3c7';
+                setTimeout(() => item.style.backgroundColor = '', 2000);
+            }
+            matchIndex++;
+        }
+    });
+    
+    document.getElementById('law-search-results').style.display = 'none';
+    document.getElementById('law-search').value = '';
+}
+
+// Закрыть поиск при клике вне
+document.addEventListener('click', function(e) {
+    const searchInput = document.getElementById('law-search');
+    const resultsContainer = document.getElementById('law-search-results');
+    if (searchInput && resultsContainer && !searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+        resultsContainer.style.display = 'none';
+    }
+});
 }
 
 // Инициализация
