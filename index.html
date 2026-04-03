@@ -7,6 +7,9 @@
     <title>Помощник в дороге | Road Smart Aid</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a56db">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         :root {
             --primary: #1a56db;
@@ -414,28 +417,46 @@
             <div id="search-results"></div>
         </header>
 
-       
         <!-- ГЛАВНОЕ МЕНЮ -->
-               <!-- ГЛАВНОЕ МЕНЮ -->
         <div id="main-menu" class="menu-grid">
-            <div class="menu-card" onclick="showSection('stop')">...</div>
-            <div class="menu-card" onclick="showSection('powers')">...</div>
-            ... (все карточки меню) ...
+            <div class="menu-card" onclick="showSection('stop')">
+                <span class="menu-icon">🛑</span>
+                <span class="menu-title">Остановка ДПС</span>
+            </div>
+            <div class="menu-card" onclick="showSection('powers')">
+                <span class="menu-icon">⚡</span>
+                <span class="menu-title">Полномочия</span>
+            </div>
+            <div class="menu-card" onclick="showSection('docs')">
+                <span class="menu-icon">📄</span>
+                <span class="menu-title">Документы</span>
+            </div>
+            <div class="menu-card" onclick="showSection('search')">
+                <span class="menu-icon">🔍</span>
+                <span class="menu-title">Осмотр и досмотр</span>
+            </div>
+            <div class="menu-card" onclick="showSection('accident')">
+                <span class="menu-icon">🚗💥</span>
+                <span class="menu-title">ДТП</span>
+            </div>
+            <div class="menu-card" onclick="showSection('rights')">
+                <span class="menu-icon">⚖️</span>
+                <span class="menu-title">Ваши права</span>
+            </div>
+            <div class="menu-card" onclick="showSection('emergency-main')">
+                <span class="menu-icon">📞</span>
+                <span class="menu-title">Экстренно</span>
+            </div>
             <div class="menu-card" onclick="showSection('laws')">
                 <span class="menu-icon">📚</span>
                 <span class="menu-title">Законы</span>
             </div>
-                        <div class="menu-card" onclick="showSection('install-app')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <span class="menu-icon">📱</span>
-                <span class="menu-title">Установить</span>
-            </div>
-            <!-- ✅   НОВая КАРТОЧКА     </div>) -->
             <div class="menu-card" onclick="showSection('install-app')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                 <span class="menu-icon">📱</span>
                 <span class="menu-title">Установить</span>
             </div>
-            
-        </div>  ← закрывающий тег menu-grid
+        </div>
+
         <!-- Экстренные номера -->
         <div id="emergency-main" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
@@ -461,7 +482,7 @@
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
 
-                <!-- РАЗДЕЛ: Остановка -->
+        <!-- РАЗДЕЛ: Остановка -->
         <div id="stop" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>🛑 Порядок действий инспектора при остановке</h2>
@@ -573,6 +594,7 @@
             </div>
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
+
         <!-- РАЗДЕЛ: Полномочия -->
         <div id="powers" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
@@ -704,7 +726,8 @@
                 <strong>3️⃣ Полис ОСАГО</strong><br>
                 <small>Можно показывать с телефона — электронный полис законен</small>
             </div>
-                        <div class="info-card" style="border-left-color: #8b5cf6;">
+            
+            <div class="info-card" style="border-left-color: #8b5cf6;">
                 <strong>📱 Электронные документы (QR-код):</strong><br>
                 • <strong>Можно показывать:</strong> Электронные версии прав и СТС через приложение «Госуслуги.Авто» или Госуслуги<br>
                 • <strong>Законно:</strong> ПДД п. 2.1.1 (в ред. Постановления №1401 от 31.12.2023)<br>
@@ -714,7 +737,6 @@
                     ⚠️ Инспектор не обязан проверять электронные документы — имейте оригиналы!
                 </small>
             </div>
-            
 
             <h3>⚖️ Ответственность: штрафы и последствия</h3>
             
@@ -841,7 +863,8 @@
                 ✔️ <strong>Любое открытие авто = досмотр</strong> → требуйте процедуру!<br>
                 ✔️ Всегда ведите видеозапись — это ваша защита
             </div>
-                        <div class="info-card" style="border-left-color: #16a34a;">
+            
+            <div class="info-card" style="border-left-color: #16a34a;">
                 <strong>🗣️ Что сказать инспектору:</strong><br>
                 <code style="background: #f3f4f6; padding: 0.75rem; border-radius: 6px; display: block; margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.5;">
                     «Я готов предоставить автомобиль для досмотра, прошу вас пригласить двух понятых и составить протокол согласно ст. 27.9 КоАП».
@@ -1025,13 +1048,14 @@
                 2️⃣ Предъявить по требованию служебное удостоверение (п. 10)<br>
                 3️⃣ Сообщить причину и цель обращения (п. 10)
             </div>
+            
             <div class="info-card" style="border-left-color: #8b5cf6;">
-    <strong>📋 Разъяснение прав при ограничении (п. 11 Приказа №264)</strong><br>
-    В случае применения мер, ограничивающих права и свободы участника дорожного движения, сотрудник ОБЯЗАН:<br>
-    • Разъяснить причину и основания применения таких мер;<br>
-    • Разъяснить возникающие права и обязанности участника дорожного движения.<br>
-    <small>ст. 5 ч. 4 ФЗ «О полиции»</small>
-</div>
+                <strong>📋 Разъяснение прав при ограничении (п. 11 Приказа №264)</strong><br>
+                В случае применения мер, ограничивающих права и свободы участника дорожного движения, сотрудник ОБЯЗАН:<br>
+                • Разъяснить причину и основания применения таких мер;<br>
+                • Разъяснить возникающие права и обязанности участника дорожного движения.<br>
+                <small>ст. 5 ч. 4 ФЗ «О полиции»</small>
+            </div>
             
             <div class="info-card">
                 <strong>📋 Подход к авто (п. 12):</strong><br>
@@ -1227,7 +1251,7 @@
                 5️⃣ Если требуют переместить ТС — зафиксируйте причину (п. 53.2)
             </div>
 
-            <h3>📚 11. Нормативная база (ОКОНЧАТЕЛЬНО ИСПРАВЛЕНО)</h3>
+            <h3>📚 11. Нормативная база</h3>
             
             <div class="info-card" style="border-left-color: #8b5cf6;">
                 <strong>📚 Нормативная база:</strong><br>
@@ -1251,7 +1275,7 @@
                   - <strong>п. 53.2 (перемещение ТС — требование)</strong><br>
                   - <strong>п. 54.1, 54.2 (предложение — можно отказаться)</strong><br>
                 • ПДД РФ: п. 2.1.1, 2.5, 2.6, 2.6.1<br>
-                • КоАП РФ: ст. 19.3, ст. 25.1, ст. 27.9, ст. 12.27, ст. 12.3, ст. 12.7, ст. 12.37
+                • КоАП РФ: ст. 19.3, ст. 25.1, ст. 27.9, ст. 12.27, ст. 12.3, ст. 12.7, st. 12.37
             </div>
             
             <div class="info-card success">
@@ -1266,6 +1290,7 @@
             <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
+
         <!-- СЕКЦИЯ: Установка приложения -->
         <div id="install-app" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
@@ -1295,37 +1320,9 @@
             
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
-                <!-- СЕКЦИЯ: Установка приложения -->
-        <div id="install-app" class="section">
-            <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
-            <h2>📱 Установите приложение</h2>
-            
-            <div class="info-card success">
-                <strong>Android (Chrome, Яндекс):</strong><br><br>
-                1️⃣ Нажмите меню <strong>⋮</strong> (три точки)<br>
-                2️⃣ Выберите <strong>«Добавить на главный экран»</strong><br>
-                3️⃣ Нажмите <strong>«Установить»</strong>
-            </div>
-            
-            <div class="info-card" style="border-left-color: #8b5cf6;">
-                <strong>iPhone (Safari):</strong><br><br>
-                1️⃣ Нажмите <strong>📤</strong> (кнопка «Поделиться»)<br>
-                2️⃣ Выберите <strong>«На экран «Домой»»</strong><br>
-                3️⃣ Нажмите <strong>«Добавить»</strong>
-            </div>
-            
-            <div class="info-card" style="border-left-color: #16a34a;">
-                <strong>✅ Преимущества:</strong><br>
-                • Работает без интернета<br>
-                • Быстрый доступ с главного экрана<br>
-                • Не занимает место в памяти<br>
-                • Всегда актуальная версия
-            </div>
-            
-            <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
-        </div>
+
         <!-- РАЗДЕЛ: Законы -->
-            <div id="laws" class="section">
+        <div id="laws" class="section">
             <div class="back-btn" onclick="showSection('main-menu')">← Назад к меню</div>
             <h2>📚 Нормативная база</h2>
             
@@ -1340,33 +1337,24 @@
             
             <div class="info-card" style="border-left-color: #8b5cf6;">
                 <strong>📌 Официальные источники:</strong><br>
-                • <a href="https://normativ.kontur.ru/document?moduleId=1&documentId=460686" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a>
+                • <a href="https://normativ.kontur.ru/document?moduleId=1&documentId=460686" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a><br>
                 • <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline;">ФЗ «О полиции» на Consultant.ru</a><br>
                 • <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline;">КоАП РФ на Consultant.ru</a>
             </div>
             
             <button class="btn btn-full btn-secondary" onclick="showSection('main-menu')">← Назад к меню</button>
         </div>
-                            <div class="menu-card" onclick="showSection('install-app')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <span class="menu-icon">📱</span>
-                <span class="menu-title">Установить</span>
-            </div>
 
-               <!-- FOOTER -->
+        <!-- FOOTER -->
         <footer>
             <p>Последнее обновление базы: <span id="last-check">Загрузка...</span></p>
             <p>
-               <a href="https://normativ.kontur.ru/document?moduleId=1&documentId=460686" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a> 
+                <a href="https://normativ.kontur.ru/document?moduleId=1&documentId=460686" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a> | 
                 <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" rel="noopener noreferrer">ФЗ «О полиции»</a> | 
                 <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer">КоАП РФ</a>
             </p>
             <p style="font-size: 0.75rem; margin-top: 1rem; opacity: 0.7; line-height: 1.5;">
-                ⚠️ Информация основана на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.<br></p>
-            <p style="font-size: 0.75rem; margin-top: 1rem; opacity: 0.8; border-top: 1px solid var(--border); padding-top: 1rem;">
-                🤝 <strong>Социальный проект</strong><br>
-                Приложение разработано на некоммерческой основе для повышения правовой грамотности граждан.<br>
-                Распространяется бесплатно в соответствии со ст. 1274 ГК РФ (свободное использование в информационных целях).
-            </p>
+                ⚠️ Информация основана на Приказе МВД России №264 от 02.05.2023, КоАП РФ, ПДД РФ.<br>
                 Приложение предоставляет справочно-информационные материалы на основе действующего законодательства 
                 (ст. 2 ч. 2 п. 3 Федерального закона «О рекламе») и не является юридической консультацией.<br>
                 Для решения конкретных правовых вопросов рекомендуется обращаться к квалифицированному юристу.<br>
@@ -1378,12 +1366,17 @@
                 на внешних ресурсах, на которые ведут ссылки.<br>
                 Все претензии по содержанию внешних сайтов следует направлять непосредственно их владельцам.
             </p>
+            <p style="font-size: 0.75rem; margin-top: 1rem; opacity: 0.8; border-top: 1px solid var(--border); padding-top: 1rem;">
+                🤝 <strong>Социальный проект</strong><br>
+                Приложение разработано на некоммерческой основе для повышения правовой грамотности граждан.<br>
+                Распространяется бесплатно в соответствии со ст. 1274 ГК РФ (свободное использование в информационных целях).
+            </p>
             <p style="font-size: 0.7rem; margin-top: 1rem; opacity: 0.6;">
                 Разработано с соблюдением ст. 2 Конституции РФ (права и свободы человека).
             </p>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="скрипт.js"></script>
 </body>
 </html>
