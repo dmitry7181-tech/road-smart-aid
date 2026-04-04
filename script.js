@@ -193,7 +193,7 @@ const searchData = [
     }
 ];
 
-// 🔍 УЛУЧШЕННАЯ функция поиска
+// 🔍 УЛУЧШЕННАЯ функция поиска (исправленная)
 function searchContent() {
     const rawQuery = document.getElementById('search-input').value.trim();
     const query = normalizeQuery(rawQuery);
@@ -216,7 +216,7 @@ function searchContent() {
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    // Поиск по разделам с УМНЫМ приоритетным поиском элементов
+    // Поиск по разделам с поиском ТОЛЬКО В ЗАГОЛОВКАХ
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
@@ -227,25 +227,42 @@ function searchContent() {
             if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
                 const relevance = fuzzyMatch(term, sectionText);
                 if (relevance > 0.3) {
-                    // УМНЫЙ поиск элемента с ПРИОРИТЕТОМ
+                    // Ищем ТОЛЬКО В ЗАГОЛОВКАХ (не в описаниях!)
                     let targetElementId = null;
                     
-                    // ПРИОРИТЕТ 1: Ищем в details (аккордеоны) - САМЫЙ ВЫСОКИЙ ПРИОРИТЕТ
-                    const accordions = section.querySelectorAll('details');
-                    for (let idx = 0; idx < accordions.length; idx++) {
-                        const acc = accordions[idx];
-                        const summary = acc.querySelector('summary')?.textContent.toLowerCase() || '';
-                        const fullText = acc.textContent.toLowerCase();
+                    // ПРИОРИТЕТ 1: Заголовки аккордеонов (summary внутри details)
+                    const accordionSummaries = section.querySelectorAll('details summary');
+                    for (let idx = 0; idx < accordionSummaries.length; idx++) {
+                        const summary = accordionSummaries[idx];
+                        const summaryText = summary.textContent.toLowerCase();
                         
-                        // Проверяем точное совпадение в заголовке summary
-                        if (summary.includes(term.toLowerCase())) {
-                            if (!acc.id) acc.id = `search-${sectionId}-acc-${idx}`;
-                            targetElementId = acc.id;
-                            break; // Нашли в аккордеоне - выходим
+                        if (summaryText.includes(term.toLowerCase())) {
+                            const parentDetails = summary.closest('details');
+                            if (!parentDetails.id) {
+                                parentDetails.id = `search-${sectionId}-acc-${idx}`;
+                            }
+                            targetElementId = parentDetails.id;
+                            break;
                         }
                     }
                     
-                    // ПРИОРИТЕТ 2: Если не нашли в аккордеонах - ищем в заголовках h3, h4
+                    // ПРИОРИТЕТ 2: Заголовки шагов (strong внутри .step)
+                    if (!targetElementId) {
+                        const stepHeaders = section.querySelectorAll('.step strong');
+                        for (let idx = 0; idx < stepHeaders.length; idx++) {
+                            const header = stepHeaders[idx];
+                            if (header.textContent.toLowerCase().includes(term.toLowerCase())) {
+                                const parentStep = header.closest('.step');
+                                if (!parentStep.id) {
+                                    parentStep.id = `search-${sectionId}-step-${idx}`;
+                                }
+                                targetElementId = parentStep.id;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // ПРИОРИТЕТ 3: Заголовки h3, h4
                     if (!targetElementId) {
                         const headers = section.querySelectorAll('h3, h4');
                         for (let idx = 0; idx < headers.length; idx++) {
@@ -253,32 +270,6 @@ function searchContent() {
                             if (h.textContent.toLowerCase().includes(term.toLowerCase())) {
                                 if (!h.id) h.id = `search-${sectionId}-h-${idx}`;
                                 targetElementId = h.id;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // ПРИОРИТЕТ 3: Если не нашли - ищем в .step (шаги)
-                    if (!targetElementId) {
-                        const steps = section.querySelectorAll('.step');
-                        for (let idx = 0; idx < steps.length; idx++) {
-                            const step = steps[idx];
-                            if (step.textContent.toLowerCase().includes(term.toLowerCase())) {
-                                if (!step.id) step.id = `search-${sectionId}-step-${idx}`;
-                                targetElementId = step.id;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // ПРИОРИТЕТ 4: Если всё ещё не нашли - ищем в .info-card
-                    if (!targetElementId) {
-                        const cards = section.querySelectorAll('.info-card');
-                        for (let idx = 0; idx < cards.length; idx++) {
-                            const card = cards[idx];
-                            if (card.textContent.toLowerCase().includes(term.toLowerCase())) {
-                                if (!card.id) card.id = `search-${sectionId}-card-${idx}`;
-                                targetElementId = card.id;
                                 break;
                             }
                         }
@@ -317,7 +308,6 @@ function searchContent() {
         }
     }
 }
-
 // Закрыть поиск при клике вне
 document.addEventListener('click', function(e) {
     const searchInput = document.getElementById('search-input');
