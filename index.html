@@ -6,12 +6,15 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>Помощник в дороге | Road Smart Aid</title>
     
-    <!-- PWA -->
+    <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a56db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Road Aid">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
-    <!-- СТИЛИ (внешний файл) -->
+    <!-- Внешние стили -->
     <link rel="stylesheet" href="styles.css">
     
     <!-- Кэширование -->
@@ -21,58 +24,310 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🚗 Помощник в дороге</h1>
-            <p>Ваш карманный юрист • Приказ МВД №264</p>
-            <input type="text" id="search-input" placeholder="🔍 Поиск: п. 47.3, ст. 5, досмотр, 112..." oninput="searchContent()">
-            <div id="search-results"></div>
+        
+        <!-- HEADER -->
+        <header class="main-header">
+            <h1 class="header-title">🚗 Помощник в дороге</h1>
+            <p class="header-subtitle">Ваш карманный юрист • Приказ МВД №264</p>
+            
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 Поиск: п. 47.3, ст. 5, досмотр, 112...">
+            <div id="search-results" class="search-results"></div>
         </header>
 
-        <div id="main-menu" class="menu-grid">
-            <div class="menu-card" onclick="showSection('stop')">
+        <!-- ГЛАВНОЕ МЕНЮ -->
+        <nav id="main-menu" class="menu-grid">
+            <button class="menu-card" data-section="stop">
                 <span class="menu-icon">🛑</span>
                 <span class="menu-title">Остановка ДПС</span>
-            </div>
-            <div class="menu-card" onclick="showSection('powers')">
+            </button>
+            <button class="menu-card" data-section="powers">
                 <span class="menu-icon">⚡</span>
                 <span class="menu-title">Полномочия</span>
-            </div>
-            <div class="menu-card" onclick="showSection('docs')">
+            </button>
+            <button class="menu-card" data-section="docs">
                 <span class="menu-icon">📄</span>
                 <span class="menu-title">Документы</span>
-            </div>
-            <div class="menu-card" onclick="showSection('search')">
+            </button>
+            <button class="menu-card" data-section="search">
                 <span class="menu-icon">🔍</span>
                 <span class="menu-title">Осмотр и досмотр</span>
-            </div>
-            <div class="menu-card" onclick="showSection('accident')">
+            </button>
+            <button class="menu-card" data-section="accident">
                 <span class="menu-icon">🚗💥</span>
                 <span class="menu-title">ДТП</span>
-            </div>
-            <div class="menu-card" onclick="showSection('rights')">
+            </button>
+            <button class="menu-card" data-section="rights">
                 <span class="menu-icon">⚖️</span>
                 <span class="menu-title">Ваши права</span>
-            </div>
-            <div class="menu-card" onclick="showSection('emergency-main')">
+            </button>
+            <button class="menu-card" data-section="emergency-main">
                 <span class="menu-icon">📞</span>
                 <span class="menu-title">Экстренно</span>
-            </div>
-            <div class="menu-card" onclick="showSection('laws')">
+            </button>
+            <button class="menu-card" data-section="laws">
                 <span class="menu-icon">📚</span>
                 <span class="menu-title">Законы</span>
-            </div>
-            <div class="menu-card menu-card-install" onclick="showSection('install-app')">
+            </button>
+            <button class="menu-card menu-card-install" data-section="install-app">
                 <span class="menu-icon">📱</span>
                 <span class="menu-title">Установить</span>
+            </button>
+        </nav>
+
+        <!-- РАЗДЕЛ: Экстренные номера -->
+        <section id="emergency-main" class="section">
+            <button class="back-btn" data-back="main-menu">← Назад к меню</button>
+            <h2 class="section-title">📞 Экстренные номера</h2>
+            
+            <div class="emergency-grid">
+                <a href="tel:112" class="emergency-card">
+                    <div class="emergency-number">112</div>
+                    <div class="emergency-label">Единый экстренный</div>
+                </a>
+                <a href="tel:102" class="emergency-card emergency-card-police">
+                    <div class="emergency-number">102</div>
+                    <div class="emergency-label">Полиция</div>
+                </a>
+                <a href="tel:103" class="emergency-card emergency-card-ambulance">
+                    <div class="emergency-number">103</div>
+                    <div class="emergency-label">Скорая помощь</div>
+                </a>
+                <a href="tel:88002227447" class="emergency-card emergency-card-mvd">
+                    <div class="emergency-number">8(800)222-74-47</div>
+                    <div class="emergency-label">Телефон доверия МВД</div>
+                </a>
             </div>
-        </div>
+            
+            <button class="btn btn-full btn-secondary" data-back="main-menu">← Назад к меню</button>
+        </section>
 
-        <!-- Все разделы (stop, powers, docs, search, accident, rights, emergency-main, laws, install-app) -->
-        <!-- ... содержимое разделов ... -->
+        <!-- РАЗДЕЛ: Остановка -->
+        <section id="stop" class="section">
+            <button class="back-btn" data-back="main-menu">← Назад к меню</button>
+            <h2 class="section-title">🛑 Порядок действий инспектора при остановке</h2>
+            
+            <div class="info-card success">
+                <strong>📘 Правильный порядок действий инспектора:</strong><br>
+                Сначала остановка (п. 48-51), потом подход и представление (п. 10-11).
+            </div>
 
-        <footer>
+            <ol class="steps">
+                <li class="step">
+                    <strong class="step-title">Подать сигнал остановки</strong>
+                    <span class="step-reference">п. 48 Приказа №264</span>
+                    <p class="step-description">Жезлом, жестом руки или громкоговорящей установкой. В темное время суток — с использованием специальных световых сигналов</p>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Указать место остановки</strong>
+                    <span class="step-reference">п. 49 Приказа №264</span>
+                    <p class="step-description">При подаче сигнала должно быть указано место остановки транспортного средства</p>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Остановка с соблюдением ПДД</strong>
+                    <span class="step-reference">п. 50-51 Приказа №264</span>
+                    <p class="step-description">Запрещено останавливать где остановка запрещена ПДД (кроме пресечения преступления, регулирования, предотвращения вреда, или если место обозначено патрульным авто с мигалкой)</p>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Подойти к водителю</strong>
+                    <span class="step-reference">п. 52 Приказа №264</span>
+                    <p class="step-description">Остановив ТС, сотрудник должен незамедлительно подойти к водителю</p>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Представиться и назвать причину</strong>
+                    <span class="step-reference">п. 10 Приказа №264</span>
+                    <p class="step-description">Назвать должность, звание, фамилию, предъявить удостоверение по требованию, сообщить причину и цель обращения</p>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Разъяснить права при ограничении</strong>
+                    <span class="step-reference">п. 11 Приказа №264</span>
+                    <p class="step-description">При применении мер, ограничивающих права: причина, основания, права и обязанности</p>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Если вы обратились первым — инспектор тоже обязан представиться</strong>
+                    <span class="step-reference">п. 13 Приказа №264</span>
+                </li>
+                <li class="step">
+                    <strong class="step-title">Не препятствует видеосъёмке</strong>
+                    <span class="step-reference">ч. 4 ст. 29 Конституции РФ, п. 6-7 Приказа №264</span>
+                </li>
+            </ol>
+
+            <!-- Освидетельствование - аккордеон -->
+            <details class="law-accordion accordion-osvidetelstvovanie">
+                <summary class="law-accordion-header">
+                    <span class="law-icon">🍺</span>
+                    <div class="law-header-content">
+                        <strong class="law-title">⚠️ ОСВИДЕТЕЛЬСТВОВАНИЕ НА ОПЬЯНЕНИЕ</strong>
+                        <small class="law-subtitle">Главная ловушка в деталях • Риск лишения прав 1.5–2 года!</small>
+                    </div>
+                    <span class="law-arrow">▼</span>
+                </summary>
+                <div class="law-accordion-content">
+                    
+                    <div class="osvid-block osvid-block-danger">
+                        <h4>🚨 В чём ловушка и какие детали?</h4>
+                        <p>Недобросовестные инспекторы ДПС используют вежливое слово <strong>«предлагаю»</strong> не случайно. Это уловка, рассчитанная на то, что в обычной жизни «предложение» можно отклонить. Если вы ответите: <strong>«Нет, я отказываюсь»</strong> — инспектор немедленно зафиксирует отказ от освидетельствования, и суд лишит вас прав по <strong>ст. 12.26 КоАП РФ</strong>, даже если вы были абсолютно трезвы.</p>
+                        <p>Подобная манипуляция — не редкость. Автоюристы подтверждают, что таким способом водителей склоняют к отказу от медицинского освидетельствования, что автоматически приравнивается к вождению в нетрезвом виде.</p>
+                        <p class="osvid-highlight"><strong>⚖️ На самом деле:</strong> с точки зрения закона (ст. 13 ФЗ «О полиции», п. 10 Приказа МВД №264), слова инспектора — это <strong>не просьба, а законное требование</strong>, зафиксированное в регламенте. Слово «предлагаю» — лишь форма вежливости, за которой стоит государственное требование, которое вы обязаны выполнить.</p>
+                    </div>
+
+                    <div class="osvid-block osvid-block-info">
+                        <h4>⚖️ Что говорит закон</h4>
+                        <ul class="osvid-list">
+                            <li><strong>Ст. 12.26 КоАП РФ</strong> — отказ от освидетельствования влечёт лишение прав на 1,5–2 года и штраф 30 000–45 000 ₽</li>
+                            <li><strong>Ст. 27.12 КоАП РФ</strong> — освидетельствование проводится только в присутствии двух понятых либо с видеозаписью</li>
+                            <li><strong>Приказ МВД №264 (п. 10, 53.1, 54)</strong> — инспектор обязан разъяснить причину и порядок, но его «предложение» является законным требованием</li>
+                        </ul>
+                    </div>
+
+                    <div class="osvid-block osvid-block-success">
+                        <h4>🛡️ Ваш алгоритм действий: «Не отказываюсь, но требую процедуру»</h4>
+                        <p>Ваша задача — чётко и спокойно показать инспектору, что вы понимаете разницу между отказом от освидетельствования и требованием соблюсти законную процедуру.</p>
+                        
+                        <div class="osvid-step">
+                            <strong>Шаг 1. Сразу заявите о согласии</strong>
+                            <p>Как только речь зашла об освидетельствовании, твёрдо произнесите:</p>
+                            <code class="osvid-code">«Я не отказываюсь от освидетельствования и готов пройти его в установленном законом порядке»</code>
+                            <p class="osvid-note">✅ Эта фраза обезоруживает ловушку. Вы заявляете о сотрудничестве — у инспектора нет оснований обвинить вас в отказе.</p>
+                        </div>
+
+                        <div class="osvid-step">
+                            <strong>Шаг 2. Требуйте соблюдения процедуры</strong>
+                            <p>Теперь, когда вы не отказались, вы вправе потребовать, чтобы всё было по закону:</p>
+                            <code class="osvid-code">«Прошу провести освидетельствование в присутствии двух понятых или под видеозапись, с составлением протокола и акта, копию которого вы мне обязаны вручить»</code>
+                            <p class="osvid-note">✅ Если понятых нет, но есть видеокамера — это законно. Главное, чтобы в протоколе была отметка о видеозаписи.</p>
+                        </div>
+
+                        <div class="osvid-step">
+                            <strong>Шаг 3. Если не согласны с результатом на месте</strong>
+                            <p>Если результат вас не устраивает (или вы сомневаетесь в исправности прибора), не спорьте. Заявите:</p>
+                            <code class="osvid-code">«Я не согласен с результатом освидетельствования на месте. Требую направить меня на медицинское освидетельствование»</code>
+                            <p class="osvid-note">✅ Это ваше законное право, и инспектор обязан вас направить.</p>
+                        </div>
+
+                        <div class="osvid-step">
+                            <strong>Шаг 4. Не соглашайтесь на «проверку» без оформления</strong>
+                            <p>Если инспектор предлагает <strong>«просто продуть для проверки»</strong> без понятых и документов — это не освидетельствование. Такая проверка не имеет юридической силы, но может быть использована против вас. Настаивайте на официальной процедуре.</p>
+                        </div>
+                    </div>
+
+                    <div class="osvid-block osvid-block-warning">
+                        <h4>📝 Шпаргалка для водителя</h4>
+                        <table class="osvid-table">
+                            <thead>
+                                <tr>
+                                    <th>Запомните</th>
+                                    <th>Почему это важно</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Никогда не произносите слово «отказываюсь»</strong></td>
+                                    <td>Любое «нет» — это немедленный протокол по ст. 12.26 КоАП</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Всегда говорите: «Я не отказываюсь, требую соблюдения процедуры»</strong></td>
+                                    <td>Вы готовы к проверке, но не позволяете нарушить свои права</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Требуйте понятых или видеозапись</strong></td>
+                                    <td>Гарантия, что инспектор не подделает результаты</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Требуйте копию акта освидетельствования</strong></td>
+                                    <td>Ваш главный документ для обжалования</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Если не согласны с «трубкой» — требуйте везти к врачу</strong></td>
+                                    <td>Это ваше законное право, инспектор обязан выполнить</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="osvid-block osvid-block-danger">
+                        <h4>❌ Чего делать нельзя</h4>
+                        <ul class="osvid-list">
+                            <li>❌ Говорить: <strong>«Я отказываюсь дуть»</strong></li>
+                            <li>❌ Говорить: <strong>«Я не буду проходить медицинское освидетельствование»</strong></li>
+                            <li>❌ <strong>Молчать</strong> — бездействие может быть расценено как отказ</li>
+                            <li>❌ <strong>Пытаться уехать</strong> — это расценивается как оставление места ДТП или неповиновение</li>
+                        </ul>
+                    </div>
+
+                    <div class="osvid-block osvid-block-gray">
+                        <h4>📚 Нормативная база</h4>
+                        <ul class="osvid-list">
+                            <li><strong>КоАП РФ:</strong> ст. 12.8, 12.26, 27.12</li>
+                            <li><strong>Приказ МВД №264:</strong> п. 10, 53.1, 54</li>
+                            <li><strong>ФЗ «О полиции»:</strong> ст. 13</li>
+                            <li><strong>Постановление Правительства РФ № 475</strong> — правила освидетельствования</li>
+                        </ul>
+                    </div>
+
+                    <div class="osvid-block osvid-block-gradient">
+                        <h4>💎 Главный вывод</h4>
+                        <p>Инспектор использует слово <strong>«предлагаю»</strong> по закону, но оно означает для вас <strong>требование</strong>. Ваша единственная защита — сразу заявить: <strong>«Я не отказываюсь, я готов пройти в установленном порядке»</strong>. Это переводит ситуацию из поля «отказаться/согласиться» в поле контроля законности, где у вас есть все права.</p>
+                    </div>
+
+                </div>
+            </details>
+
+            <div class="info-card">
+                <strong>📚 Нормативная база:</strong><br>
+                • Приказ МВД №264: п. 6, 7, 10, 11, 13, 48-52<br>
+                • ФЗ «О полиции»: ст. 5 ч. 4, ст. 8<br>
+                • Конституция РФ: ст. 29 ч. 4<br>
+                • ПДД РФ: п. 6.10-6.12 (сигналы регулировщика)
+            </div>
+
+            <div class="info-card warning">
+                <strong>⚠️ Что делать если инспектор нарушил порядок?</strong><br><br>
+                <strong>1. Это нарушение регламента</strong><br>
+                Если инспектор не представился и не назвал причину — он нарушил п. 10 Приказа №264.<br><br>
+                <strong>2. Это даёт вам право:</strong><br>
+                • Зафиксировать нарушение (видео, аудиозапись)<br>
+                • Подать жалобу в прокуратуру или МВД<br>
+                • Оспорить штраф в суде<br><br>
+                <strong>3. Важное уточнение:</strong><br>
+                Нарушение п. 10 <strong>не делает действия инспектора автоматически незаконными</strong>.<br>
+                Но это <strong>серьёзное процессуальное нарушение</strong>, которое может быть использовано в вашу пользу при обжаловании.
+            </div>
+
+            <div class="info-card danger">
+                <strong>🛡️ Алгоритм действий при нарушении:</strong><br><br>
+                <strong>Шаг 1:</strong> Спокойно скажите: «Вы не представились и не назвали причину. Прошу выполнить п. 10 Приказа №264».<br>
+                <strong>Шаг 2:</strong> Включите видеозапись (сообщите об этом инспектору).<br>
+                <strong>Шаг 3:</strong> Если инспектор отказывается — запишите его ФИО (с жетона/удостоверения).<br>
+                <strong>Шаг 4:</strong> После остановки подайте жалобу через сайт МВД или в прокуратуру.<br>
+                <strong>Шаг 5:</strong> Сохраните видео — это доказательство в суде.
+            </div>
+
+            <div class="info-card success">
+                <strong>✅ Хронологический порядок действий инспектора:</strong><br><br>
+                1️⃣ Подал сигнал остановки (п. 48)<br>
+                2️⃣ Указал место остановки (п. 49)<br>
+                3️⃣ Остановил с соблюдением ПДД (п. 50-51)<br>
+                4️⃣ Подошёл к водителю (п. 52)<br>
+                5️⃣ Представился (п. 10)<br>
+                6️⃣ Назвал причину остановки (п. 10)<br>
+                7️⃣ Разъяснил права при ограничении (п. 11)<br>
+                8️⃣ Только после этого — требования (документы, выход из авто и т.д.)
+            </div>
+
+            <a href="tel:112" class="btn btn-full btn-danger">📞 Позвонить 112</a>
+            <a href="https://xn--b1aew.xn--p1ai/request_main" target="_blank" class="btn btn-full btn-secondary">📝 Подать жалобу онлайн</a>
+            <p class="text-muted text-center">На сайте: выберите «Главное управление по обеспечению безопасности дорожного движения» → следуйте инструкциям</p>
+            <button class="btn btn-full btn-secondary" data-back="main-menu">← Назад к меню</button>
+        </section>
+
+        <!-- ОСТАЛЬНЫЕ РАЗДЕЛЫ (powers, docs, search, accident, rights, laws, install-app) -->
+        <!-- Структура аналогична разделу "stop" - только классы, без inline-стилей -->
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
             <p>Последнее обновление базы: <span id="last-check">Загрузка...</span></p>
-            <p>
+            <p class="footer-links">
                 <a href="https://normativ.kontur.ru/document?moduleId=1&documentId=460686" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a> | 
                 <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" rel="noopener noreferrer">ФЗ «О полиции»</a> | 
                 <a href="https://www.consultant.ru/document/cons_doc_LAW_34661/" target="_blank" rel="noopener noreferrer">КоАП РФ</a>
@@ -84,7 +339,7 @@
                 Для решения конкретных правовых вопросов рекомендуется обращаться к квалифицированному юристу.<br>
                 Владелец приложения действует как информационный посредник в соответствии со ст. 1253.1 ГК РФ.
             </p>
-            <p class="footer-links">
+            <p class="footer-external">
                 🔗 <strong>Об внешних ссылках:</strong> Информация и гиперссылки взяты из открытых общедоступных источников.<br>
                 Владелец приложения не несёт ответственности за содержание, актуальность и достоверность материалов 
                 на внешних ресурсах, на которые ведут ссылки.<br>
@@ -99,9 +354,10 @@
                 Разработано с соблюдением ст. 2 Конституции РФ (права и свободы человека).
             </p>
         </footer>
+
     </div>
 
-    <!-- СКРИПТ (внешний файл) -->
+    <!-- Внешний скрипт -->
     <script src="script.js"></script>
 </body>
 </html>
