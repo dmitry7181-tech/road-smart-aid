@@ -1,14 +1,14 @@
-// ===================================
-// ROAD SMART AID - JavaScript v4.0
-// ===================================
+/* ===================================
+   ROAD SMART AID - script.js v5.0
+   Профессиональная архитектура: только поведение
+   =================================== */
 
-// 📚 Словарь синонимов для поиска
+// 📚 СЛОВАРЬ СИНОНИМОВ ДЛЯ ПОИСКА
 const searchSynonyms = {
     'дпс': ['гаи', 'гибдд', 'полиция', 'инспектор'],
     'гаи': ['дпс', 'гибдд', 'полиция', 'инспектор'],
     'гибдд': ['дпс', 'гаи', 'полиция', 'инспектор'],
     'штраф': ['наказание', 'санкция', 'взыскание', 'лишение'],
-    'наказание': ['штраф', 'санкция', 'взыскание'],
     'досмотр': ['осмотр', 'проверка', 'обыск', 'багажник'],
     'осмотр': ['досмотр', 'проверка', 'визуальный'],
     'права': ['удостоверение', 'водительское', 'в/у'],
@@ -21,7 +21,6 @@ const searchSynonyms = {
     'понятые': ['свидетели', 'люди'],
     'видео': ['запись', 'камера', 'съёмка', 'видеозапись'],
     'протокол': ['документ', 'бумага', 'постановление'],
-    'выход': ['выйти', 'покинуть', 'выйти из авто'],
     'остановка': ['остановили', 'требуют', 'жест'],
     '112': ['экстренный', 'мчс', 'помощь', 'звонок'],
     '102': ['полиция', 'дпс', 'милиция'],
@@ -52,10 +51,11 @@ const searchSynonyms = {
     'ст 51': ['ст. 51', 'статья 51'],
     'ст. 51': ['ст 51', 'статья 51'],
     'коап': ['кодекс', 'административный', 'нарушение'],
-    'пдд': ['правила', 'дорожное', 'движение']
+    'пдд': ['правила', 'дорожное', 'движение'],
+    'освидетельствование': ['алкоголь', 'опьянение', 'алкотестер', 'трубка', 'нарколог']
 };
 
-// 🔤 Функция нормализации запроса
+// 🔤 НОРМАЛИЗАЦИЯ ЗАПРОСА
 function normalizeQuery(query) {
     let normalized = query.toLowerCase();
     normalized = normalized.replace(/(\bп)\s+(\d+)/gi, '$1. $2');
@@ -64,7 +64,7 @@ function normalizeQuery(query) {
     return normalized;
 }
 
-// 🔤 Функция нормализации текста
+// 🔤 НОРМАЛИЗАЦИЯ ТЕКСТА
 function normalizeText(text) {
     return text
         .toLowerCase()
@@ -74,14 +74,16 @@ function normalizeText(text) {
         .trim();
 }
 
-// 🎯 Функция нечёткого поиска
+// 🎯 НЕЧЁТКИЙ ПОИСК (Levenshtein)
 function fuzzyMatch(query, text, threshold = 0.6) {
     query = normalizeText(query);
     text = normalizeText(text);
     if (text.includes(query)) return 1.0;
+    
     const words1 = query.split(' ');
     const words2 = text.split(' ');
     let matches = 0;
+    
     words1.forEach(w1 => {
         words2.forEach(w2 => {
             if (w1.length > 2 && w2.length > 2) {
@@ -91,14 +93,16 @@ function fuzzyMatch(query, text, threshold = 0.6) {
             }
         });
     });
+    
     return matches / words1.length;
 }
 
-// 📏 Расстояние Левенштейна
+// 📏 РАССТОЯНИЕ ЛЕВЕНШТЕЙНА
 function levenshteinDistance(str1, str2) {
     const matrix = [];
     for (let i = 0; i <= str2.length; i++) matrix[i] = [i];
     for (let j = 0; j <= str1.length; j++) matrix[0][j] = j;
+    
     for (let i = 1; i <= str2.length; i++) {
         for (let j = 1; j <= str1.length; j++) {
             if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
@@ -112,24 +116,38 @@ function levenshteinDistance(str1, str2) {
             }
         }
     }
+    
     return matrix[str2.length][str1.length];
 }
 
-// 🔍 Подсветка найденного текста
+// 🔍 ПОДСВЕТКА НАЙДЕННОГО ТЕКСТА
 function highlightText(text, query) {
     const normalizedQuery = normalizeQuery(query);
-    const terms = [query, normalizedQuery, ...(searchSynonyms[query] || []), ...(searchSynonyms[normalizedQuery] || [])];
+    const terms = [
+        query,
+        normalizedQuery,
+        ...(searchSynonyms[query] || []),
+        ...(searchSynonyms[normalizedQuery] || [])
+    ];
+    
     let highlighted = text;
     terms.forEach(term => {
         if (term && term.length > 1) {
-            const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-            highlighted = highlighted.replace(regex, '<span class="search-highlight">$1</span>');
+            const regex = new RegExp(
+                `(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
+                'gi'
+            );
+            highlighted = highlighted.replace(
+                regex,
+                '<span class="search-highlight">$1</span>'
+            );
         }
     });
+    
     return highlighted;
 }
 
-// 🔍 Данные для умного поиска
+// 🔍 ДАННЫЕ ДЛЯ УМНОГО ПОИСКА
 const searchData = [
     {
         section: 'stop',
@@ -193,19 +211,22 @@ const searchData = [
     }
 ];
 
-// 🔍 УЛУЧШЕННАЯ функция поиска
+// 🔍 ФУНКЦИЯ ПОИСКА
 function searchContent() {
-    const rawQuery = document.getElementById('search-input').value.trim();
-    const query = normalizeQuery(rawQuery);
+    const searchInput = document.getElementById('search-input');
     const resultsContainer = document.getElementById('search-results');
     
-    console.log('🔍 Поиск:', rawQuery, '->', query);
+    if (!searchInput || !resultsContainer) return;
+    
+    const rawQuery = searchInput.value.trim();
+    const query = normalizeQuery(rawQuery);
     
     if (query.length < 2) {
-        if (resultsContainer) resultsContainer.style.display = 'none';
+        resultsContainer.style.display = 'none';
         return;
     }
     
+    // Собираем термины для поиска
     let searchTerms = [query, rawQuery];
     Object.keys(searchSynonyms).forEach(key => {
         if (query.includes(key) || searchSynonyms[key].includes(query) || rawQuery.includes(key)) {
@@ -213,20 +234,17 @@ function searchContent() {
         }
     });
     
-    console.log('📋 Search terms:', searchTerms);
-    
+    // Поиск в searchData
     const searchDataResults = searchData.filter(item => {
         const searchText = (item.title + ' ' + item.content + ' ' + item.keywords.join(' ')).toLowerCase();
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    console.log('📊 searchDataResults:', searchDataResults.length);
-    
-    // Поиск по разделам с ПРИОРИТЕТОМ
+    // Поиск по разделам
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
-        const sectionTitle = section.querySelector('h2')?.textContent || '';
+        const sectionTitle = section.querySelector('.section-title')?.textContent || '';
         const sectionText = section.textContent || '';
         
         searchTerms.forEach(term => {
@@ -235,29 +253,23 @@ function searchContent() {
                 if (relevance > 0.3) {
                     let targetElementId = null;
                     
-                    // 🔥 ПРИОРИТЕТ 1: Заголовки аккордеонов (summary)
+                    // Приоритет 1: Аккордеоны
                     const accordionSummaries = section.querySelectorAll('details summary');
-                    console.log(`📑 Проверяю аккордеоны в ${sectionId}:`, accordionSummaries.length);
-                    
                     for (let idx = 0; idx < accordionSummaries.length; idx++) {
                         const summary = accordionSummaries[idx];
-                        const summaryText = summary.textContent.toLowerCase();
-                        console.log(`  Аккордеон ${idx}:`, summaryText);
-                        
-                        if (summaryText.includes(term.toLowerCase())) {
+                        if (summary.textContent.toLowerCase().includes(term.toLowerCase())) {
                             const parentDetails = summary.closest('details');
                             if (!parentDetails.id) {
                                 parentDetails.id = `search-${sectionId}-acc-${idx}-${Date.now()}`;
                             }
                             targetElementId = parentDetails.id;
-                            console.log(`✅ Нашёл в аккордеоне:`, targetElementId);
                             break;
                         }
                     }
                     
-                    // ПРИОРИТЕТ 2: Заголовки шагов (strong)
+                    // Приоритет 2: Заголовки шагов
                     if (!targetElementId) {
-                        const stepHeaders = section.querySelectorAll('.step strong');
+                        const stepHeaders = section.querySelectorAll('.step-title');
                         for (let idx = 0; idx < stepHeaders.length; idx++) {
                             const header = stepHeaders[idx];
                             if (header.textContent.toLowerCase().includes(term.toLowerCase())) {
@@ -266,23 +278,6 @@ function searchContent() {
                                     parentStep.id = `search-${sectionId}-step-${idx}-${Date.now()}`;
                                 }
                                 targetElementId = parentStep.id;
-                                console.log(`✅ Нашёл в шаге:`, targetElementId);
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // ПРИОРИТЕТ 3: Заголовки h3, h4
-                    if (!targetElementId) {
-                        const headers = section.querySelectorAll('h3, h4');
-                        for (let idx = 0; idx < headers.length; idx++) {
-                            const h = headers[idx];
-                            if (h.textContent.toLowerCase().includes(term.toLowerCase())) {
-                                if (!h.id) {
-                                    h.id = `search-${sectionId}-h-${idx}-${Date.now()}`;
-                                }
-                                targetElementId = h.id;
-                                console.log(`✅ Нашёл в заголовке:`, targetElementId);
                                 break;
                             }
                         }
@@ -296,43 +291,56 @@ function searchContent() {
                         targetElementId: targetElementId,
                         searchTerm: term
                     });
-                    
-                    console.log(`➕ Добавлен результат:`, sectionId, 'target:', targetElementId);
                 }
             }
         });
     });
     
+    // Объединяем и сортируем
     const allResults = [...searchDataResults, ...sectionResults];
     allResults.sort((a, b) => (b.relevance || 1) - (a.relevance || 1));
-    const uniqueResults = allResults.filter((v, i, a) => a.findIndex(t => t.section === v.section) === i);
+    const uniqueResults = allResults.filter(
+        (v, i, a) => a.findIndex(t => t.section === v.section) === i
+    );
     
-    console.log('📊 Итого результатов:', uniqueResults.length);
-    
-    if (resultsContainer) {
-        if (uniqueResults.length > 0) {
-            resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => {
-                const targetId = item.targetElementId || '';
-                console.log(`📝 Результат: ${item.section}, target: ${targetId}`);
-                return `
-                <div class="search-result-item" onclick="openSectionAndScroll('${item.section}', '${targetId}')">
+    // Отображаем результаты
+    if (uniqueResults.length > 0) {
+        resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => {
+            const targetId = item.targetElementId || '';
+            return `
+                <div class="search-result-item" data-section="${item.section}" data-target="${targetId}">
                     <div class="search-result-title">${item.title}</div>
                     <div class="search-result-text">${highlightText(item.content, rawQuery)}</div>
                     <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
                 </div>
-            `}).join('');
-            resultsContainer.style.display = 'block';
-        } else {
-            resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте: "п 48", "ст 5", "гаи", "дтп"</small></div>';
-            resultsContainer.style.display = 'block';
-        }
+            `;
+        }).join('');
+        resultsContainer.style.display = 'block';
+        
+        // Добавляем обработчики кликов
+        resultsContainer.querySelectorAll('.search-result-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                const target = this.getAttribute('data-target');
+                openSectionAndScroll(section, target);
+            });
+        });
+    } else {
+        resultsContainer.innerHTML = `
+            <div class="no-results">
+                Ничего не найдено 😕<br>
+                <small>Попробуйте: "п 48", "ст 5", "гаи", "дтп"</small>
+            </div>
+        `;
+        resultsContainer.style.display = 'block';
     }
 }
 
-// Закрыть поиск при клике вне
+// 🚫 ЗАКРЫТЬ ПОИСК ПРИ КЛИКЕ ВНЕ
 document.addEventListener('click', function(e) {
     const searchInput = document.getElementById('search-input');
     const resultsContainer = document.getElementById('search-results');
+    
     if (searchInput && resultsContainer) {
         const searchContainer = searchInput.parentElement;
         if (!searchContainer.contains(e.target)) {
@@ -341,51 +349,52 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// 📱 Переключение разделов
+// 📱 ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
 function showSection(id) {
-    console.log('📱 Открываю раздел:', id);
+    // Скрываем все разделы
     document.querySelectorAll('.section').forEach(el => {
         el.classList.remove('active');
-        el.style.setProperty('display', 'none', 'important');
+        el.style.display = 'none';
     });
     
-    var menu = document.getElementById('main-menu');
-    var emergency = document.getElementById('emergency-main');
-    if(menu) menu.style.setProperty('display', 'none', 'important');
-    if(emergency) emergency.style.setProperty('display', 'none', 'important');
+    // Скрываем меню
+    const menu = document.getElementById('main-menu');
+    if (menu) menu.style.display = 'none';
     
-    if (id === 'main-menu' || id === 'main') {
-        if(menu) menu.style.setProperty('display', 'grid', 'important');
-        if(emergency) emergency.style.setProperty('display', 'block', 'important');
+    // Показываем нужное
+    if (id === 'main-menu') {
+        if (menu) menu.style.display = 'grid';
     } else {
-        var section = document.getElementById(id);
+        const section = document.getElementById(id);
         if (section) {
             section.classList.add('active');
-            section.style.setProperty('display', 'block', 'important');
+            section.style.display = 'block';
         }
     }
+    
+    // Прокрутка вверх
     window.scrollTo(0, 0);
 }
 
-// 🎯 Открыть раздел и прокрутить к элементу
+// 🎯 ОТКРЫТЬ РАЗДЕЛ И ПРОКРУТИТЬ К ЭЛЕМЕНТУ
 function openSectionAndScroll(sectionId, targetElementId) {
-    console.log('🎯 Открываю раздел:', sectionId, 'target:', targetElementId);
     showSection(sectionId);
     
     setTimeout(() => {
-        // Раскрываем ВСЕ аккордеоны в разделе
-        const accordions = document.querySelectorAll(`#${sectionId} details`);
-        accordions.forEach(acc => acc.setAttribute('open', ''));
-        console.log(`📂 Раскрыто аккордеонов:`, accordions.length);
+        // Раскрываем все аккордеоны в разделе
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const accordions = section.querySelectorAll('details');
+            accordions.forEach(acc => acc.setAttribute('open', ''));
+        }
         
-        // Если есть ID конкретного элемента - скроллим к нему
+        // Если есть целевой элемент - скроллим к нему
         if (targetElementId && targetElementId.trim() !== '') {
-            console.log('🔍 Ищу элемент:', targetElementId);
             const target = document.getElementById(targetElementId);
             if (target) {
-                console.log('✅ Нашёл элемент:', target);
                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
+                // Подсветка на 3 секунды
                 const originalBg = target.style.backgroundColor;
                 const originalTransition = target.style.transition;
                 target.style.transition = 'all 0.3s ease';
@@ -398,66 +407,71 @@ function openSectionAndScroll(sectionId, targetElementId) {
                     target.style.boxShadow = '';
                     target.style.transition = originalTransition;
                 }, 3000);
-            } else {
-                console.error('❌ Не нашёл элемент:', targetElementId);
-            }
-        } else {
-            console.log('⚠️ Нет targetElementId, скроллим к разделу');
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
         
+        // Скрываем результаты поиска
         const resultsContainer = document.getElementById('search-results');
         if (resultsContainer) resultsContainer.style.display = 'none';
         
+        // Очищаем поле поиска
         const searchInput = document.getElementById('search-input');
         if (searchInput) searchInput.value = '';
     }, 300);
 }
 
-// 📅 Загрузка даты обновления
-fetch('data/legal-base.json?t=' + Date.now())
-    .then(r => r.json())
-    .then(data => {
-        var el = document.getElementById('last-check');
-        if (el && data.metadata && data.metadata.last_verified) {
-            el.innerText = data.metadata.last_verified.split('T')[0];
-        }
-    })
-    .catch(() => {
-        var el = document.getElementById('last-check');
-        if (el) el.innerText = "Онлайн";
-    });
-
-// 📱 Service Worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js')
-            .then(reg => {
-                console.log('✅ SW registered:', reg.scope);
-                reg.addEventListener('updatefound', () => {
-                    const newWorker = reg.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('🔄 SW: Доступно обновление!');
-                        }
-                    });
-                });
-            })
-            .catch(err => console.log('❌ SW error:', err));
-    });
+// 📅 ЗАГРУЗКА ДАТЫ ОБНОВЛЕНИЯ
+function loadLastCheckDate() {
+    fetch('data/legal-base.json?t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            const el = document.getElementById('last-check');
+            if (el && data.metadata && data.metadata.last_verified) {
+                el.innerText = data.metadata.last_verified.split('T')[0];
+            }
+        })
+        .catch(() => {
+            const el = document.getElementById('last-check');
+            if (el) el.innerText = 'Онлайн';
+        });
 }
 
-// 📱 PWA: Установка приложения
-let deferredPrompt;
+// 📱 SERVICE WORKER
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => {
+                    console.log('✅ SW registered:', reg.scope);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('🔄 SW: Доступно обновление!');
+                            }
+                        });
+                    });
+                })
+                .catch(err => console.log('❌ SW error:', err));
+        });
+    }
+}
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    console.log('✅ PWA: Готова к установке');
-});
+// 📱 PWA: УСТАНОВКА ПРИЛОЖЕНИЯ
+let deferredPrompt = null;
+
+function initPWA() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('✅ PWA: Готова к установке');
+    });
+    
+    window.addEventListener('appinstalled', () => {
+        console.log('✅ PWA: Приложение установлено!');
+        deferredPrompt = null;
+    });
+}
 
 async function installApp() {
     if (!deferredPrompt) {
@@ -475,18 +489,14 @@ async function installApp() {
     deferredPrompt = null;
 }
 
-window.addEventListener('appinstalled', () => {
-    console.log('✅ PWA: Приложение установлено!');
-    deferredPrompt = null;
-});
-
-// ===================================
-// 📚 Поиск по законам
-// ===================================
-
+// 📚 ПОИСК ПО ЗАКОНАМ
 function searchLaws() {
-    const query = document.getElementById('law-search').value.toLowerCase().trim();
+    const searchInput = document.getElementById('law-search');
     const resultsContainer = document.getElementById('law-search-results');
+    
+    if (!searchInput || !resultsContainer) return;
+    
+    const query = searchInput.value.toLowerCase().trim();
     
     if (query.length < 2) {
         resultsContainer.style.display = 'none';
@@ -503,7 +513,7 @@ function searchLaws() {
         
         if (fullText.toLowerCase().includes(query)) {
             const highlighted = content.substring(0, 150).replace(
-                new RegExp(`(${query})`, 'gi'), 
+                new RegExp(`(${query})`, 'gi'),
                 '<span class="law-search-highlight">$1</span>'
             );
             
@@ -517,22 +527,26 @@ function searchLaws() {
     
     if (results.length > 0) {
         resultsContainer.innerHTML = results.slice(0, 5).map(r => `
-            <div class="law-search-result" onclick="scrollToLawItem(this)">
+            <div class="law-search-result">
                 <div class="law-search-title">${r.title}</div>
                 <div class="law-search-text">${r.content}</div>
             </div>
         `).join('');
         resultsContainer.style.display = 'block';
+        
+        // Добавляем обработчики кликов
+        resultsContainer.querySelectorAll('.law-search-result').forEach((item, idx) => {
+            item.addEventListener('click', function() {
+                scrollToLawItem(idx, query);
+            });
+        });
     } else {
-        resultsContainer.innerHTML = '<div style="padding: 0.5rem; color: #6b7280;">Ничего не найдено 😕</div>';
+        resultsContainer.innerHTML = '<div style="padding: 0.5rem; color: var(--text-muted);">Ничего не найдено 😕</div>';
         resultsContainer.style.display = 'block';
     }
 }
 
-function scrollToLawItem(el) {
-    const index = Array.from(el.parentElement.children).indexOf(el);
-    const query = document.getElementById('law-search').value.toLowerCase().trim();
-    
+function scrollToLawItem(index, query) {
     const allItems = document.querySelectorAll('.law-item');
     let matchIndex = 0;
     
@@ -545,26 +559,64 @@ function scrollToLawItem(el) {
                 item.setAttribute('open', '');
                 item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 item.style.backgroundColor = '#fef3c7';
-                setTimeout(() => item.style.backgroundColor = '', 2000);
+                setTimeout(() => {
+                    item.style.backgroundColor = '';
+                }, 2000);
             }
             matchIndex++;
         }
     });
     
-    document.getElementById('law-search-results').style.display = 'none';
-    document.getElementById('law-search').value = '';
+    const resultsContainer = document.getElementById('law-search-results');
+    const searchInput = document.getElementById('law-search');
+    if (resultsContainer) resultsContainer.style.display = 'none';
+    if (searchInput) searchInput.value = '';
 }
 
-document.addEventListener('click', function(e) {
-    const searchInput = document.getElementById('law-search');
-    const resultsContainer = document.getElementById('law-search-results');
-    if (searchInput && resultsContainer && !searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
-        resultsContainer.style.display = 'none';
+// 🖱️ ОБРАБОТЧИКИ СОБЫТИЙ
+function initEventListeners() {
+    // Кнопки меню
+    document.querySelectorAll('.menu-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const section = this.getAttribute('data-section');
+            if (section) showSection(section);
+        });
+    });
+    
+    // Кнопки "Назад"
+    document.querySelectorAll('[data-back]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.getAttribute('data-back');
+            if (target) showSection(target);
+        });
+    });
+    
+    // Поиск по законам
+    const lawSearch = document.getElementById('law-search');
+    if (lawSearch) {
+        lawSearch.addEventListener('input', searchLaws);
     }
-});
+    
+    // Закрытие поиска по законам при клике вне
+    document.addEventListener('click', function(e) {
+        const lawSearch = document.getElementById('law-search');
+        const lawResults = document.getElementById('law-search-results');
+        if (lawSearch && lawResults && !lawSearch.contains(e.target) && !lawResults.contains(e.target)) {
+            lawResults.style.display = 'none';
+        }
+    });
+}
 
-// Инициализация
+// 🚀 ИНИЦИАЛИЗАЦИЯ
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Road Smart Aid загружен!');
+    
+    // Инициализация
+    initEventListeners();
+    initPWA();
+    registerServiceWorker();
+    loadLastCheckDate();
+    
+    // Показываем главное меню
     showSection('main-menu');
 });
