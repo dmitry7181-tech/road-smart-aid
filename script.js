@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v2.1
+// ROAD SMART AID - JavaScript v3.0
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -58,10 +58,8 @@ const searchSynonyms = {
 // 🔤 Функция нормализации запроса (добавляет точки к п./ст.)
 function normalizeQuery(query) {
     let normalized = query.toLowerCase();
-    // п 48 → п. 48, ст 5 → ст. 5
     normalized = normalized.replace(/(\bп)\s+(\d+)/gi, '$1. $2');
     normalized = normalized.replace(/(\bст)\s+(\d+)/gi, '$1. $2');
-    // убираем лишние пробелы
     normalized = normalized.replace(/\s+/g, ' ').trim();
     return normalized;
 }
@@ -140,6 +138,12 @@ const searchData = [
         content: 'Порядок действий инспектора при остановке: представиться (п. 10), назвать причину, предъявить удостоверение, п. 48-52 Приказа №264'
     },
     {
+        section: 'stop',
+        title: '🍺 Освидетельствование на опьянение',
+        keywords: ['освидетельствование', 'алкоголь', 'опьянение', 'алкотестер', 'трубка', 'отказ', 'ст. 12.26', 'ст. 12.8', 'ст. 27.12', 'лишение прав', '30000', 'понятые', 'акт', 'медицинское', 'нарколог', 'предлагаю', 'требование'],
+        content: 'Освидетельствование на состояние опьянения: отказ = лишение прав 1.5-2 года + штраф 30000₽. Говорите: «Я не отказываюсь, требую процедуру с понятыми»'
+    },
+    {
         section: 'powers',
         title: '⚡ Полномочия инспектора',
         keywords: ['полномочия', 'права', 'инспектор', 'п. 47', 'п 47', 'остановка тс', 'проверка', 'гаи', 'дпс', 'п. 53', 'п 53'],
@@ -180,13 +184,13 @@ const searchData = [
         title: '📚 Главное меню',
         keywords: ['меню', 'разделы', 'навигация'],
         content: 'Все разделы приложения: Остановка, Полномочия, Документы, Осмотр, ДТП, Права'
-    }
-        {
-        section: 'stop',
-        title: '🍺 Освидетельствование на опьянение',
-        keywords: ['освидетельствование', 'алкоголь', 'опьянение', 'алкотестер', 'трубка', 'отказ', 'ст. 12.26', 'ст. 12.8', 'ст. 27.12', 'лишение прав', '30000', 'понятые', 'акт', 'медицинское', 'нарколог', 'предлагаю', 'требование'],
-        content: 'Освидетельствование на состояние опьянения: отказ = лишение прав 1.5-2 года + штраф 30000₽. Говорите: «Я не отказываюсь, требую процедуру с понятыми»'
     },
+    {
+        section: 'laws',
+        title: '📚 Справочник законов',
+        keywords: ['законы', 'коап', 'пдд', 'приказ', 'мвд', '264', 'конституция', 'полиция', 'аккордеон'],
+        content: 'Полный справочник законов: Приказ МВД №264, КоАП РФ, ПДД РФ, ФЗ О полиции, Конституция РФ'
+    }
 ];
 
 // 🔍 УЛУЧШЕННАЯ функция поиска
@@ -327,7 +331,39 @@ if ('serviceWorker' in navigator) {
             })
             .catch(err => console.log('❌ SW error:', err));
     });
-    // ===================================
+}
+
+// 📱 PWA: Установка приложения
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('✅ PWA: Готова к установке');
+});
+
+async function installApp() {
+    if (!deferredPrompt) {
+        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
+        return;
+    }
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+        console.log('✅ PWA: Пользователь установил приложение');
+    }
+    
+    deferredPrompt = null;
+}
+
+window.addEventListener('appinstalled', () => {
+    console.log('✅ PWA: Приложение установлено!');
+    deferredPrompt = null;
+});
+
+// ===================================
 // 📚 Поиск по законам
 // ===================================
 
@@ -406,7 +442,7 @@ function scrollToLawItem(el) {
     document.getElementById('law-search').value = '';
 }
 
-// Закрыть поиск при клике вне
+// Закрыть поиск по законам при клике вне
 document.addEventListener('click', function(e) {
     const searchInput = document.getElementById('law-search');
     const resultsContainer = document.getElementById('law-search-results');
@@ -414,89 +450,8 @@ document.addEventListener('click', function(e) {
         resultsContainer.style.display = 'none';
     }
 });
-}
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', function() {
     showSection('main-menu');
 });
-// ===================================
-// 📱 PWA: Установка приложения
-// ===================================
-
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    console.log('✅ PWA: Готова к установке');
-    showInstallButton();
-});
-
-function showInstallButton() {
-    if (document.getElementById('install-pwa-btn')) return;
-    
-    const installBtn = document.createElement('button');
-    installBtn.id = 'install-pwa-btn';
-    installBtn.textContent = '📱 Установить приложение';
-    installBtn.className = 'btn btn-full';
-    installBtn.style.cssText = 'position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 90%; max-width: 400px;';
-    
-    installBtn.onclick = installApp;
-    document.body.appendChild(installBtn);
-}
-
-async function installApp() {
-    if (!deferredPrompt) {
-        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
-        return;
-    }
-    
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-        console.log('✅ PWA: Пользователь установил приложение');
-        const btn = document.getElementById('install-pwa-btn');
-        if (btn) btn.remove();
-    }
-    
-    deferredPrompt = null;
-}
-
-window.addEventListener('appinstalled', () => {
-    console.log('✅ PWA: Приложение установлено!');
-    deferredPrompt = null;
-    const btn = document.getElementById('install-pwa-btn');
-    if (btn) btn.remove();
-});
-// 🔍 PWA Debug: Проверка условий установки
-async function checkPWAStatus() {
-    console.log('🔍 PWA Debug: Проверка...');
-    
-    // 1. manifest.json
-    const manifest = await fetch('manifest.json').then(r => r.json()).catch(() => null);
-    console.log('📋 manifest.json:', manifest ? '✅ Загружен' : '❌ Ошибка');
-    
-    // 2. Service Worker
-    if ('serviceWorker' in navigator) {
-        const reg = await navigator.serviceWorker.getRegistration();
-        console.log('🔧 Service Worker:', reg ? '✅ Активен' : '❌ Не активен');
-    }
-    
-    // 3. HTTPS
-    console.log('🔒 HTTPS:', location.protocol === 'https:' ? '✅ Да' : '❌ Нет');
-    
-    // 4. Иконки
-    if (manifest?.icons) {
-        for (const icon of manifest.icons) {
-            const img = new Image();
-            img.src = icon.src;
-            img.onload = () => console.log(`🖼️ Иконка ${icon.src}: ✅ Загружена`);
-            img.onerror = () => console.log(`🖼️ Иконка ${icon.src}: ❌ 404`);
-        }
-    }
-}
-
-// Запустить проверку через 3 секунды после загрузки
-setTimeout(checkPWAStatus, 3000);
