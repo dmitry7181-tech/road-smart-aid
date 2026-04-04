@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v3.5
+// ROAD SMART AID - JavaScript v4.0
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -199,6 +199,8 @@ function searchContent() {
     const query = normalizeQuery(rawQuery);
     const resultsContainer = document.getElementById('search-results');
     
+    console.log('🔍 Поиск:', rawQuery, '->', query);
+    
     if (query.length < 2) {
         if (resultsContainer) resultsContainer.style.display = 'none';
         return;
@@ -211,12 +213,16 @@ function searchContent() {
         }
     });
     
+    console.log('📋 Search terms:', searchTerms);
+    
     const searchDataResults = searchData.filter(item => {
         const searchText = (item.title + ' ' + item.content + ' ' + item.keywords.join(' ')).toLowerCase();
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    // Поиск по разделам с ЭКСПЕРТНЫМ приоритетом
+    console.log('📊 searchDataResults:', searchDataResults.length);
+    
+    // Поиск по разделам с ПРИОРИТЕТОМ
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
@@ -229,32 +235,23 @@ function searchContent() {
                 if (relevance > 0.3) {
                     let targetElementId = null;
                     
-                    // 🔥 ПРИОРИТЕТ 0: ОСОБАЯ ОБРАБОТКА для "освидетельствование"
-                    if (term.includes('освидетельствование') && sectionId === 'stop') {
-                        const allDetails = section.querySelectorAll('details');
-                        for (let d = 0; d < allDetails.length; d++) {
-                            const details = allDetails[d];
-                            const summary = details.querySelector('summary');
-                            if (summary && summary.textContent.toLowerCase().includes('освидетельствование')) {
-                                if (!details.id) details.id = `search-osvid-${d}`;
-                                targetElementId = details.id;
-                                console.log('✅ Нашёл освидетельствование в аккордеоне:', details.id);
-                                break;
-                            }
-                        }
-                    }
+                    // 🔥 ПРИОРИТЕТ 1: Заголовки аккордеонов (summary)
+                    const accordionSummaries = section.querySelectorAll('details summary');
+                    console.log(`📑 Проверяю аккордеоны в ${sectionId}:`, accordionSummaries.length);
                     
-                    // ПРИОРИТЕТ 1: Заголовки аккордеонов (summary)
-                    if (!targetElementId) {
-                        const accordionSummaries = section.querySelectorAll('details summary');
-                        for (let idx = 0; idx < accordionSummaries.length; idx++) {
-                            const summary = accordionSummaries[idx];
-                            if (summary.textContent.toLowerCase().includes(term.toLowerCase())) {
-                                const parentDetails = summary.closest('details');
-                                if (!parentDetails.id) parentDetails.id = `search-${sectionId}-acc-${idx}`;
-                                targetElementId = parentDetails.id;
-                                break;
+                    for (let idx = 0; idx < accordionSummaries.length; idx++) {
+                        const summary = accordionSummaries[idx];
+                        const summaryText = summary.textContent.toLowerCase();
+                        console.log(`  Аккордеон ${idx}:`, summaryText);
+                        
+                        if (summaryText.includes(term.toLowerCase())) {
+                            const parentDetails = summary.closest('details');
+                            if (!parentDetails.id) {
+                                parentDetails.id = `search-${sectionId}-acc-${idx}-${Date.now()}`;
                             }
+                            targetElementId = parentDetails.id;
+                            console.log(`✅ Нашёл в аккордеоне:`, targetElementId);
+                            break;
                         }
                     }
                     
@@ -265,8 +262,27 @@ function searchContent() {
                             const header = stepHeaders[idx];
                             if (header.textContent.toLowerCase().includes(term.toLowerCase())) {
                                 const parentStep = header.closest('.step');
-                                if (!parentStep.id) parentStep.id = `search-${sectionId}-step-${idx}`;
+                                if (!parentStep.id) {
+                                    parentStep.id = `search-${sectionId}-step-${idx}-${Date.now()}`;
+                                }
                                 targetElementId = parentStep.id;
+                                console.log(`✅ Нашёл в шаге:`, targetElementId);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // ПРИОРИТЕТ 3: Заголовки h3, h4
+                    if (!targetElementId) {
+                        const headers = section.querySelectorAll('h3, h4');
+                        for (let idx = 0; idx < headers.length; idx++) {
+                            const h = headers[idx];
+                            if (h.textContent.toLowerCase().includes(term.toLowerCase())) {
+                                if (!h.id) {
+                                    h.id = `search-${sectionId}-h-${idx}-${Date.now()}`;
+                                }
+                                targetElementId = h.id;
+                                console.log(`✅ Нашёл в заголовке:`, targetElementId);
                                 break;
                             }
                         }
@@ -280,6 +296,8 @@ function searchContent() {
                         targetElementId: targetElementId,
                         searchTerm: term
                     });
+                    
+                    console.log(`➕ Добавлен результат:`, sectionId, 'target:', targetElementId);
                 }
             }
         });
@@ -289,15 +307,20 @@ function searchContent() {
     allResults.sort((a, b) => (b.relevance || 1) - (a.relevance || 1));
     const uniqueResults = allResults.filter((v, i, a) => a.findIndex(t => t.section === v.section) === i);
     
+    console.log('📊 Итого результатов:', uniqueResults.length);
+    
     if (resultsContainer) {
         if (uniqueResults.length > 0) {
-            resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => `
-                <div class="search-result-item" onclick="openSectionAndScroll('${item.section}', '${item.targetElementId || ''}')">
+            resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => {
+                const targetId = item.targetElementId || '';
+                console.log(`📝 Результат: ${item.section}, target: ${targetId}`);
+                return `
+                <div class="search-result-item" onclick="openSectionAndScroll('${item.section}', '${targetId}')">
                     <div class="search-result-title">${item.title}</div>
                     <div class="search-result-text">${highlightText(item.content, rawQuery)}</div>
                     <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
                 </div>
-            `).join('');
+            `}).join('');
             resultsContainer.style.display = 'block';
         } else {
             resultsContainer.innerHTML = '<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте: "п 48", "ст 5", "гаи", "дтп"</small></div>';
@@ -320,6 +343,7 @@ document.addEventListener('click', function(e) {
 
 // 📱 Переключение разделов
 function showSection(id) {
+    console.log('📱 Открываю раздел:', id);
     document.querySelectorAll('.section').forEach(el => {
         el.classList.remove('active');
         el.style.setProperty('display', 'none', 'important');
@@ -345,16 +369,23 @@ function showSection(id) {
 
 // 🎯 Открыть раздел и прокрутить к элементу
 function openSectionAndScroll(sectionId, targetElementId) {
+    console.log('🎯 Открываю раздел:', sectionId, 'target:', targetElementId);
     showSection(sectionId);
     
     setTimeout(() => {
+        // Раскрываем ВСЕ аккордеоны в разделе
         const accordions = document.querySelectorAll(`#${sectionId} details`);
         accordions.forEach(acc => acc.setAttribute('open', ''));
+        console.log(`📂 Раскрыто аккордеонов:`, accordions.length);
         
-        if (targetElementId) {
+        // Если есть ID конкретного элемента - скроллим к нему
+        if (targetElementId && targetElementId.trim() !== '') {
+            console.log('🔍 Ищу элемент:', targetElementId);
             const target = document.getElementById(targetElementId);
             if (target) {
+                console.log('✅ Нашёл элемент:', target);
                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
                 const originalBg = target.style.backgroundColor;
                 const originalTransition = target.style.transition;
                 target.style.transition = 'all 0.3s ease';
@@ -367,8 +398,11 @@ function openSectionAndScroll(sectionId, targetElementId) {
                     target.style.boxShadow = '';
                     target.style.transition = originalTransition;
                 }, 3000);
+            } else {
+                console.error('❌ Не нашёл элемент:', targetElementId);
             }
         } else {
+            console.log('⚠️ Нет targetElementId, скроллим к разделу');
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -531,5 +565,6 @@ document.addEventListener('click', function(e) {
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ Road Smart Aid загружен!');
     showSection('main-menu');
 });
