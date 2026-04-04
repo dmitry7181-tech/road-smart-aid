@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v3.1
+// ROAD SMART AID - JavaScript v3.2
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -216,6 +216,7 @@ function searchContent() {
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
+    // Поиск по разделам с поиском КОНКРЕТНОГО элемента
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
@@ -226,11 +227,16 @@ function searchContent() {
             if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
                 const relevance = fuzzyMatch(term, sectionText);
                 if (relevance > 0.3) {
-                    let targetElement = null;
-                    const elements = section.querySelectorAll('.step, .info-card, .law-item, details');
-                    elements.forEach(el => {
-                        if (el.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElement) {
-                            targetElement = el;
+                    // Ищем КОНКРЕТНЫЙ элемент внутри раздела
+                    let targetElementId = null;
+                    const elements = section.querySelectorAll('.step, .info-card, details, h3, h4');
+                    elements.forEach((el, idx) => {
+                        if (el.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElementId) {
+                            // Создаём уникальный ID если нет
+                            if (!el.id) {
+                                el.id = `search-target-${sectionId}-${idx}`;
+                            }
+                            targetElementId = el.id;
                         }
                     });
                     
@@ -239,7 +245,7 @@ function searchContent() {
                         title: sectionTitle,
                         content: sectionText.substring(0, 150) + '...',
                         relevance: relevance,
-                        targetElement: targetElement,
+                        targetElementId: targetElementId,
                         searchTerm: term
                     });
                 }
@@ -254,7 +260,7 @@ function searchContent() {
     if (resultsContainer) {
         if (uniqueResults.length > 0) {
             resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => `
-                <div class="search-result-item" onclick="openSectionAndScroll('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
+                <div class="search-result-item" onclick="openSectionAndScroll('${item.section}', '${item.targetElementId || ''}')">
                     <div class="search-result-title">${item.title}</div>
                     <div class="search-result-text">${highlightText(item.content, rawQuery)}</div>
                     <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
@@ -305,27 +311,51 @@ function showSection(id) {
     window.scrollTo(0, 0);
 }
 
-// 🎯 Открыть раздел и прокрутить к найденному элементу
-function openSectionAndScroll(sectionId) {
+// 🎯 Открыть раздел и прокрутить к КОНКРЕТНОМУ элементу
+function openSectionAndScroll(sectionId, targetElementId) {
     showSection(sectionId);
     
     setTimeout(() => {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            // Раскрываем все аккордеоны в разделе
-            const accordions = section.querySelectorAll('details');
-            accordions.forEach(acc => acc.setAttribute('open', ''));
-            
-            // Прокрутка к разделу
-            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            
-            // Подсветка на 3 секунды
-            section.style.transition = 'background 0.3s';
-            section.style.backgroundColor = '#fef3c7';
-            setTimeout(() => {
-                section.style.backgroundColor = '';
-            }, 3000);
+        // Раскрываем все аккордеоны в разделе
+        const accordions = document.querySelectorAll(`#${sectionId} details`);
+        accordions.forEach(acc => acc.setAttribute('open', ''));
+        
+        // Если есть ID конкретного элемента - скроллим к нему
+        if (targetElementId) {
+            const target = document.getElementById(targetElementId);
+            if (target) {
+                // Плавная прокрутка к элементу
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Яркая подсветка элемента на 3 секунды
+                const originalBg = target.style.backgroundColor;
+                const originalTransition = target.style.transition;
+                target.style.transition = 'all 0.3s ease';
+                target.style.backgroundColor = '#fef3c7';
+                target.style.boxShadow = '0 0 0 4px #fbbf24';
+                target.style.borderRadius = '8px';
+                
+                setTimeout(() => {
+                    target.style.backgroundColor = originalBg;
+                    target.style.boxShadow = '';
+                    target.style.transition = originalTransition;
+                }, 3000);
+            }
+        } else {
+            // Если нет конкретного элемента - скроллим к разделу
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
+        
+        // Скрываем результаты поиска
+        const resultsContainer = document.getElementById('search-results');
+        if (resultsContainer) resultsContainer.style.display = 'none';
+        
+        // Очищаем поле поиска
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.value = '';
     }, 300);
 }
 
