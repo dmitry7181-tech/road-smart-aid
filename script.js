@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v3.3
+// ROAD SMART AID - JavaScript v3.5
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -193,7 +193,7 @@ const searchData = [
     }
 ];
 
-// 🔍 УЛУЧШЕННАЯ функция поиска (ЭКСПЕРТНАЯ v3.5)
+// 🔍 УЛУЧШЕННАЯ функция поиска
 function searchContent() {
     const rawQuery = document.getElementById('search-input').value.trim();
     const query = normalizeQuery(rawQuery);
@@ -305,6 +305,17 @@ function searchContent() {
         }
     }
 }
+
+// Закрыть поиск при клике вне
+document.addEventListener('click', function(e) {
+    const searchInput = document.getElementById('search-input');
+    const resultsContainer = document.getElementById('search-results');
+    if (searchInput && resultsContainer) {
+        const searchContainer = searchInput.parentElement;
+        if (!searchContainer.contains(e.target)) {
+            resultsContainer.style.display = 'none';
+        }
+    }
 });
 
 // 📱 Переключение разделов
@@ -332,23 +343,18 @@ function showSection(id) {
     window.scrollTo(0, 0);
 }
 
-// 🎯 Открыть раздел и прокрутить к КОНКРЕТНОМУ элементу
+// 🎯 Открыть раздел и прокрутить к элементу
 function openSectionAndScroll(sectionId, targetElementId) {
     showSection(sectionId);
     
     setTimeout(() => {
-        // Раскрываем ВСЕ аккордеоны в разделе
         const accordions = document.querySelectorAll(`#${sectionId} details`);
         accordions.forEach(acc => acc.setAttribute('open', ''));
         
-        // Если есть ID конкретного элемента - скроллим к нему
         if (targetElementId) {
             const target = document.getElementById(targetElementId);
             if (target) {
-                // Плавная прокрутка к элементу
                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Яркая подсветка элемента на 3 секунды
                 const originalBg = target.style.backgroundColor;
                 const originalTransition = target.style.transition;
                 target.style.transition = 'all 0.3s ease';
@@ -363,18 +369,15 @@ function openSectionAndScroll(sectionId, targetElementId) {
                 }, 3000);
             }
         } else {
-            // Если нет конкретного элемента - скроллим к разделу
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
         
-        // Скрываем результаты поиска
         const resultsContainer = document.getElementById('search-results');
         if (resultsContainer) resultsContainer.style.display = 'none';
         
-        // Очищаем поле поиска
         const searchInput = document.getElementById('search-input');
         if (searchInput) searchInput.value = '';
     }, 300);
