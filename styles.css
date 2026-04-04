@@ -1,5 +1,5 @@
 /* ===================================
-   ROAD SMART AID - styles.css v5.0
+   ROAD SMART AID - styles.css v5.1
    Профессиональная архитектура: только стили
    =================================== */
 
@@ -76,6 +76,7 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 1rem;
+    overflow: hidden;
 }
 
 /* 🧭 HEADER */
@@ -246,6 +247,12 @@ body {
 
 .section.active {
     display: block;
+}
+
+/* Скрываем аккордеоны внутри неактивных разделов */
+.section:not(.active) .law-accordion,
+.section:not(.active) .accordion-osvidetelstvovanie {
+    display: none !important;
 }
 
 @keyframes fadeIn {
@@ -853,11 +860,13 @@ body {
     padding: 0.75rem;
     text-align: left;
     border: 1px solid #fcd34d;
-} 
-/* ===================================
-   📊 ТАБЛИЦЫ С ДАННЫМИ (НОВОЕ)
-   =================================== */
+}
 
+.osvid-table th {
+    font-weight: 600;
+}
+
+/* 📊 ТАБЛИЦЫ С ДАННЫМИ */
 .table-container {
     overflow-x: auto;
     margin: 1rem 0;
@@ -892,33 +901,7 @@ body {
     background: var(--bg);
 }
 
-/* Адаптив для таблиц */
-@media (max-width: 768px) {
-    .data-table {
-        font-size: 0.75rem;
-    }
-    
-    .data-table th,
-    .data-table td {
-        padding: 0.5rem;
-    }
-}
-
-/* Тёмная тема для таблиц */
-@media (prefers-color-scheme: dark) {
-    .data-table {
-        background: var(--card);
-    }
-    
-    .data-table thead tr {
-        background: var(--primary-hover);
-    }
-}
-
-/* ===================================
-   📜 ПОЛНЫЙ ТЕКСТ ЗАКОНОВ (НОВОЕ)
-   =================================== */
-
+/* 📜 ПОЛНЫЙ ТЕКСТ ЗАКОНОВ */
 .law-full-text {
     margin: 1rem 0;
     padding-left: 1.5rem;
@@ -950,17 +933,6 @@ body {
     border-left: none;
     padding-left: 0.5rem;
     margin: 0.25rem 0;
-}
-
-/* Тёмная тема для полного текста */
-@media (prefers-color-scheme: dark) {
-    .law-full-text li {
-        border-left-color: var(--border);
-    }
-}
-
-.osvid-table th {
-    font-weight: 600;
 }
 
 /* 📄 FOOTER */
@@ -1045,12 +1017,26 @@ body {
         font-size: 1.25rem;
     }
     
-    .osvid-table {
+    .osvid-table,
+    .data-table {
         font-size: 0.8rem;
     }
     
     .osvid-table th,
-    .osvid-table td {
+    .osvid-table td,
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .data-table {
+        font-size: 0.75rem;
+    }
+    
+    .data-table th,
+    .data-table td {
         padding: 0.5rem;
     }
 }
@@ -1114,43 +1100,15 @@ input:focus-visible {
     .law-item-content code {
         background: var(--border);
     }
-}
-/* 📜 Полный текст законов */
-.law-full-text {
-    margin: 1rem 0;
-    padding-left: 1.5rem;
-    line-height: 1.8;
-    list-style: none;
-    counter-reset: law-item;
-}
-
-.law-full-text li {
-    margin: 0.75rem 0;
-    padding-left: 0.5rem;
-    border-left: 2px solid var(--border);
-    padding-left: 1rem;
-}
-
-.law-full-text li strong {
-    color: var(--primary);
-    display: inline-block;
-    min-width: 3rem;
-}
-
-.law-full-text ul {
-    margin: 0.5rem 0;
-    padding-left: 1.5rem;
-    list-style: disc;
-}
-
-.law-full-text ul li {
-    border-left: none;
-    padding-left: 0.5rem;
-    margin: 0.25rem 0;
-}
-
-/* Тёмная тема для полного текста */
-@media (prefers-color-scheme: dark) {
+    
+    .data-table {
+        background: var(--card);
+    }
+    
+    .data-table thead tr {
+        background: var(--primary-hover);
+    }
+    
     .law-full-text li {
         border-left-color: var(--border);
     }
