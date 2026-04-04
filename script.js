@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v3.2
+// ROAD SMART AID - JavaScript v3.3
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -216,7 +216,7 @@ function searchContent() {
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    // Поиск по разделам с УМНЫМ поиском элементов
+    // Поиск по разделам с УМНЫМ приоритетным поиском элементов
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
@@ -227,39 +227,61 @@ function searchContent() {
             if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
                 const relevance = fuzzyMatch(term, sectionText);
                 if (relevance > 0.3) {
-                    // УМНЫЙ поиск элемента с приоритетом
+                    // УМНЫЙ поиск элемента с ПРИОРИТЕТОМ
                     let targetElementId = null;
                     
-                    // 1. Сначала ищем в details (аккордеоны) - ВЫСОКИЙ ПРИОРИТЕТ
+                    // ПРИОРИТЕТ 1: Ищем в details (аккордеоны) - САМЫЙ ВЫСОКИЙ ПРИОРИТЕТ
                     const accordions = section.querySelectorAll('details');
-                    accordions.forEach((acc, idx) => {
+                    for (let idx = 0; idx < accordions.length; idx++) {
+                        const acc = accordions[idx];
                         const summary = acc.querySelector('summary')?.textContent.toLowerCase() || '';
-                        if (summary.includes(term.toLowerCase()) && !targetElementId) {
+                        const fullText = acc.textContent.toLowerCase();
+                        
+                        // Проверяем точное совпадение в заголовке summary
+                        if (summary.includes(term.toLowerCase())) {
                             if (!acc.id) acc.id = `search-${sectionId}-acc-${idx}`;
                             targetElementId = acc.id;
+                            break; // Нашли в аккордеоне - выходим
                         }
-                    });
-                    
-                    // 2. Если не нашли - ищем в заголовках
-                    if (!targetElementId) {
-                        const headers = section.querySelectorAll('h3, h4, .step strong');
-                        headers.forEach((h, idx) => {
-                            if (h.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElementId) {
-                                if (!h.id) h.id = `search-${sectionId}-h-${idx}`;
-                                targetElementId = h.id;
-                            }
-                        });
                     }
                     
-                    // 3. Если всё ещё не нашли - ищем в info-card
+                    // ПРИОРИТЕТ 2: Если не нашли в аккордеонах - ищем в заголовках h3, h4
+                    if (!targetElementId) {
+                        const headers = section.querySelectorAll('h3, h4');
+                        for (let idx = 0; idx < headers.length; idx++) {
+                            const h = headers[idx];
+                            if (h.textContent.toLowerCase().includes(term.toLowerCase())) {
+                                if (!h.id) h.id = `search-${sectionId}-h-${idx}`;
+                                targetElementId = h.id;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // ПРИОРИТЕТ 3: Если не нашли - ищем в .step (шаги)
+                    if (!targetElementId) {
+                        const steps = section.querySelectorAll('.step');
+                        for (let idx = 0; idx < steps.length; idx++) {
+                            const step = steps[idx];
+                            if (step.textContent.toLowerCase().includes(term.toLowerCase())) {
+                                if (!step.id) step.id = `search-${sectionId}-step-${idx}`;
+                                targetElementId = step.id;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // ПРИОРИТЕТ 4: Если всё ещё не нашли - ищем в .info-card
                     if (!targetElementId) {
                         const cards = section.querySelectorAll('.info-card');
-                        cards.forEach((card, idx) => {
-                            if (card.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElementId) {
+                        for (let idx = 0; idx < cards.length; idx++) {
+                            const card = cards[idx];
+                            if (card.textContent.toLowerCase().includes(term.toLowerCase())) {
                                 if (!card.id) card.id = `search-${sectionId}-card-${idx}`;
                                 targetElementId = card.id;
+                                break;
                             }
-                        });
+                        }
                     }
                     
                     sectionResults.push({
@@ -295,6 +317,7 @@ function searchContent() {
         }
     }
 }
+
 // Закрыть поиск при клике вне
 document.addEventListener('click', function(e) {
     const searchInput = document.getElementById('search-input');
@@ -337,7 +360,7 @@ function openSectionAndScroll(sectionId, targetElementId) {
     showSection(sectionId);
     
     setTimeout(() => {
-        // Раскрываем все аккордеоны в разделе
+        // Раскрываем ВСЕ аккордеоны в разделе
         const accordions = document.querySelectorAll(`#${sectionId} details`);
         accordions.forEach(acc => acc.setAttribute('open', ''));
         
