@@ -1,5 +1,5 @@
 // ===================================
-// ROAD SMART AID - JavaScript v3.0
+// ROAD SMART AID - JavaScript v3.1
 // ===================================
 
 // 📚 Словарь синонимов для поиска
@@ -55,7 +55,7 @@ const searchSynonyms = {
     'пдд': ['правила', 'дорожное', 'движение']
 };
 
-// 🔤 Функция нормализации запроса (добавляет точки к п./ст.)
+// 🔤 Функция нормализации запроса
 function normalizeQuery(query) {
     let normalized = query.toLowerCase();
     normalized = normalized.replace(/(\bп)\s+(\d+)/gi, '$1. $2');
@@ -74,7 +74,7 @@ function normalizeText(text) {
         .trim();
 }
 
-// 🎯 Функция нечёткого поиска (Levenshtein)
+// 🎯 Функция нечёткого поиска
 function fuzzyMatch(query, text, threshold = 0.6) {
     query = normalizeText(query);
     text = normalizeText(text);
@@ -115,7 +115,7 @@ function levenshteinDistance(str1, str2) {
     return matrix[str2.length][str1.length];
 }
 
-// 🔍 Подсветка найденного текста (с синонимами)
+// 🔍 Подсветка найденного текста
 function highlightText(text, query) {
     const normalizedQuery = normalizeQuery(query);
     const terms = [query, normalizedQuery, ...(searchSynonyms[query] || []), ...(searchSynonyms[normalizedQuery] || [])];
@@ -204,7 +204,6 @@ function searchContent() {
         return;
     }
     
-    // Получаем синонимы + варианты с/без точек
     let searchTerms = [query, rawQuery];
     Object.keys(searchSynonyms).forEach(key => {
         if (query.includes(key) || searchSynonyms[key].includes(query) || rawQuery.includes(key)) {
@@ -212,13 +211,11 @@ function searchContent() {
         }
     });
     
-    // Поиск в searchData
     const searchDataResults = searchData.filter(item => {
         const searchText = (item.title + ' ' + item.content + ' ' + item.keywords.join(' ')).toLowerCase();
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    // Поиск по содержимому разделов
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
@@ -229,27 +226,35 @@ function searchContent() {
             if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
                 const relevance = fuzzyMatch(term, sectionText);
                 if (relevance > 0.3) {
+                    let targetElement = null;
+                    const elements = section.querySelectorAll('.step, .info-card, .law-item, details');
+                    elements.forEach(el => {
+                        if (el.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElement) {
+                            targetElement = el;
+                        }
+                    });
+                    
                     sectionResults.push({
                         section: sectionId,
                         title: sectionTitle,
                         content: sectionText.substring(0, 150) + '...',
-                        relevance: relevance
+                        relevance: relevance,
+                        targetElement: targetElement,
+                        searchTerm: term
                     });
                 }
             }
         });
     });
     
-    // Объединяем и сортируем
     const allResults = [...searchDataResults, ...sectionResults];
     allResults.sort((a, b) => (b.relevance || 1) - (a.relevance || 1));
     const uniqueResults = allResults.filter((v, i, a) => a.findIndex(t => t.section === v.section) === i);
     
-    // Отображаем
     if (resultsContainer) {
         if (uniqueResults.length > 0) {
             resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => `
-                <div class="search-result-item" onclick="showSection('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
+                <div class="search-result-item" onclick="openSectionAndScroll('${item.section}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value='';">
                     <div class="search-result-title">${item.title}</div>
                     <div class="search-result-text">${highlightText(item.content, rawQuery)}</div>
                     <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
@@ -298,6 +303,30 @@ function showSection(id) {
         }
     }
     window.scrollTo(0, 0);
+}
+
+// 🎯 Открыть раздел и прокрутить к найденному элементу
+function openSectionAndScroll(sectionId) {
+    showSection(sectionId);
+    
+    setTimeout(() => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            // Раскрываем все аккордеоны в разделе
+            const accordions = section.querySelectorAll('details');
+            accordions.forEach(acc => acc.setAttribute('open', ''));
+            
+            // Прокрутка к разделу
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Подсветка на 3 секунды
+            section.style.transition = 'background 0.3s';
+            section.style.backgroundColor = '#fef3c7';
+            setTimeout(() => {
+                section.style.backgroundColor = '';
+            }, 3000);
+        }
+    }, 300);
 }
 
 // 📅 Загрузка даты обновления
@@ -379,14 +408,12 @@ function searchLaws() {
     
     const results = [];
     
-    // Ищем по всем пунктам законов
     document.querySelectorAll('.law-item').forEach(item => {
         const header = item.querySelector('.law-item-header')?.textContent || '';
         const content = item.querySelector('.law-item-content')?.textContent || '';
         const fullText = header + ' ' + content;
         
         if (fullText.toLowerCase().includes(query)) {
-            // Подсветка найденного
             const highlighted = content.substring(0, 150).replace(
                 new RegExp(`(${query})`, 'gi'), 
                 '<span class="law-search-highlight">$1</span>'
@@ -400,7 +427,6 @@ function searchLaws() {
         }
     });
     
-    // Отображаем результаты
     if (results.length > 0) {
         resultsContainer.innerHTML = results.slice(0, 5).map(r => `
             <div class="law-search-result" onclick="scrollToLawItem(this)">
@@ -415,7 +441,6 @@ function searchLaws() {
     }
 }
 
-// Прокрутка к найденному пункту
 function scrollToLawItem(el) {
     const index = Array.from(el.parentElement.children).indexOf(el);
     const query = document.getElementById('law-search').value.toLowerCase().trim();
@@ -442,7 +467,6 @@ function scrollToLawItem(el) {
     document.getElementById('law-search').value = '';
 }
 
-// Закрыть поиск по законам при клике вне
 document.addEventListener('click', function(e) {
     const searchInput = document.getElementById('law-search');
     const resultsContainer = document.getElementById('law-search-results');
