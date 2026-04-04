@@ -1011,3 +1011,43 @@ input:focus-visible {
         background: var(--border);
     }
 }
+/* 📜 Полный текст законов */
+.law-full-text {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    line-height: 1.8;
+    list-style: none;
+    counter-reset: law-item;
+}
+
+.law-full-text li {
+    margin: 0.75rem 0;
+    padding-left: 0.5rem;
+    border-left: 2px solid var(--border);
+    padding-left: 1rem;
+}
+
+.law-full-text li strong {
+    color: var(--primary);
+    display: inline-block;
+    min-width: 3rem;
+}
+
+.law-full-text ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    list-style: disc;
+}
+
+.law-full-text ul li {
+    border-left: none;
+    padding-left: 0.5rem;
+    margin: 0.25rem 0;
+}
+
+/* Тёмная тема для полного текста */
+@media (prefers-color-scheme: dark) {
+    .law-full-text li {
+        border-left-color: var(--border);
+    }
+}
