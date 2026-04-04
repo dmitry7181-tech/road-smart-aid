@@ -216,7 +216,7 @@ function searchContent() {
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    // Поиск по разделам с поиском КОНКРЕТНОГО элемента
+    // Поиск по разделам с УМНЫМ поиском элементов
     const sectionResults = [];
     document.querySelectorAll('.section').forEach(section => {
         const sectionId = section.id;
@@ -227,18 +227,40 @@ function searchContent() {
             if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
                 const relevance = fuzzyMatch(term, sectionText);
                 if (relevance > 0.3) {
-                    // Ищем КОНКРЕТНЫЙ элемент внутри раздела
+                    // УМНЫЙ поиск элемента с приоритетом
                     let targetElementId = null;
-                    const elements = section.querySelectorAll('.step, .info-card, details, h3, h4');
-                    elements.forEach((el, idx) => {
-                        if (el.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElementId) {
-                            // Создаём уникальный ID если нет
-                            if (!el.id) {
-                                el.id = `search-target-${sectionId}-${idx}`;
-                            }
-                            targetElementId = el.id;
+                    
+                    // 1. Сначала ищем в details (аккордеоны) - ВЫСОКИЙ ПРИОРИТЕТ
+                    const accordions = section.querySelectorAll('details');
+                    accordions.forEach((acc, idx) => {
+                        const summary = acc.querySelector('summary')?.textContent.toLowerCase() || '';
+                        if (summary.includes(term.toLowerCase()) && !targetElementId) {
+                            if (!acc.id) acc.id = `search-${sectionId}-acc-${idx}`;
+                            targetElementId = acc.id;
                         }
                     });
+                    
+                    // 2. Если не нашли - ищем в заголовках
+                    if (!targetElementId) {
+                        const headers = section.querySelectorAll('h3, h4, .step strong');
+                        headers.forEach((h, idx) => {
+                            if (h.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElementId) {
+                                if (!h.id) h.id = `search-${sectionId}-h-${idx}`;
+                                targetElementId = h.id;
+                            }
+                        });
+                    }
+                    
+                    // 3. Если всё ещё не нашли - ищем в info-card
+                    if (!targetElementId) {
+                        const cards = section.querySelectorAll('.info-card');
+                        cards.forEach((card, idx) => {
+                            if (card.textContent.toLowerCase().includes(term.toLowerCase()) && !targetElementId) {
+                                if (!card.id) card.id = `search-${sectionId}-card-${idx}`;
+                                targetElementId = card.id;
+                            }
+                        });
+                    }
                     
                     sectionResults.push({
                         section: sectionId,
@@ -273,7 +295,6 @@ function searchContent() {
         }
     }
 }
-
 // Закрыть поиск при клике вне
 document.addEventListener('click', function(e) {
     const searchInput = document.getElementById('search-input');
