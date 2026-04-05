@@ -1028,6 +1028,304 @@ body {
     .data-table td {
         padding: 0.5rem;
     }
+   /* ===================================
+   📱 МОБИЛЬНАЯ АДАПТАЦИЯ (УЛУЧШЕННАЯ)
+   =================================== */
+
+@media (max-width: 640px) {
+    /* Уменьшаем шрифты */
+    .header-title {
+        font-size: 1.1rem;
+    }
+    
+    .header-subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+    }
+    
+    .law-title {
+        font-size: 0.9rem;
+    }
+    
+    .law-subtitle {
+        font-size: 0.75rem;
+    }
+    
+    /* Перенос текста */
+    .law-accordion-header,
+    .law-item-header,
+    .law-item-content,
+    .info-card,
+    .osvid-block,
+    .osvid-block h4,
+    .osvid-code,
+    .step-title,
+    .step-description,
+    .menu-title {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Аккордеоны - адаптивность */
+    .law-accordion-header {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+    
+    .law-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .law-header-content {
+        min-width: 0;
+    }
+    
+    .law-arrow {
+        flex-shrink: 0;
+    }
+    
+    /* Блоки освидетельствования */
+    .accordion-osvidetelstvovanie summary {
+        padding: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .osvid-block {
+        padding: 1rem;
+    }
+    
+    .osvid-block h4 {
+        font-size: 0.95rem;
+        word-wrap: break-word;
+    }
+    
+    .osvid-code {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    
+    .osvid-step strong {
+        font-size: 0.9rem;
+    }
+    
+    /* Таблицы */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table,
+    .osvid-table {
+        font-size: 0.75rem;
+        min-width: 300px;
+    }
+    
+    .data-table th,
+    .data-table td,
+    .osvid-table th,
+    .osvid-table td {
+        padding: 0.5rem;
+        white-space: nowrap;
+    }
+    
+    /* Меню */
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .menu-card {
+        padding: 1rem;
+    }
+    
+    .menu-icon {
+        font-size: 2rem;
+    }
+    
+    .menu-title {
+        font-size: 0.85rem;
+    }
+    
+    /* Шаги */
+    .step {
+        padding-left: 2.5rem;
+    }
+    
+    .step::before {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Info cards */
+    .info-card {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Кнопки */
+    .btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Поиск */
+    .search-input {
+        font-size: 0.9rem;
+        padding: 0.65rem;
+    }
+    
+    /* Экстренные номера */
+    .emergency-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .emergency-number {
+        font-size: 1.75rem;
+    }
+}
+
+/* Очень маленькие экраны (менее 360px) */
+@media (max-width: 360px) {
+    .header-title {
+        font-size: 1rem;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .law-title {
+        font-size: 0.85rem;
+    }
+    
+    .data-table,
+    .osvid-table {
+        font-size: 0.7rem;
+    }
+}
+
+/* ===================================
+   📱 ИСПРАВЛЕНИЕ ПЕРЕНОСА ТЕКСТА
+   =================================== */
+
+/* Для всех текстовых элементов */
+.law-accordion-header,
+.law-item-header,
+.law-item-content,
+.law-full-text,
+.osvid-block,
+.osvid-block h4,
+.osvid-code,
+.info-card,
+.step-title,
+.step-description,
+.step-reference,
+.menu-title,
+.footer-disclaimer,
+.footer-external,
+.footer-social {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
+/* Для заголовков аккордеонов */
+.law-accordion-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.law-header-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.law-title {
+    display: block;
+    word-break: break-word;
+}
+
+/* Для освидетельствования - особая обработка */
+.accordion-osvidetelstvovanie summary {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.accordion-osvidetelstvovanie .law-header-content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.accordion-osvidetelstvovanie .law-title {
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.accordion-osvidetelstvovanie .law-subtitle {
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+/* Код - перенос длинных строк */
+.osvid-code,
+code {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    display: block;
+    max-width: 100%;
+}
+
+/* Таблицы - горизонтальный скролл */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+.data-table,
+.osvid-table {
+    display: table;
+    width: 100%;
+    min-width: 300px;
+}
+
+/* Списки */
+.osvid-list,
+.law-full-text ul,
+.law-full-text ol {
+    padding-left: 1.25rem;
+    word-wrap: break-word;
+}
+
+/* Шаги */
+.step {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.step-title {
+    word-break: break-word;
+}
+
+.step-description {
+    word-break: break-word;
+}
 }
 
 @media (max-width: 768px) {
