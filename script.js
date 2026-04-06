@@ -511,28 +511,66 @@ const scrollToLawItem = (index, query) => {
     if (searchInput) searchInput.value = '';
 };
 
-/* 📅 Загрузка даты обновления */
-const loadLastCheckDate = () => {
+//* 📅 Загрузка даты обновления (для структуры legal-base.json v3.1.0) */
+const loadLastCheckDate = async () => {
     const el = document.getElementById('last-check');
     if (!el) return;
     
     el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
     
-    fetch('data/legal-base.json?t=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
-            if (data.metadata?.last_verified) {
-                el.innerText = data.metadata.last_verified.split('T')[0];
+    try {
+        const response = await fetch('data/legal-base.json?t=' + Date.now());
+        const data = await response.json();
+        
+        // Показываем дату последней проверки из metadata
+        if (data.metadata?.last_verified) {
+            const date = new Date(data.metadata.last_verified);
+            const formattedDate = date.toLocaleDateString('ru-RU', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            el.innerText = formattedDate;
+        }
+        
+        // Обновляем версию в футере
+        const versionEl = document.querySelector('.main-footer strong');
+        if (versionEl && data.metadata?.version) {
+            versionEl.innerText = `v${data.metadata.version}`;
+        }
+        
+        // Проверка на наличие ожидающих обновлений
+        if (data.documents) {
+            const pendingUpdates = Object.values(data.documents).filter(
+                doc => doc.update_pending === true
+            );
+            
+            if (pendingUpdates.length > 0 && !document.querySelector('.update-notice')) {
+                console.warn(`⚠️ Есть обновления: ${pendingUpdates.map(d => d.name).join(', ')}`);
+                
+                // Показать уведомление в футере
+                const footer = document.querySelector('.main-footer');
+                if (footer) {
+                    const notice = document.createElement('p');
+                    notice.className = 'text-muted text-center update-notice';
+                    notice.style.fontSize = '0.7rem';
+                    notice.style.color = 'var(--warning)';
+                    notice.style.marginBottom = '0.5rem';
+                    notice.innerHTML = `⚠️ Доступны обновления: ${pendingUpdates.length} документ(ов)`;
+                    footer.insertBefore(notice, footer.firstChild);
+                }
             }
-        })
-        .catch(() => {
-            if (window.location.hostname === 'localhost') {
-                console.warn('⚠️ Не удалось загрузить legal-base.json');
-            }
-            el.innerText = 'Онлайн';
-        });
+        }
+        
+    } catch (error) {
+        if (window.location.hostname === 'localhost') {
+            console.warn('⚠️ Не удалось загрузить legal-base.json:', error.message);
+        }
+        el.innerText = 'Онлайн';
+    }
 };
+ 
 
 /* 📱 Service Worker */
 const registerServiceWorker = async () => {
