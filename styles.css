@@ -1191,6 +1191,110 @@ input:focus-visible {
         margin-bottom: 0.25rem;
         color: var(--primary);
     }
+   /* 📊 ТАБЛИЦЫ — ПОЛНОЕ ИСПРАВЛЕНИЕ для мобильных */
+
+/* Разрешаем перенос текста во ВСЕХ ячейках */
+.data-table th,
+.data-table td {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 200px;
+}
+
+/* На мобильных — карточный вид вместо таблицы */
+@media (max-width: 639px) {
+    /* Скрываем горизонтальный скролл */
+    .table-container {
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: auto;
+    }
+    
+    /* Таблица становится блоком */
+    .data-table,
+    .data-table tbody,
+    .data-table tr,
+    .data-table th,
+    .data-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Скрываем шапку таблицы */
+    .data-table thead {
+        display: none;
+    }
+    
+    /* Каждая строка — отдельная карточка */
+    .data-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem;
+        background: var(--card);
+        box-shadow: var(--shadow);
+    }
+    
+    /* Ячейки */
+    .data-table td {
+        border: none;
+        padding: 0.5rem 0;
+        text-align: left;
+        font-size: 0.85rem;
+    }
+    
+    /* Добавляем заголовки перед каждой ячейкой */
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary);
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+    
+    /* Первая ячейка — заголовок карточки */
+    .data-table td:first-child {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .data-table td:first-child::before {
+        display: none;
+    }
+}
+
+/* Особое исправление для раздела Документы */
+@media (max-width: 639px) {
+    #docs .data-table {
+        font-size: 0.75rem;
+    }
+    
+    #docs .data-table th,
+    #docs .data-table td {
+        padding: 0.4rem;
+        word-break: break-word;
+    }
+}
+
+/* Особое исправление для раздела Осмотр и досмотр */
+@media (max-width: 639px) {
+    #search .data-table {
+        font-size: 0.7rem;
+    }
+    
+    #search .data-table th,
+    #search .data-table td {
+        padding: 0.35rem;
+        word-break: break-word;
+    }
+}
 }
  
  
