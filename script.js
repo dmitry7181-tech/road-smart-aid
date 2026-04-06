@@ -659,4 +659,44 @@ document.addEventListener('DOMContentLoaded', () => {
     registerServiceWorker();
     loadLastCheckDate();
     showSection('main-menu');
+   /* 🔄 ПРОВЕРКА ОБНОВЛЕНИЙ БАЗЫ */
+const checkLegalBaseUpdate = async () => {
+    try {
+        const response = await fetch('data/legal-base.json?t=' + Date.now());
+        const data = await response.json();
+        
+        const lastVerified = new Date(data.metadata.last_verified);
+        const today = new Date();
+        const daysSinceCheck = Math.floor((today - lastVerified) / (1000 * 60 * 60 * 24));
+        
+        // Если проверка была больше 30 дней назад
+        if (daysSinceCheck > 30) {
+            console.warn(`⚠️ База законов не проверялась ${daysSinceCheck} дней`);
+            
+            // Можно показать уведомление пользователю (опционально)
+            const footer = document.querySelector('.main-footer');
+            if (footer) {
+                const notice = document.createElement('p');
+                notice.className = 'text-muted text-center';
+                notice.style.fontSize = '0.7rem';
+                notice.innerHTML = '⚠️ Требуется проверка актуальности законов';
+                footer.insertBefore(notice, footer.firstChild);
+            }
+        }
+        
+        // Показываем версию в футере (опционально)
+        console.log(`📚 Версия базы: ${data.metadata.version}`);
+        
+    } catch (error) {
+        if (window.location.hostname === 'localhost') {
+            console.warn('⚠️ Не удалось проверить legal-base.json:', error.message);
+        }
+    }
+};
+
+// Запуск проверки при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    // ... существующий код ...
+    checkLegalBaseUpdate(); // ← Добавить эту строку
+});
 });
