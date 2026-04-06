@@ -1,6 +1,6 @@
 /* ===================================
-   ROAD SMART AID — PRODUCTION CSS v9.0
-   Mobile-first архитектура + Оптимизация
+   ROAD SMART AID — PRODUCTION CSS v10.0
+   Mobile-first + Все таблицы исправлены
    Профессиональный уровень
    =================================== */
 
@@ -81,11 +81,10 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Адаптивный базовый шрифт */
     font-size: clamp(14px, 1.2vw, 16px);
 }
 
-/* 📦 КОНТЕЙНЕР — расширен + адаптивный */
+/* 📦 КОНТЕЙНЕР */
 .container {
     width: 100%;
     max-width: 1200px;
@@ -125,7 +124,6 @@ body {
     font-size: clamp(0.9rem, 1.5vw, 1rem);
     background: rgba(255,255,255,0.95);
     color: var(--text);
-    /* Конкретные transition свойства */
     transition: var(--transition-border), var(--transition-shadow);
 }
 
@@ -197,7 +195,7 @@ body {
     color: var(--text-muted);
 }
 
-/* 🧭 МЕНЮ — mobile-first GRID */
+/* 🧭 МЕНЮ */
 .menu-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -212,7 +210,6 @@ body {
     text-align: center;
     cursor: pointer;
     border: 2px solid transparent;
-    /* Конкретные transition свойства */
     transition: var(--transition-transform), var(--transition-shadow), var(--transition-border);
     box-shadow: var(--shadow);
 }
@@ -392,7 +389,6 @@ body {
     color: #fff;
     font-weight: 600;
     margin: 0.5rem 0.5rem 0.5rem 0;
-    /* Конкретные transition свойства */
     transition: var(--transition-transform), background var(--transition-normal);
     text-align: center;
     text-decoration: none;
@@ -430,7 +426,7 @@ body {
     display: block;
 }
 
-/* 📊 ТАБЛИЦЫ — единые стили */
+/* 📊 ТАБЛИЦЫ — ИСПРАВЛЕНО (без скролла на мобильных) */
 .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -459,11 +455,15 @@ body {
     text-align: left;
     border: 1px solid var(--border);
     vertical-align: top;
+    /* Безопасный перенос текста */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 200px;
 }
 
 .data-table th {
     font-weight: 600;
-    white-space: nowrap;
 }
 
 .data-table tbody tr:hover,
@@ -471,7 +471,86 @@ body {
     background: var(--bg);
 }
 
-/* 📚 АККОРДЕОНЫ — единые стили */
+/* ТАБЛИЦЫ НА МОБИЛЬНЫХ — карточный вид (без скролла) */
+@media (max-width: 639px) {
+    /* Отключаем скролл для таблиц в разделах docs и search */
+    #docs .table-container,
+    #search .table-container {
+        overflow-x: hidden !important;
+    }
+    
+    /* Таблица становится блоком */
+    #docs .data-table,
+    #docs .data-table tbody,
+    #docs .data-table tr,
+    #docs .data-table th,
+    #docs .data-table td,
+    #search .data-table,
+    #search .data-table tbody,
+    #search .data-table tr,
+    #search .data-table th,
+    #search .data-table td {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    /* Скрываем шапку */
+    #docs .data-table thead,
+    #search .data-table thead {
+        display: none !important;
+    }
+    
+    /* Каждая строка — карточка */
+    #docs .data-table tr,
+    #search .data-table tr {
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem;
+        background: var(--card);
+        box-shadow: var(--shadow);
+    }
+    
+    /* Ячейки */
+    #docs .data-table td,
+    #search .data-table td {
+        border: none !important;
+        padding: 0.4rem 0 !important;
+        text-align: left !important;
+        font-size: 0.8rem;
+    }
+    
+    /* Заголовки перед ячейками */
+    #docs .data-table td::before,
+    #search .data-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary);
+        display: block;
+        margin-bottom: 0.2rem;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+    
+    /* Первая ячейка — заголовок карточки */
+    #docs .data-table td:first-child,
+    #search .data-table td:first-child {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text);
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    #docs .data-table td:first-child::before,
+    #search .data-table td:first-child::before {
+        display: none;
+    }
+}
+
+/* 📚 АККОРДЕОНЫ */
 .law-accordion,
 .law-item {
     border: 1px solid var(--border);
@@ -544,7 +623,6 @@ body {
 .law-title {
     display: block;
     margin-bottom: 0.25rem;
-    /* Безопасный перенос — без break-all! */
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
@@ -628,7 +706,7 @@ body {
     font-weight: 600;
 }
 
-/* 🍺 ОСВИДЕТЕЛЬСТВОВАНИЕ — аккордеон */
+/* 🍺 ОСВИДЕТЕЛЬСТВОВАНИЕ */
 .accordion-osvidetelstvovanie {
     margin: 1.5rem 0;
     border: 2px solid var(--danger);
@@ -663,7 +741,7 @@ body {
     border-top: 2px solid var(--danger);
 }
 
-/* 🎨 БЛОКИ ОСВИДЕТЕЛЬСТВОВАНИЯ — единые стили */
+/* 🎨 БЛОКИ ОСВИДЕТЕЛЬСТВОВАНИЯ */
 .osvid-block {
     padding: clamp(1rem, 2vw, 1.25rem);
     border-radius: var(--radius-sm);
@@ -749,7 +827,6 @@ code {
     line-height: 1.5;
     font-family: monospace;
     white-space: pre-wrap;
-    /* БЕЗОПАСНЫЙ перенос — без break-all! */
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
@@ -863,7 +940,7 @@ code {
 .text-danger { color: var(--danger); }
 .text-success { color: var(--success); }
 
-/* 🔐 БЕЗОПАСНЫЙ ПЕРЕНОС ТЕКСТА — единый стиль */
+/* 🔐 БЕЗОПАСНЫЙ ПЕРЕНОС ТЕКСТА */
 .text-safe {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -871,7 +948,6 @@ code {
     -webkit-hyphens: auto;
 }
 
-/* Применяем ко всем текстовым элементам */
 .law-item-content,
 .info-card,
 .step-description,
@@ -886,7 +962,6 @@ code {
 .footer-social,
 .search-result-title,
 .search-result-text {
-    @extend .text-safe;
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
@@ -1014,287 +1089,4 @@ input:focus-visible {
     .law-full-text li {
         border-left-color: var(--border);
     }
-   /* 📊 ТАБЛИЦЫ В РАЗДЕЛЕ ОСМОТР И ДОСМОТР — без горизонтального скролла */
-
-/* Убираем min-width чтобы таблицы не вылезали */
-#search .data-table {
-    min-width: auto;
-    width: 100%;
-    font-size: clamp(0.7rem, 1vw, 0.8rem);
 }
-
-/* Разрешаем перенос текста в ячейках */
-#search .data-table th,
-#search .data-table td {
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    padding: clamp(0.4rem, 0.8vw, 0.6rem);
-    vertical-align: top;
-}
-
-/* Заголовки таблиц — компактные */
-#search .data-table th {
-    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-}
-
-/* На мобильных — ещё компактнее */
-@media (max-width: 639px) {
-    #search .data-table {
-        font-size: 0.7rem;
-    }
-    
-    #search .data-table th,
-    #search .data-table td {
-        padding: 0.4rem;
-        font-size: 0.7rem;
-    }
-    
-    /* Переносим заголовки колонок */
-    #search .data-table th {
-        word-break: normal;
-    }
-}
-
-/* Альтернативный вариант: карточки вместо таблицы на мобильных */
-@media (max-width: 639px) {
-    #search .table-container {
-        overflow-x: hidden;
-    }
-    
-    #search .data-table,
-    #search .data-table tbody,
-    #search .data-table tr,
-    #search .data-table td {
-        display: block;
-        width: 100%;
-    }
-    
-    #search .data-table thead {
-        display: none; /* Скрываем шапку на мобильных */
-    }
-    
-    #search .data-table tr {
-        margin-bottom: 1rem;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 0.5rem;
-    }
-    
-    #search .data-table td {
-        border: none;
-        padding: 0.5rem;
-        text-align: left;
-    }
-    
-    #search .data-table td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        display: block;
-        margin-bottom: 0.25rem;
-        color: var(--primary);
-    }
-   /* 📊 ТАБЛИЦЫ — убираем горизонтальный скролл (#docs и #search) */
-
-/* Убираем min-width чтобы таблицы не вылезали */
-#search .data-table,
-#docs .data-table {
-    min-width: auto;
-    width: 100%;
-    font-size: clamp(0.7rem, 1vw, 0.8rem);
-}
-
-/* Разрешаем перенос текста в ячейках */
-#search .data-table th,
-#search .data-table td,
-#docs .data-table th,
-#docs .data-table td {
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    padding: clamp(0.4rem, 0.8vw, 0.6rem);
-    vertical-align: top;
-}
-
-/* Заголовки таблиц — компактные */
-#search .data-table th,
-#docs .data-table th {
-    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-}
-
-/* На мобильных — ещё компактнее */
-@media (max-width: 639px) {
-    #search .data-table,
-    #docs .data-table {
-        font-size: 0.7rem;
-    }
-    
-    #search .data-table th,
-    #search .data-table td,
-    #docs .data-table th,
-    #docs .data-table td {
-        padding: 0.4rem;
-        font-size: 0.7rem;
-    }
-    
-    /* Переносим заголовки колонок */
-    #search .data-table th,
-    #docs .data-table th {
-        word-break: normal;
-    }
-}
-
-/* Альтернативный вариант: карточки вместо таблицы на мобильных */
-@media (max-width: 639px) {
-    #search .table-container,
-    #docs .table-container {
-        overflow-x: hidden;
-    }
-    
-    #search .data-table,
-    #search .data-table tbody,
-    #search .data-table tr,
-    #search .data-table td,
-    #docs .data-table,
-    #docs .data-table tbody,
-    #docs .data-table tr,
-    #docs .data-table td {
-        display: block;
-        width: 100%;
-    }
-    
-    #search .data-table thead,
-    #docs .data-table thead {
-        display: none; /* Скрываем шапку на мобильных */
-    }
-    
-    #search .data-table tr,
-    #docs .data-table tr {
-        margin-bottom: 1rem;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 0.5rem;
-    }
-    
-    #search .data-table td,
-    #docs .data-table td {
-        border: none;
-        padding: 0.5rem;
-        text-align: left;
-    }
-    
-    #search .data-table td::before,
-    #docs .data-table td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        display: block;
-        margin-bottom: 0.25rem;
-        color: var(--primary);
-    }
-   /* 📊 ТАБЛИЦЫ — ПОЛНОЕ ИСПРАВЛЕНИЕ для мобильных */
-
-/* Разрешаем перенос текста во ВСЕХ ячейках */
-.data-table th,
-.data-table td {
-    white-space: normal !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    max-width: 200px;
-}
-
-/* На мобильных — карточный вид вместо таблицы */
-@media (max-width: 639px) {
-    /* Скрываем горизонтальный скролл */
-    .table-container {
-        overflow-x: hidden !important;
-        -webkit-overflow-scrolling: auto;
-    }
-    
-    /* Таблица становится блоком */
-    .data-table,
-    .data-table tbody,
-    .data-table tr,
-    .data-table th,
-    .data-table td {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Скрываем шапку таблицы */
-    .data-table thead {
-        display: none;
-    }
-    
-    /* Каждая строка — отдельная карточка */
-    .data-table tr {
-        margin-bottom: 1rem;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 0.75rem;
-        background: var(--card);
-        box-shadow: var(--shadow);
-    }
-    
-    /* Ячейки */
-    .data-table td {
-        border: none;
-        padding: 0.5rem 0;
-        text-align: left;
-        font-size: 0.85rem;
-    }
-    
-    /* Добавляем заголовки перед каждой ячейкой */
-    .data-table td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: var(--primary);
-        display: block;
-        margin-bottom: 0.25rem;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-    }
-    
-    /* Первая ячейка — заголовок карточки */
-    .data-table td:first-child {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--text);
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .data-table td:first-child::before {
-        display: none;
-    }
-}
-
-/* Особое исправление для раздела Документы */
-@media (max-width: 639px) {
-    #docs .data-table {
-        font-size: 0.75rem;
-    }
-    
-    #docs .data-table th,
-    #docs .data-table td {
-        padding: 0.4rem;
-        word-break: break-word;
-    }
-}
-
-/* Особое исправление для раздела Осмотр и досмотр */
-@media (max-width: 639px) {
-    #search .data-table {
-        font-size: 0.7rem;
-    }
-    
-    #search .data-table th,
-    #search .data-table td {
-        padding: 0.35rem;
-        word-break: break-word;
-    }
-}
-}
- 
- 
