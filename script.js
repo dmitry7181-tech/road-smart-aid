@@ -586,18 +586,20 @@ const initPWA = () => {
     });
 };
 
-const installApp = async () => {
+const installApp = async () => {  // ← ДОБАВЬТЕ async
     if (!deferredPrompt) {
-            const userConfirmed = confirm(
-            '📱 Установка через кнопку недоступна в этом браузере.\n\n' +
-            'Используйте меню браузера:\n' +
-            '• Android: ⋮ → «Добавить на главный экран»\n' +
-            '• iPhone: 📤 → «На экран Домой»\n\n' +
-            'Нажмите OK для продолжения.'
-        );
+        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
         return;
     }
-    // ...
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted' && window.location.hostname === 'localhost') {
+        console.log('✅ PWA: Пользователь установил приложение');
+    }
+    
+    deferredPrompt = null;
 };
     
     deferredPrompt.prompt();
