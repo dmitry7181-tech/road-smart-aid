@@ -4,7 +4,7 @@ print("🔍 Start check...")
 url = "https://publication.pravo.gov.ru/document/0001202305020028"
 
 try:
-    r = requests.get(url, timeout=20)
+    r = requests.get(url, timeout=60)
     new_hash = hashlib.sha256(r.text.encode()).hexdigest()[:16]
     
     with open("data/legal-base.json", "r", encoding="utf-8") as f:
