@@ -586,22 +586,12 @@ const initPWA = () => {
     });
 };
 
-const installApp = async () => {  // ← ДОБАВЬТЕ async
+const installApp = async () => {   
     if (!deferredPrompt) {
         alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
         return;
     }
-    
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted' && window.location.hostname === 'localhost') {
-        console.log('✅ PWA: Пользователь установил приложение');
-    }
-    
-    deferredPrompt = null;
-};
-    
+       
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     
