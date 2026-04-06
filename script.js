@@ -1,10 +1,14 @@
 /* ===================================
-   ROAD SMART AID - script.js v5.0
-   Профессиональная архитектура: только поведение
+   ROAD SMART AID — PRODUCTION JS v9.0
+   Профессиональная архитектура
+   Оптимизация + Безопасность + a11y
+   Совместим с CSS v8.0
    =================================== */
 
-// 📚 СЛОВАРЬ СИНОНИМОВ ДЛЯ ПОИСКА
-const searchSynonyms = {
+'use strict';
+
+/* 📚 СЛОВАРЬ СИНОНИМОВ ДЛЯ ПОИСКА */
+const SEARCH_SYNONYMS = Object.freeze({
     'дпс': ['гаи', 'гибдд', 'полиция', 'инспектор'],
     'гаи': ['дпс', 'гибдд', 'полиция', 'инспектор'],
     'гибдд': ['дпс', 'гаи', 'полиция', 'инспектор'],
@@ -53,102 +57,10 @@ const searchSynonyms = {
     'коап': ['кодекс', 'административный', 'нарушение'],
     'пдд': ['правила', 'дорожное', 'движение'],
     'освидетельствование': ['алкоголь', 'опьянение', 'алкотестер', 'трубка', 'нарколог']
-};
+});
 
-// 🔤 НОРМАЛИЗАЦИЯ ЗАПРОСА
-function normalizeQuery(query) {
-    let normalized = query.toLowerCase();
-    normalized = normalized.replace(/(\bп)\s+(\d+)/gi, '$1. $2');
-    normalized = normalized.replace(/(\bст)\s+(\d+)/gi, '$1. $2');
-    normalized = normalized.replace(/\s+/g, ' ').trim();
-    return normalized;
-}
-
-// 🔤 НОРМАЛИЗАЦИЯ ТЕКСТА
-function normalizeText(text) {
-    return text
-        .toLowerCase()
-        .replace(/ё/g, 'е')
-        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-}
-
-// 🎯 НЕЧЁТКИЙ ПОИСК (Levenshtein)
-function fuzzyMatch(query, text, threshold = 0.6) {
-    query = normalizeText(query);
-    text = normalizeText(text);
-    if (text.includes(query)) return 1.0;
-    
-    const words1 = query.split(' ');
-    const words2 = text.split(' ');
-    let matches = 0;
-    
-    words1.forEach(w1 => {
-        words2.forEach(w2 => {
-            if (w1.length > 2 && w2.length > 2) {
-                const distance = levenshteinDistance(w1, w2);
-                const similarity = 1 - (distance / Math.max(w1.length, w2.length));
-                if (similarity >= threshold) matches++;
-            }
-        });
-    });
-    
-    return matches / words1.length;
-}
-
-// 📏 РАССТОЯНИЕ ЛЕВЕНШТЕЙНА
-function levenshteinDistance(str1, str2) {
-    const matrix = [];
-    for (let i = 0; i <= str2.length; i++) matrix[i] = [i];
-    for (let j = 0; j <= str1.length; j++) matrix[0][j] = j;
-    
-    for (let i = 1; i <= str2.length; i++) {
-        for (let j = 1; j <= str1.length; j++) {
-            if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j] + 1
-                );
-            }
-        }
-    }
-    
-    return matrix[str2.length][str1.length];
-}
-
-// 🔍 ПОДСВЕТКА НАЙДЕННОГО ТЕКСТА
-function highlightText(text, query) {
-    const normalizedQuery = normalizeQuery(query);
-    const terms = [
-        query,
-        normalizedQuery,
-        ...(searchSynonyms[query] || []),
-        ...(searchSynonyms[normalizedQuery] || [])
-    ];
-    
-    let highlighted = text;
-    terms.forEach(term => {
-        if (term && term.length > 1) {
-            const regex = new RegExp(
-                `(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
-                'gi'
-            );
-            highlighted = highlighted.replace(
-                regex,
-                '<span class="search-highlight">$1</span>'
-            );
-        }
-    });
-    
-    return highlighted;
-}
-
-// 🔍 ДАННЫЕ ДЛЯ УМНОГО ПОИСКА
-const searchData = [
+/* 🔍 ДАННЫЕ ДЛЯ УМНОГО ПОИСКА (без дубликатов) */
+const SEARCH_DATA = Object.freeze([
     {
         section: 'stop',
         title: '🛑 Остановка инспектором',
@@ -198,159 +110,266 @@ const searchData = [
         content: '112 — единый экстренный, 102 — полиция, 103 — скорая, 8(800)222-74-47 — телефон доверия МВД'
     },
     {
-        section: 'main-menu',
-        title: '📚 Главное меню',
-        keywords: ['меню', 'разделы', 'навигация'],
-        content: 'Все разделы приложения: Остановка, Полномочия, Документы, Осмотр, ДТП, Права'
-    },
-    {
         section: 'laws',
         title: '📚 Справочник законов',
         keywords: ['законы', 'коап', 'пдд', 'приказ', 'мвд', '264', 'конституция', 'полиция', 'аккордеон'],
         content: 'Полный справочник законов: Приказ МВД №264, КоАП РФ, ПДД РФ, ФЗ О полиции, Конституция РФ'
     }
-];
+]);
 
-// 🔍 ФУНКЦИЯ ПОИСКА
-function searchContent() {
-    const searchInput = document.getElementById('search-input');
-    const resultsContainer = document.getElementById('search-results');
+/* 🔧 УТИЛИТЫ */
+
+/* 🔤 Нормализация запроса */
+const normalizeQuery = (query) => {
+    let normalized = query.toLowerCase();
+    normalized = normalized.replace(/(\bп)\s+(\d+)/gi, '$1. $2');
+    normalized = normalized.replace(/(\bст)\s+(\d+)/gi, '$1. $2');
+    return normalized.replace(/\s+/g, ' ').trim();
+};
+
+/* 🔤 Нормализация текста */
+const normalizeText = (text) => text
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+/* 🎯 Безопасное экранирование для RegExp */
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/* 🎯 Нечёткий поиск (Levenshtein) */
+const fuzzyMatch = (query, text, threshold = 0.6) => {
+    query = normalizeText(query);
+    text = normalizeText(text);
+    if (text.includes(query)) return 1.0;
     
-    if (!searchInput || !resultsContainer) return;
+    const words1 = query.split(' ');
+    const words2 = text.split(' ');
+    let matches = 0;
     
-    const rawQuery = searchInput.value.trim();
-    const query = normalizeQuery(rawQuery);
+    words1.forEach(w1 => {
+        words2.forEach(w2 => {
+            if (w1.length > 2 && w2.length > 2) {
+                const distance = levenshteinDistance(w1, w2);
+                const similarity = 1 - (distance / Math.max(w1.length, w2.length));
+                if (similarity >= threshold) matches++;
+            }
+        });
+    });
     
-    if (query.length < 2) {
-        resultsContainer.style.display = 'none';
-        return;
+    return words1.length ? matches / words1.length : 0;
+};
+
+/* 📏 Расстояние Левенштейна */
+const levenshteinDistance = (str1, str2) => {
+    const matrix = [];
+    for (let i = 0; i <= str2.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= str1.length; j++) matrix[0][j] = j;
+    
+    for (let i = 1; i <= str2.length; i++) {
+        for (let j = 1; j <= str1.length; j++) {
+            if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
     }
     
-    // Собираем термины для поиска
-    let searchTerms = [query, rawQuery];
-    Object.keys(searchSynonyms).forEach(key => {
-        if (query.includes(key) || searchSynonyms[key].includes(query) || rawQuery.includes(key)) {
-            searchTerms = searchTerms.concat(searchSynonyms[key]);
+    return matrix[str2.length][str1.length];
+};
+
+/* 🔍 Подсветка найденного текста (безопасная) */
+const highlightText = (text, query) => {
+    if (!query || query.length < 2) return text;
+    
+    const normalizedQuery = normalizeQuery(query);
+    const terms = [
+        query,
+        normalizedQuery,
+        ...(SEARCH_SYNONYMS[query] || []),
+        ...(SEARCH_SYNONYMS[normalizedQuery] || [])
+    ];
+    
+    let highlighted = text;
+    terms.forEach(term => {
+        if (term && term.length > 1) {
+            const escapedTerm = escapeRegex(term);
+            const regex = new RegExp(`(${escapedTerm})`, 'gi');
+            highlighted = highlighted.replace(regex, '<span class="search-highlight">$1</span>');
         }
     });
     
-    // Поиск в searchData
-    const searchDataResults = searchData.filter(item => {
-        const searchText = (item.title + ' ' + item.content + ' ' + item.keywords.join(' ')).toLowerCase();
+    return highlighted;
+};
+
+/* 🔍 Универсальная функция поиска */
+const performSearch = (query, dataSource, maxResults = 10) => {
+    if (query.length < 2) return [];
+    
+    const searchTerms = [query, normalizeQuery(query)];
+    Object.keys(SEARCH_SYNONYMS).forEach(key => {
+        if (query.includes(key) || SEARCH_SYNONYMS[key].includes(query)) {
+            searchTerms.push(...SEARCH_SYNONYMS[key]);
+        }
+    });
+    
+    const results = dataSource.filter(item => {
+        const searchText = (item.title + ' ' + item.content + ' ' + (item.keywords || []).join(' ')).toLowerCase();
         return searchTerms.some(term => term && searchText.includes(term.toLowerCase()));
     });
     
-    // Поиск по разделам
-    const sectionResults = [];
-    document.querySelectorAll('.section').forEach(section => {
-        const sectionId = section.id;
-        const sectionTitle = section.querySelector('.section-title')?.textContent || '';
-        const sectionText = section.textContent || '';
+    return results
+        .map(item => ({
+            ...item,
+            relevance: fuzzyMatch(query, item.content + ' ' + item.title)
+        }))
+        .filter(item => item.relevance > 0.3)
+        .sort((a, b) => b.relevance - a.relevance)
+        .slice(0, maxResults)
+        .filter((v, i, a) => a.findIndex(t => t.section === v.section) === i);
+};
+
+/* 🎯 ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ ПОИСКА */
+const renderSearchResults = (results, container, rawQuery, isLawSearch = false) => {
+    if (!container) return;
+    
+    if (results.length > 0) {
+        container.innerHTML = results.map(item => {
+            const targetId = item.targetElementId || '';
+            const itemClass = isLawSearch ? 'law-search-result' : 'search-result-item';
+            const titleClass = isLawSearch ? 'law-search-title' : 'search-result-title';
+            const textClass = isLawSearch ? 'law-search-text' : 'search-result-text';
+            const highlightClass = isLawSearch ? 'law-search-highlight' : 'search-highlight';
+            
+            return `
+                <div class="${itemClass}" data-section="${item.section}" data-target="${targetId}">
+                    <div class="${titleClass}">${item.title}</div>
+                    <div class="${textClass}">${highlightText(item.content, rawQuery)}</div>
+                    ${!isLawSearch ? `<div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>` : ''}
+                </div>
+            `;
+        }).join('');
+        container.style.display = 'block';
+        container.setAttribute('aria-live', 'polite');
         
-        searchTerms.forEach(term => {
-            if (term && sectionText.toLowerCase().includes(term.toLowerCase())) {
-                const relevance = fuzzyMatch(term, sectionText);
+        // Добавляем обработчики кликов
+        container.querySelectorAll(`.${isLawSearch ? 'law-search-result' : 'search-result-item'}`).forEach(item => {
+            item.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                const target = this.getAttribute('data-target');
+                if (isLawSearch) {
+                    const index = Array.from(container.children).indexOf(this);
+                    scrollToLawItem(index, rawQuery);
+                } else {
+                    openSectionAndScroll(section, target);
+                }
+            });
+        });
+    } else {
+        container.innerHTML = `<div class="no-results">Ничего не найдено 😕<br><small>Попробуйте: "п 48", "ст 5", "гаи", "дтп"</small></div>`;
+        container.style.display = 'block';
+        container.setAttribute('aria-live', 'polite');
+    }
+};
+
+/* 🔍 ОСНОВНОЙ ПОИСК (с debounce) */
+let searchDebounce;
+const onSearchInput = () => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('search-results');
+        
+        if (!searchInput || !resultsContainer) return;
+        
+        const rawQuery = searchInput.value.trim();
+        const query = normalizeQuery(rawQuery);
+        
+        if (query.length < 2) {
+            resultsContainer.style.display = 'none';
+            resultsContainer.removeAttribute('aria-live');
+            return;
+        }
+        
+        // Поиск по разделам
+        const searchDataResults = performSearch(query, SEARCH_DATA);
+        
+        // Поиск по контенту разделов
+        const sectionResults = [];
+        document.querySelectorAll('.section').forEach(section => {
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('.section-title')?.textContent || '';
+            const sectionText = section.textContent?.slice(0, 500) || '';
+            
+            if (sectionText.toLowerCase().includes(query.toLowerCase())) {
+                const relevance = fuzzyMatch(query, sectionText);
                 if (relevance > 0.3) {
                     let targetElementId = null;
                     
-                    // Приоритет 1: Аккордеоны
-                    const accordionSummaries = section.querySelectorAll('details summary');
-                    for (let idx = 0; idx < accordionSummaries.length; idx++) {
-                        const summary = accordionSummaries[idx];
-                        if (summary.textContent.toLowerCase().includes(term.toLowerCase())) {
-                            const parentDetails = summary.closest('details');
-                            if (!parentDetails.id) {
-                                parentDetails.id = `search-${sectionId}-acc-${idx}-${Date.now()}`;
+                    // Приоритет: аккордеоны
+                    const summaries = section.querySelectorAll('details summary');
+                    for (const [idx, summary] of summaries.entries()) {
+                        if (summary.textContent.toLowerCase().includes(query.toLowerCase())) {
+                            const parent = summary.closest('details');
+                            if (parent && !parent.id) {
+                                parent.id = `search-${sectionId}-acc-${idx}-${Date.now()}`;
                             }
-                            targetElementId = parentDetails.id;
+                            targetElementId = parent?.id || null;
                             break;
-                        }
-                    }
-                    
-                    // Приоритет 2: Заголовки шагов
-                    if (!targetElementId) {
-                        const stepHeaders = section.querySelectorAll('.step-title');
-                        for (let idx = 0; idx < stepHeaders.length; idx++) {
-                            const header = stepHeaders[idx];
-                            if (header.textContent.toLowerCase().includes(term.toLowerCase())) {
-                                const parentStep = header.closest('.step');
-                                if (!parentStep.id) {
-                                    parentStep.id = `search-${sectionId}-step-${idx}-${Date.now()}`;
-                                }
-                                targetElementId = parentStep.id;
-                                break;
-                            }
                         }
                     }
                     
                     sectionResults.push({
                         section: sectionId,
                         title: sectionTitle,
-                        content: sectionText.substring(0, 150) + '...',
-                        relevance: relevance,
-                        targetElementId: targetElementId,
-                        searchTerm: term
+                        content: sectionText.slice(0, 150) + '...',
+                        relevance,
+                        targetElementId
                     });
                 }
             }
         });
-    });
-    
-    // Объединяем и сортируем
-    const allResults = [...searchDataResults, ...sectionResults];
-    allResults.sort((a, b) => (b.relevance || 1) - (a.relevance || 1));
-    const uniqueResults = allResults.filter(
-        (v, i, a) => a.findIndex(t => t.section === v.section) === i
-    );
-    
-    // Отображаем результаты
-    if (uniqueResults.length > 0) {
-        resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(item => {
-            const targetId = item.targetElementId || '';
-            return `
-                <div class="search-result-item" data-section="${item.section}" data-target="${targetId}">
-                    <div class="search-result-title">${item.title}</div>
-                    <div class="search-result-text">${highlightText(item.content, rawQuery)}</div>
-                    <div class="search-result-meta">🔑 Релевантность: ${Math.round((item.relevance || 1) * 100)}%</div>
-                </div>
-            `;
-        }).join('');
-        resultsContainer.style.display = 'block';
         
-        // Добавляем обработчики кликов
-        resultsContainer.querySelectorAll('.search-result-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const section = this.getAttribute('data-section');
-                const target = this.getAttribute('data-target');
-                openSectionAndScroll(section, target);
-            });
-        });
-    } else {
-        resultsContainer.innerHTML = `
-            <div class="no-results">
-                Ничего не найдено 😕<br>
-                <small>Попробуйте: "п 48", "ст 5", "гаи", "дтп"</small>
-            </div>
-        `;
-        resultsContainer.style.display = 'block';
-    }
-}
+        const allResults = [...searchDataResults, ...sectionResults];
+        renderSearchResults(allResults, resultsContainer, rawQuery, false);
+    }, 300);
+};
 
-// 🚫 ЗАКРЫТЬ ПОИСК ПРИ КЛИКЕ ВНЕ
-document.addEventListener('click', function(e) {
-    const searchInput = document.getElementById('search-input');
-    const resultsContainer = document.getElementById('search-results');
-    
-    if (searchInput && resultsContainer) {
-        const searchContainer = searchInput.parentElement;
-        if (!searchContainer.contains(e.target)) {
-            resultsContainer.style.display = 'none';
+/* 🚫 Закрытие поиска при клике вне */
+const setupSearchCloseHandler = () => {
+    document.addEventListener('click', (e) => {
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('search-results');
+        const lawSearch = document.getElementById('law-search');
+        const lawResults = document.getElementById('law-search-results');
+        
+        // Основной поиск
+        if (searchInput && resultsContainer) {
+            const searchArea = searchInput.closest('header') || searchInput.parentElement;
+            if (searchArea && !searchArea.contains(e.target) && !resultsContainer.contains(e.target)) {
+                resultsContainer.style.display = 'none';
+                resultsContainer.removeAttribute('aria-live');
+            }
         }
-    }
-});
+        
+        // Поиск по законам
+        if (lawSearch && lawResults) {
+            const lawSearchArea = lawSearch.parentElement;
+            if (lawSearchArea && !lawSearchArea.contains(e.target) && !lawResults.contains(e.target)) {
+                lawResults.style.display = 'none';
+            }
+        }
+    });
+};
 
-// 📱 ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
-function showSection(id) {
+/* 📱 ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ */
+const showSection = (id) => {
     // Скрываем все разделы
     document.querySelectorAll('.section').forEach(el => {
         el.classList.remove('active');
@@ -364,37 +383,41 @@ function showSection(id) {
     // Показываем нужное
     if (id === 'main-menu') {
         if (menu) menu.style.display = 'grid';
+        // Фокус на первый элемент меню
+        const firstCard = menu.querySelector('.menu-card');
+        if (firstCard) firstCard.focus();
     } else {
         const section = document.getElementById(id);
         if (section) {
             section.classList.add('active');
             section.style.display = 'block';
+            // Фокус на кнопку "Назад"
+            const backBtn = section.querySelector('.back-btn');
+            if (backBtn) backBtn.focus();
         }
     }
     
-    // Прокрутка вверх
     window.scrollTo(0, 0);
-}
+};
 
-// 🎯 ОТКРЫТЬ РАЗДЕЛ И ПРОКРУТИТЬ К ЭЛЕМЕНТУ
-function openSectionAndScroll(sectionId, targetElementId) {
+/* 🎯 Открыть раздел и прокрутить к элементу */
+const openSectionAndScroll = (sectionId, targetElementId) => {
     showSection(sectionId);
     
     setTimeout(() => {
-        // Раскрываем все аккордеоны в разделе
         const section = document.getElementById(sectionId);
         if (section) {
-            const accordions = section.querySelectorAll('details');
-            accordions.forEach(acc => acc.setAttribute('open', ''));
+            // Раскрываем аккордеоны
+            section.querySelectorAll('details').forEach(acc => acc.setAttribute('open', ''));
         }
         
-        // Если есть целевой элемент - скроллим к нему
-        if (targetElementId && targetElementId.trim() !== '') {
+        // Скролл к элементу
+        if (targetElementId?.trim()) {
             const target = document.getElementById(targetElementId);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
-                // Подсветка на 3 секунды
+                // Подсветка
                 const originalBg = target.style.backgroundColor;
                 const originalTransition = target.style.transition;
                 target.style.transition = 'all 0.3s ease';
@@ -410,87 +433,21 @@ function openSectionAndScroll(sectionId, targetElementId) {
             }
         }
         
-        // Скрываем результаты поиска
-        const resultsContainer = document.getElementById('search-results');
-        if (resultsContainer) resultsContainer.style.display = 'none';
+        // Скрыть результаты
+        const results = document.getElementById('search-results');
+        if (results) {
+            results.style.display = 'none';
+            results.removeAttribute('aria-live');
+        }
         
-        // Очищаем поле поиска
+        // Очистить поиск
         const searchInput = document.getElementById('search-input');
         if (searchInput) searchInput.value = '';
     }, 300);
-}
+};
 
-// 📅 ЗАГРУЗКА ДАТЫ ОБНОВЛЕНИЯ
-function loadLastCheckDate() {
-    fetch('data/legal-base.json?t=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
-            const el = document.getElementById('last-check');
-            if (el && data.metadata && data.metadata.last_verified) {
-                el.innerText = data.metadata.last_verified.split('T')[0];
-            }
-        })
-        .catch(() => {
-            const el = document.getElementById('last-check');
-            if (el) el.innerText = 'Онлайн';
-        });
-}
-
-// 📱 SERVICE WORKER
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => {
-                    console.log('✅ SW registered:', reg.scope);
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('🔄 SW: Доступно обновление!');
-                            }
-                        });
-                    });
-                })
-                .catch(err => console.log('❌ SW error:', err));
-        });
-    }
-}
-
-// 📱 PWA: УСТАНОВКА ПРИЛОЖЕНИЯ
-let deferredPrompt = null;
-
-function initPWA() {
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        console.log('✅ PWA: Готова к установке');
-    });
-    
-    window.addEventListener('appinstalled', () => {
-        console.log('✅ PWA: Приложение установлено!');
-        deferredPrompt = null;
-    });
-}
-
-async function installApp() {
-    if (!deferredPrompt) {
-        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
-        return;
-    }
-    
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-        console.log('✅ PWA: Пользователь установил приложение');
-    }
-    
-    deferredPrompt = null;
-}
-
-// 📚 ПОИСК ПО ЗАКОНАМ
-function searchLaws() {
+/* 📚 ПОИСК ПО ЗАКОНАМ */
+const searchLaws = () => {
     const searchInput = document.getElementById('law-search');
     const resultsContainer = document.getElementById('law-search-results');
     
@@ -512,8 +469,8 @@ function searchLaws() {
         const fullText = header + ' ' + content;
         
         if (fullText.toLowerCase().includes(query)) {
-            const highlighted = content.substring(0, 150).replace(
-                new RegExp(`(${query})`, 'gi'),
+            const highlighted = content.slice(0, 150).replace(
+                new RegExp(`(${escapeRegex(query)})`, 'gi'),
                 '<span class="law-search-highlight">$1</span>'
             );
             
@@ -525,28 +482,11 @@ function searchLaws() {
         }
     });
     
-    if (results.length > 0) {
-        resultsContainer.innerHTML = results.slice(0, 5).map(r => `
-            <div class="law-search-result">
-                <div class="law-search-title">${r.title}</div>
-                <div class="law-search-text">${r.content}</div>
-            </div>
-        `).join('');
-        resultsContainer.style.display = 'block';
-        
-        // Добавляем обработчики кликов
-        resultsContainer.querySelectorAll('.law-search-result').forEach((item, idx) => {
-            item.addEventListener('click', function() {
-                scrollToLawItem(idx, query);
-            });
-        });
-    } else {
-        resultsContainer.innerHTML = '<div style="padding: 0.5rem; color: var(--text-muted);">Ничего не найдено 😕</div>';
-        resultsContainer.style.display = 'block';
-    }
-}
+    renderSearchResults(results.slice(0, 5), resultsContainer, query, true);
+};
 
-function scrollToLawItem(index, query) {
+/* 🎯 Скролл к элементу в законах */
+const scrollToLawItem = (index, query) => {
     const allItems = document.querySelectorAll('.law-item');
     let matchIndex = 0;
     
@@ -559,23 +499,112 @@ function scrollToLawItem(index, query) {
                 item.setAttribute('open', '');
                 item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 item.style.backgroundColor = '#fef3c7';
-                setTimeout(() => {
-                    item.style.backgroundColor = '';
-                }, 2000);
+                setTimeout(() => { item.style.backgroundColor = ''; }, 2000);
             }
             matchIndex++;
         }
     });
     
-    const resultsContainer = document.getElementById('law-search-results');
+    const results = document.getElementById('law-search-results');
     const searchInput = document.getElementById('law-search');
-    if (resultsContainer) resultsContainer.style.display = 'none';
+    if (results) results.style.display = 'none';
     if (searchInput) searchInput.value = '';
-}
+};
 
-// 🖱️ ОБРАБОТЧИКИ СОБЫТИЙ
-function initEventListeners() {
-    // Кнопки меню
+/* 📅 Загрузка даты обновления */
+const loadLastCheckDate = () => {
+    const el = document.getElementById('last-check');
+    if (!el) return;
+    
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    
+    fetch('data/legal-base.json?t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            if (data.metadata?.last_verified) {
+                el.innerText = data.metadata.last_verified.split('T')[0];
+            }
+        })
+        .catch(() => {
+            if (window.location.hostname === 'localhost') {
+                console.warn('⚠️ Не удалось загрузить legal-base.json');
+            }
+            el.innerText = 'Онлайн';
+        });
+};
+
+/* 📱 Service Worker */
+const registerServiceWorker = () => {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => {
+                    if (window.location.hostname === 'localhost') {
+                        console.log('✅ SW registered:', reg.scope);
+                    }
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker?.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                if (window.location.hostname === 'localhost') {
+                                    console.log('🔄 SW: Доступно обновление!');
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(err => {
+                    if (window.location.hostname === 'localhost') {
+                        console.error('❌ SW error:', err);
+                    }
+                });
+        });
+    }
+};
+
+/* 📱 PWA: Установка */
+let deferredPrompt = null;
+
+const initPWA = () => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (window.location.hostname === 'localhost') {
+            console.log('✅ PWA: Готова к установке');
+        }
+        // Показываем кнопку установки если нужно
+        const installBtn = document.querySelector('.menu-card-install');
+        if (installBtn) installBtn.style.display = 'flex';
+    });
+    
+    window.addEventListener('appinstalled', () => {
+        if (window.location.hostname === 'localhost') {
+            console.log('✅ PWA: Приложение установлено!');
+        }
+        deferredPrompt = null;
+    });
+};
+
+const installApp = async () => {
+    if (!deferredPrompt) {
+        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
+        return;
+    }
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted' && window.location.hostname === 'localhost') {
+        console.log('✅ PWA: Пользователь установил приложение');
+    }
+    
+    deferredPrompt = null;
+};
+
+/* 🖱️ Инициализация обработчиков */
+const initEventListeners = () => {
+    // Меню
     document.querySelectorAll('.menu-card').forEach(card => {
         card.addEventListener('click', function() {
             const section = this.getAttribute('data-section');
@@ -591,32 +620,40 @@ function initEventListeners() {
         });
     });
     
+    // Поиск
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', onSearchInput);
+    }
+    
     // Поиск по законам
     const lawSearch = document.getElementById('law-search');
     if (lawSearch) {
         lawSearch.addEventListener('input', searchLaws);
     }
     
-    // Закрытие поиска по законам при клике вне
-    document.addEventListener('click', function(e) {
-        const lawSearch = document.getElementById('law-search');
-        const lawResults = document.getElementById('law-search-results');
-        if (lawSearch && lawResults && !lawSearch.contains(e.target) && !lawResults.contains(e.target)) {
-            lawResults.style.display = 'none';
-        }
-    });
-}
-
-// 🚀 ИНИЦИАЛИЗАЦИЯ
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ Road Smart Aid загружен!');
+    // Установка PWA
+    const installBtn = document.querySelector('.menu-card-install');
+    if (installBtn) {
+        installBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            installApp();
+        });
+    }
     
-    // Инициализация
+    // Закрытие поиска
+    setupSearchCloseHandler();
+};
+
+/* 🚀 Инициализация */
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hostname === 'localhost') {
+        console.log('✅ Road Smart Aid загружен!');
+    }
+    
     initEventListeners();
     initPWA();
     registerServiceWorker();
     loadLastCheckDate();
-    
-    // Показываем главное меню
     showSection('main-menu');
 });
