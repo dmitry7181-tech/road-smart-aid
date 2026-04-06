@@ -1094,5 +1094,103 @@ input:focus-visible {
         margin-bottom: 0.25rem;
         color: var(--primary);
     }
+   /* 📊 ТАБЛИЦЫ — убираем горизонтальный скролл (#docs и #search) */
+
+/* Убираем min-width чтобы таблицы не вылезали */
+#search .data-table,
+#docs .data-table {
+    min-width: auto;
+    width: 100%;
+    font-size: clamp(0.7rem, 1vw, 0.8rem);
 }
+
+/* Разрешаем перенос текста в ячейках */
+#search .data-table th,
+#search .data-table td,
+#docs .data-table th,
+#docs .data-table td {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: clamp(0.4rem, 0.8vw, 0.6rem);
+    vertical-align: top;
 }
+
+/* Заголовки таблиц — компактные */
+#search .data-table th,
+#docs .data-table th {
+    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+}
+
+/* На мобильных — ещё компактнее */
+@media (max-width: 639px) {
+    #search .data-table,
+    #docs .data-table {
+        font-size: 0.7rem;
+    }
+    
+    #search .data-table th,
+    #search .data-table td,
+    #docs .data-table th,
+    #docs .data-table td {
+        padding: 0.4rem;
+        font-size: 0.7rem;
+    }
+    
+    /* Переносим заголовки колонок */
+    #search .data-table th,
+    #docs .data-table th {
+        word-break: normal;
+    }
+}
+
+/* Альтернативный вариант: карточки вместо таблицы на мобильных */
+@media (max-width: 639px) {
+    #search .table-container,
+    #docs .table-container {
+        overflow-x: hidden;
+    }
+    
+    #search .data-table,
+    #search .data-table tbody,
+    #search .data-table tr,
+    #search .data-table td,
+    #docs .data-table,
+    #docs .data-table tbody,
+    #docs .data-table tr,
+    #docs .data-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    #search .data-table thead,
+    #docs .data-table thead {
+        display: none; /* Скрываем шапку на мобильных */
+    }
+    
+    #search .data-table tr,
+    #docs .data-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.5rem;
+    }
+    
+    #search .data-table td,
+    #docs .data-table td {
+        border: none;
+        padding: 0.5rem;
+        text-align: left;
+    }
+    
+    #search .data-table td::before,
+    #docs .data-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.25rem;
+        color: var(--primary);
+    }
+}
+ 
+ 
