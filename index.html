@@ -31,7 +31,13 @@
             <p class="header-subtitle">Ваш карманный юрист • Приказ МВД №264</p>
             
             <input type="text" id="search-input" class="search-input" placeholder="🔍 Поиск: п. 47.3, ст. 5, досмотр, 112...">
-            <div id="search-results" class="search-results"></div>
+           <div 
+    id="search-results" 
+    class="search-results" 
+    role="region" 
+    aria-live="polite" 
+    aria-label="Результаты поиска">
+</div>
         </header>
 
         <!-- ГЛАВНОЕ МЕНЮ -->
@@ -68,10 +74,14 @@
                 <span class="menu-icon">📚</span>
                 <span class="menu-title">Законы</span>
             </button>
-            <button class="menu-card menu-card-install" data-section="install-app">
-                <span class="menu-icon">📱</span>
-                <span class="menu-title">Установить</span>
-            </button>
+           <button 
+    class="menu-card menu-card-install" 
+    data-section="install-app"
+    id="install-app-btn"
+    aria-label="Установить приложение на устройство">
+    <span class="menu-icon">📱</span>
+    <span class="menu-title">Установить</span>
+</button>
         </nav>
 
         <!-- РАЗДЕЛ: Экстренные номера -->
@@ -869,8 +879,20 @@
     
     <!-- Поиск по законам -->
     <div class="law-search-container">
-        <input type="text" id="law-search" class="law-search-input" placeholder="🔍 Поиск: п. 10, ст. 19.3, досмотр, права...">
-        <div id="law-search-results" class="law-search-results"></div>
+      <input 
+    type="text" 
+    id="law-search" 
+    class="law-search-input" 
+    placeholder="🔍 Поиск: п. 10, ст. 19.3, досмотр, права..."
+    aria-label="Поиск по законам"
+    autocomplete="off">
+       <div 
+    id="law-search-results" 
+    class="law-search-results" 
+    role="region" 
+    aria-live="polite" 
+    aria-label="Результаты поиска по законам">
+</div>
     </div>
     
     <!-- АККОРДЕОН: Приказ МВД №264 -->
@@ -1197,7 +1219,7 @@
 </section>
                 <!-- FOOTER -->
         <footer class="main-footer">
-            <p>Последнее обновление базы: <span id="last-check">Загрузка...</span></p>
+            <p>Последнее обновление базы: <span id="last-check" role="status" aria-live="polite">Загрузка...</span></p>
             <p class="footer-links">
                 <a href="https://normativ.kontur.ru/document?moduleId=1&documentId=460686" target="_blank" rel="noopener noreferrer">📌 Приказ МВД №264</a> | 
                 <a href="https://www.consultant.ru/document/cons_doc_LAW_109831/" target="_blank" rel="noopener noreferrer">ФЗ «О полиции»</a> | 
