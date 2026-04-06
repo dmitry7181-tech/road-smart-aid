@@ -588,9 +588,17 @@ const initPWA = () => {
 
 const installApp = async () => {
     if (!deferredPrompt) {
-        alert('📱 Установка недоступна. Используйте меню браузера: «Добавить на главный экран»');
+            const userConfirmed = confirm(
+            '📱 Установка через кнопку недоступна в этом браузере.\n\n' +
+            'Используйте меню браузера:\n' +
+            '• Android: ⋮ → «Добавить на главный экран»\n' +
+            '• iPhone: 📤 → «На экран Домой»\n\n' +
+            'Нажмите OK для продолжения.'
+        );
         return;
     }
+    // ...
+};
     
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
