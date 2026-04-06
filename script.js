@@ -535,31 +535,34 @@ const loadLastCheckDate = () => {
 };
 
 /* 📱 Service Worker */
-const registerServiceWorker = () => {
+const registerServiceWorker = async () => {
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => {
-                    if (window.location.hostname === 'localhost') {
-                        console.log('✅ SW registered:', reg.scope);
-                    }
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker?.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                if (window.location.hostname === 'localhost') {
-                                    console.log('🔄 SW: Доступно обновление!');
-                                }
+        try {
+            const registration = await navigator.serviceWorker.register('sw.js');
+            
+            if (window.location.hostname === 'localhost') {
+                console.log('✅ SW registered:', registration.scope);
+            }
+            
+            // Обработка обновлений
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (newWorker) {
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            if (window.location.hostname === 'localhost') {
+                                console.log('🔄 SW: Доступно обновление!');
                             }
-                        });
+                        }
                     });
-                })
-                .catch(err => {
-                    if (window.location.hostname === 'localhost') {
-                        console.error('❌ SW error:', err);
-                    }
-                });
-        });
+                }
+            });
+            
+        } catch (error) {
+            if (window.location.hostname === 'localhost') {
+                console.warn('⚠️ Service Worker registration failed:', error.message);
+            }
+        }
     }
 };
 
