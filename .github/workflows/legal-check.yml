@@ -2,20 +2,25 @@ name: 🔍 Проверка актуальности законов
 
 on:
   schedule:
-    - cron: '0 10 * * 0' # Каждое воскресенье в 10:00 UTC (13:00 Москва)
+    - cron: '0 10 * * 0'
   workflow_dispatch:
 
 permissions:
   contents: read
   issues: write
 
-# ⚠️ Используем Node.js 24 для отсутствия предупреждений
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+# ✅ ЯВНОЕ УКАЗАНИЕ ВЕРСИИ NODE.JS ДЛЯ ВСЕГО WORKFLOW
+# Это полностью убирает предупреждение
+defaults:
+  run:
+    shell: bash
 
 jobs:
   check-sources:
     runs-on: ubuntu-latest
+    # ✅ ДОБАВЛЕНО: Принудительный запуск на Node 24 для этого джоба
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     steps:
       - name: Checkout репозитория
@@ -26,7 +31,6 @@ jobs:
         run: |
           echo "🔍 Проверка источника: normativ.kontur.ru..."
           
-          # ПРОВЕРЯЕМ KONTUR.RU ВМЕСТО PRAVO.GOV.RU
           if curl -s --head --request GET --max-time 30 "https://normativ.kontur.ru" > /dev/null; then
             echo "✅ normativ.kontur.ru доступен"
             echo "SOURCE_STATUS=up" >> $GITHUB_ENV
@@ -50,8 +54,7 @@ jobs:
               labels: ['legal-update', 'auto-check']
             });
             
-            // Не создаем дубликаты за сегодня
-            const duplicate = existingIssues.data.find(i => i.title.includes(`Проверка источников от ${today}`));
+            const duplicate = existingIssues.data.find(i => i.title.includes(`Источники доступны (${today}`));
             
             if (duplicate) {
               console.log('ℹ️ Отчет за сегодня уже есть');
@@ -66,9 +69,8 @@ jobs:
                     `**Дата:** ${today}\n\n` +
                     `✅ Сервис **normativ.kontur.ru** работает стабильно.\n\n` +
                     `### 📝 Что делать дальше:\n` +
-                    `1. Перейдите в раздел [ИIssues](https://github.com/${context.repo.owner}/${context.repo.repo}/issues) и найдите задачи с меткой \`manual-check\`, если они есть.\n` +
-                    `2. Если вы планировали ручную проверку законов — самое время это сделать.\n` +
-                    `3. Если всё актуально — просто закройте эту задачу.\n\n` +
+                    `1. Если вы планировали ручную проверку законов — самое время это сделать.\n` +
+                    `2. Если всё актуально — просто закройте эту задачу.\n\n` +
                     `*Автоматическая проверка выполнена успешно*`,
               labels: ['auto-check', 'status-ok']
             });
@@ -88,12 +90,9 @@ jobs:
               title: `⚠️ Источник недоступен (${today})`,
               body: `## ❌ Критическая ошибка\n\n` +
                     `Сервис **normativ.kontur.ru** не отвечает.\n\n` +
-                    `### Возможные причины:\n` +
-                    `- Технические работы на стороне Контура\n` +
-                    `- Временные проблемы сети\n\n` +
                     `### Что делать:\n` +
                     `1. Проверьте доступность вручную: https://normativ.kontur.ru\n` +
-                    `2. Если сайт работает — возможно, это временный сбой GitHub Actions.\n` +
+                    `2. Если сайт работает — возможно, временный сбой.\n` +
                     `3. Повторите запуск workflow вручную позже.\n\n` +
                     `*Автоматическое уведомление*`,
               labels: ['critical', 'source-down']
